@@ -1,9 +1,6 @@
 package asteroids.model;
 
-import be.kuleuven.cs.som.annotate.*;
-import java.lang.Math;
 import asteroids.exceptions.*;
-import asteroids.util.*;
 
 
 
@@ -24,10 +21,9 @@ import asteroids.util.*;
 
 public class Ship extends Entity {
 
-	private double radius;
-
 	private static final double MIN_RADIUS = 10;
-	
+
+
 	
 	
 	@Deprecated
@@ -56,15 +52,14 @@ public class Ship extends Entity {
 	 * @post   The radius of this new ship is equal to the given radius.
 	 */
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-
-
 		super(x, y, xVelocity, yVelocity, radius, orientation, mass);
 
+		//TODO: VRAAG: argument checking before super
+
 		//DEFENSIVE
-		throwErrorIfInvalidNumbers(radius);
 		if (radius < MIN_RADIUS)
 			throw new InvalidRadiusException();
-		this.radius = radius;
+
 	}
 
 }

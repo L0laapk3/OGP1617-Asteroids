@@ -10,7 +10,7 @@ public abstract class Entity {
 		/**
 		 * Constant for the maximum velocity.
 		 */
-		private double maxSpeed = 300000;
+		private final double maxSpeed;
 		
 		
 		/**
@@ -21,12 +21,13 @@ public abstract class Entity {
 		 * @post 	The maxSpeed of this entity is the same as the given maxSpeed
 		 * 		  | new.getMaxSpeed() == maxSpeed
 		 */
-		@Raw
-		public void setMaxSpeed(double maxSpeed) {
+		//TODO VRAAG: in constructor: final
+		/*@Raw
+		private void setMaxSpeed(double maxSpeed) {
 			if (Entity.isValidMaxSpeed(maxSpeed)) {
 				this.maxSpeed = maxSpeed;
 			}
-		}
+		}*/
 		
 		/**
 		 *  Returns the maxSpeed of the entity
@@ -247,7 +248,11 @@ public abstract class Entity {
 		 * @throws InvalidRadiusException
 		 * 		   The radius must not be smaller than MIN_RADIUS.
 		 */
-		public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+		public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+			
+			//setMaxSpeed(300000);
+			this.maxSpeed = 300000;
+			
 			
 			//DEFENSIVE
 			//Variables of type double can never be null, so we do not have to check if they are null.
@@ -260,7 +265,7 @@ public abstract class Entity {
 			
 			
 			//TOTAL
-			if (isInvalidNumber(xVelocity) || isInvalidNumber(yVelocity))
+			if (OGUtil.isInvalidNumber(xVelocity) || OGUtil.isInvalidNumber(yVelocity))
 				this.velocity = new Vector2(0, 0);
 			else {
 				setVelocity(xVelocity, yVelocity);
@@ -275,10 +280,15 @@ public abstract class Entity {
 			
 			
 			//DEFENSIVE
-			throwErrorIfInvalidNumbers(radius);
+			OGUtil.throwErrorIfInvalidNumbers(radius);
 			if (radius < MIN_RADIUS)
 				throw new InvalidRadiusException();
 			this.radius = radius;
+			
+			
+			
+			
+			//TODO: DEAL WITH MASS
 		}
 		
 		
@@ -307,7 +317,7 @@ public abstract class Entity {
 		 * @note   This is written in a defensive manner.
 		 */
 		public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
-			throwErrorIfInvalidNumbers(dt);
+			OGUtil.throwErrorIfInvalidNumbers(dt);
 			if (!isValidDeltaTime(dt))
 				throw new NegativeTimeException();
 			this.position = Vector2.add(this.position, Vector2.multiply(this.velocity, dt));
@@ -378,7 +388,7 @@ public abstract class Entity {
 		 * @note   This is written in a total manner.
 		 */
 		public void thrust(double amount) {
-			if (isInvalidNumber(amount) || amount < 0)
+			if (OGUtil.isInvalidNumber(amount) || amount < 0)
 				return;
 			double xVelocity = this.velocity.x + amount * Math.cos(this.orientation);
 			double yVelocity = this.velocity.y + amount * Math.sin(this.orientation);
@@ -470,6 +480,11 @@ public abstract class Entity {
 		 * 		   The entities should not overlap already.
 		 */
 		public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
+			
+			//TODO: ADD WALL COLLISION SHIT
+			
+			
+			
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
 			if (overlap(entity1, entity2))
@@ -555,11 +570,27 @@ public abstract class Entity {
 	 *       | result == (!isInvalidNumber(position.x) && !isInvalidNumber(position.y))
 	 */
 	public boolean isValidPosition(Vector2 position) {
-		return !isInvalidNumber(position.x) && !isInvalidNumber(position.y);
+		return !OGUtil.isInvalidNumber(position.x) && !OGUtil.isInvalidNumber(position.y);
 	}
 	
-	public double speed;
+	
+	
+	
+	
+
+	//TODO: do stuff with world? maybe
 	private World world;
+	
+	public World getWorld() {
+		return world;
+	}
+
+	public void setWorld(World world) {
+		this.world = world;
+	}
+
+
+
 	
 
 }

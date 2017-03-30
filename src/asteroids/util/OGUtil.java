@@ -29,7 +29,7 @@ public class OGUtil {
 	 * @return True if the number is infinite or Nan, otherwise false.
 	 */
 	@Immutable
-	private static boolean isInvalidNumber(double number) {
+	public static boolean isInvalidNumber(double number) {
 		return Double.isInfinite(number) || Double.isNaN(number);
 	}
 	

@@ -3,7 +3,8 @@ package asteroids.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import asteroids.util.Vector2;
+import asteroids.exceptions.*;
+import asteroids.util.*;
 
 public class World {
 	
@@ -78,6 +79,7 @@ public class World {
 	 * 		  Entity to add to the world.
 	 */
 	public void addEntity(Entity entity) {
+		entity.setWorld(this);
 		entities.add(entity);
 	}
 
@@ -87,6 +89,7 @@ public class World {
 	 * 		  Entity to remove from the world.
 	 */
 	public void removeEntity(Entity entity) {
+		entity.setWorld(null);
 		entities.remove(entity);
 	}
 	
@@ -151,17 +154,22 @@ public class World {
 		do {
 			
 			double firstCollisionTime = Double.POSITIVE_INFINITY;
-			Entity collisionFirstShip;
-			Entity collisionSecondShip;
-			for (int i = 0; i < entities.size(); i++)
-				for(int j = 1; j < entities.size(); j++) {
-					double collisionTime = Entity.getTimeToCollision(entities.get(i), entities.get(j));
-					if (firstCollisionTime > collisionTime) {
-						firstCollisionTime = collisionTime;
-						collisionFirstShip = entities.get(i);
-						collisionSecondShip = entities.get(j);
+			Entity collisionFirstEntity = null;
+			Entity collisionSecondEntity = null;
+			try {
+				for (int i = 0; i < entities.size(); i++)
+					for(int j = 1; j < entities.size(); j++) {
+						double collisionTime = Entity.getTimeToCollision(entities.get(i), entities.get(j));
+						if (firstCollisionTime > collisionTime) {
+							firstCollisionTime = collisionTime;
+							collisionFirstEntity = entities.get(i);
+							collisionSecondEntity = entities.get(j);
+						}
 					}
-				}
+			} catch (EntitiesOverlapException ex) { //should never happen..
+				throw new RuntimeException(ex); //FATAL ERROR
+				//TODO: opt einde zie ofda dees klopt
+			}
 			
 			
 			if (firstCollisionTime < Dt) { //collision happens before end Dt
@@ -169,12 +177,19 @@ public class World {
 					entity.move(firstCollisionTime);
 				Dt -= firstCollisionTime;
 				
-				//TODO: BOTSEN YO
+				collideEntities(collisionFirstEntity, collisionSecondEntity);
 			} else
 				for (Entity entity: entities)
 					entity.move(Dt);
 				Dt = (double)0;
 		} while (Dt > 0);
+	}
+
+
+
+	private void collideEntities(Entity collisionFirstEntity, Entity collisionSecondEntity) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
