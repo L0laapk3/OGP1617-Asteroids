@@ -294,35 +294,49 @@ public abstract class Entity {
 		
 
 
-		
-		
-		
-			
+		/**
+		 * variable to declare the acceleration of the given entity
+		 */		
+		public Vector2 acceleration = new Vector2(0,0);
 
 		/**
 		 * Update <code>entity</code>'s position, assuming it moves <code>dt</code>
 		 * seconds at its current velocity.
 		 * 
-		 * @param  dt
-		 * 		   The amount of time that the entity should move forward.
-		 * @effect The entity moves forward by the amount of time dt, with the stored velocity
-		 *       | x += xVelocity * dt
-		 *       | y += yVelocity * dt
-		 * @throws IllegalArgumentException
-		 * 		   The time of the action should not be infinite.
-		 * @throws IllegalArgumentException
-		 * 		   The time of the action should not be NaN.
-		 * @throws NegativeTimeException
-		 * 		   The time of the action should be positive. 
-		 * @note   This is written in a defensive manner.
+		 * @param  	dt
+		 * 		   	The amount of time that the entity should move forward.
+		 * @post   	The entity moves forward by the amount of time dt, with the stored velocity and the acceleration.
+		 * 			The new position is calculated in a deterministic way so that the speed will never exceed the max speed of the given ship.
+		 *        |	xPosition = xPosition + xVelocity * dt + 1/2 * xAcceleration^2
+		 *        | yPosition = yPosition + yVelocity * dt + 1/2 * yAcceleration^2
+		 * @throws 	IllegalArgumentException
+		 * 		   	The time of the action should not be infinite.
+		 * @throws 	IllegalArgumentException
+		 * 		   	The time of the action should not be NaN.
+		 * @throws 	NegativeTimeException
+		 * 		   	The time of the action should be positive. 
+		 * @note   	This is written in a defensive manner.
 		 */
 		public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
 			OGUtil.throwErrorIfInvalidNumbers(dt);
 			if (!isValidDeltaTime(dt))
 				throw new NegativeTimeException();
-			this.position = Vector2.add(this.position, Vector2.multiply(this.velocity, dt));
+			
+			double dtPossible;
+			if ((this.acceleration.x==0) && (this.acceleration.y==0)) {
+				dtPossible = dt;
+			} else {
+				double a = Math.pow(this.acceleration.x, 2) + Math.pow(this.acceleration.y, 2);
+				double b = -2*this.velocity.x*this.acceleration.x-2*this.velocity.y*this.acceleration.y;
+				double c = Math.pow(this.velocity.x,2)+Math.pow(this.velocity.y,2)-Math.pow(this.maxSpeed, 2);
+				dtPossible = Math.min(dt, Math.max(((-b+Math.sqrt(b*b-4*a*c))/2), (-b-Math.sqrt(b*b-4*a*c))/2));
+				assert dtPossible >= 0;
+			}
+			
+			this.position = Vector2.add(Vector2.add(this.position, Vector2.multiply(this.velocity, dt)), Vector2.multiply(acceleration, 1/2*Math.pow(dtPossible, 2)));	
+			this.velocity = Vector2.add(this.velocity, Vector2.multiply(this.acceleration, dtPossible));
+
 		}
-		
 		
 		
 		/**
