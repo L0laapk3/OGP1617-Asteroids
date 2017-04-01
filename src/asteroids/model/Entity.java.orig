@@ -290,11 +290,19 @@ public abstract class Entity {
 			
 			//TODO: DEAL WITH MASS
 		}
+		
+		
+
+
+<<<<<<< HEAD
+		
+		
+		
+		
+		
 
 		
-		
-		
-		
+		//---------------Terminating
 		
 		/**
 		 * Variable reflecting whether or not the instance is terminated.
@@ -322,31 +330,6 @@ public abstract class Entity {
 		public boolean isTerminated() {
 			return isTerminated;
 		}
-
-		
-		
-		
-		
-		
-		
-		
-
-
-
-
-		/**
-		 * variable to declare the acceleration of the given entity
-		 */		
-		private Vector2 acceleration = new Vector2(0,0);
-
-		public Vector2 getAcceleration() {
-			return acceleration;
-		}
-
-		public void setAcceleration(Vector2 acceleration) {
-			this.acceleration = acceleration;
-		}
-		
 		
 		
 		
@@ -354,6 +337,12 @@ public abstract class Entity {
 		
 		
 			
+=======
+		/**
+		 * variable to declare the acceleration of the given entity
+		 */		
+		public Vector2 acceleration = new Vector2(0,0);
+>>>>>>> f40c9879e67ba1dd51b781148b7183af02fd639c
 
 		/**
 		 * Update <code>entity</code>'s position, assuming it moves <code>dt</code>
@@ -379,18 +368,18 @@ public abstract class Entity {
 				throw new NegativeTimeException();
 			
 			double dtPossible;
-			if ((this.getAcceleration().x==0) && (this.getAcceleration().y==0)) {
+			if ((this.acceleration.x==0) && (this.acceleration.y==0)) {
 				dtPossible = dt;
 			} else {
-				double a = Math.pow(this.getAcceleration().x, 2) + Math.pow(this.getAcceleration().y, 2);
-				double b = -2*this.velocity.x*this.getAcceleration().x-2*this.velocity.y*this.getAcceleration().y;
+				double a = Math.pow(this.acceleration.x, 2) + Math.pow(this.acceleration.y, 2);
+				double b = -2*this.velocity.x*this.acceleration.x-2*this.velocity.y*this.acceleration.y;
 				double c = Math.pow(this.velocity.x,2)+Math.pow(this.velocity.y,2)-Math.pow(this.maxSpeed, 2);
 				dtPossible = Math.min(dt, Math.max(((-b+Math.sqrt(b*b-4*a*c))/2), (-b-Math.sqrt(b*b-4*a*c))/2));
 				assert dtPossible >= 0;
 			}
 			
-			this.position = Vector2.add(Vector2.add(this.position, Vector2.multiply(this.velocity, dt)), Vector2.multiply(getAcceleration(), 1/2*Math.pow(dtPossible, 2)));	
-			this.velocity = Vector2.add(this.velocity, Vector2.multiply(this.getAcceleration(), dtPossible));
+			this.position = Vector2.add(Vector2.add(this.position, Vector2.multiply(this.velocity, dt)), Vector2.multiply(acceleration, 1/2*Math.pow(dtPossible, 2)));	
+			this.velocity = Vector2.add(this.velocity, Vector2.multiply(this.acceleration, dtPossible));
 
 		}
 		
@@ -468,7 +457,6 @@ public abstract class Entity {
 		
 		
 		
-
 		
 		
 		
@@ -667,5 +655,9 @@ public abstract class Entity {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	
 
 }
