@@ -350,7 +350,7 @@ public class World {
 			Entity collisionSecondEntity = null;
 			try {
 				for (int i = 0; i < entities.size(); i++)
-					for(int j = 1; j < entities.size(); j++) {
+					for(int j = i + 1; j < entities.size(); j++) {
 						double collisionTime = Entity.getTimeToCollision(entities.get(i), entities.get(j));
 						if (firstCollisionTime > collisionTime) {
 							firstCollisionTime = collisionTime;
