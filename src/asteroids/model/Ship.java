@@ -62,4 +62,14 @@ public class Ship extends Entity {
 
 	}
 
+	public void kill() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addBullet() { //adds 1 bullet
+		// TODO Auto-generated method stub
+		
+	}
+
 }

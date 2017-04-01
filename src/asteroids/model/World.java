@@ -380,7 +380,6 @@ public class World {
 	
 
 	private void collideEntities(Entity collisionFirstEntity, Entity collisionSecondEntity) {
-		// TODO Auto-generated method stub
 		
 	}
 	
