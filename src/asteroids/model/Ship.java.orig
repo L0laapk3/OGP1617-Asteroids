@@ -139,9 +139,15 @@ public class Ship extends Entity {
 	//-------------Thrust functions
 	private double thrustforce=1.1*(Math.pow(10, 21));
 	
+<<<<<<< HEAD
+	public void thrustOn(){
+		this.acceleration=thrustforce/this.mass;
+	} 
+=======
 	public void thrustOn() {
 		this.setAcceleration(Vector2.multiply(this.getAcceleration(), thrustforce/this.getMass()));
-	} 
+	}
+>>>>>>> 3251ed67c433ab5bdf199d8d146adfe7b45aaa91
 	
 	public void thrustOff() {
 		this.setAcceleration(new Vector2(0,0));
