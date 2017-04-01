@@ -94,10 +94,10 @@ public abstract class Entity {
 				this.velocity = new Vector2(xVelocity, yVelocity);
 		}
 		
+		
+		
 		/**
 		 * Return the velocity of entity.
-		 * 
-		 * @return a Vector2 containing the velocity of the entity.
 		 * @note   This is written in a total fashion.
 		 */
 		@Basic
@@ -298,6 +298,69 @@ public abstract class Entity {
 		 * variable to declare the acceleration of the given entity
 		 */		
 		public Vector2 acceleration = new Vector2(0,0);
+		/**
+		 * Variable reflecting whether or not the instance is terminated.
+		 */
+		private boolean isTerminated = false;
+		
+		
+		/**
+		 * Terminate this world.
+		 *
+		 * @post   The instance is terminated.
+		 * @post   Each of the entities of the instance is terminated.
+		 */
+		public void terminate() {
+			if (!isTerminated()) {
+				this.isTerminated = true;	//TODO alle entities daarin terminaten
+			}
+		}
+		
+		/**
+		 * Check whether this world is terminated.
+		 */
+		@Basic
+		@Raw
+		public boolean isTerminated() {
+			return isTerminated;
+		}
+
+		
+		//---------------Terminating
+		
+		/**
+		 * Variable reflecting whether or not the instance is terminated.
+		 */
+		private boolean isTerminated = false;
+		
+		
+		/**
+		 * Terminate this world.
+		 *
+		 * @post   The instance is terminated.
+		 * @post   Each of the entities of the instance is terminated.
+		 */
+		public void terminate() {
+			if (!isTerminated()) {
+				this.isTerminated = true;	//TODO alle entities daarin terminaten
+			}
+		}
+		
+		/**
+		 * Check whether this world is terminated.
+		 */
+		@Basic
+		@Raw
+		public boolean isTerminated() {
+			return isTerminated;
+		}
+		
+		
+		
+		
+		
+		
+			
 
 		/**
 		 * Update <code>entity</code>'s position, assuming it moves <code>dt</code>
@@ -486,17 +549,15 @@ public abstract class Entity {
 		 * 		   The first entity to measure the distance from.
 		 * @param  entity2
 		 *         The second entity to measure the distance to.
-		 * @return The time until collision of the two entities if the entities are going to collide. They will collide if delta velocity multiplied by delta position is nonnegative and the following equation
-		 *         is 0 or more (where D stands for delta, meaning difference between the two entities): (Dv*Dr) - (Dv*Dv)(Dr*Dr - sigma²) where sigma is the combined total of the two radii of the entities.
+		 * @return The time until collision of the two entities if the entities are going to collide.
+		 *       | if (Dv * Dr < 0 || (d = (Dv*Dr) - (Dv*Dv)(Dr*Dr - sigma²)) < 0) result == positive infinity
+		 *       | else result = -(Dv*Dr + sqrt(d)) / (Dv*Dv)
 		 * @throws NullPointerException
 		 * 		   entity1 or entity2 should not be null.
 		 * @throws EntitiesOverlapException
 		 * 		   The entities should not overlap already.
 		 */
-		public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
-			
-			//TODO: ADD WALL COLLISION SHIT
-			
+		public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {			
 			
 			
 			if (entity1 == null || entity2 == null)
@@ -601,6 +662,16 @@ public abstract class Entity {
 
 	public void setWorld(World world) {
 		this.world = world;
+	}
+
+	public double getTimeToWallCollision() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void collideWithWall() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

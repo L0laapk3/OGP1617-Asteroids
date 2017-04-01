@@ -140,13 +140,21 @@ public class World {
 	 */
 	@Raw
 	public static boolean isValidUpperBoundWidth(double width) {
-		if ((width>=0) && (width<Double.POSITIVE_INFINITY)) {
+		if ((width >= 0) && (width < Double.POSITIVE_INFINITY)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//----------------HEIGHT
 	
@@ -160,7 +168,7 @@ public class World {
 	 */
 	@Basic
 	@Raw
-	public double getHeight(){
+	public double getHeight() {
 		return this.getHeight();
 	}
 	
@@ -180,6 +188,16 @@ public class World {
 		return false;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//----------------WIDTH
 	
 	/**
@@ -192,7 +210,7 @@ public class World {
 	 */
 	@Basic
 	@Raw
-	public double getWidth(){
+	public double getWidth() {
 		return this.getWidth();
 	}
 	
@@ -211,10 +229,20 @@ public class World {
 		return false;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//---------------Terminating
 	
 	/**
-	 * Variable reflecting whether or not this world is terminated.
+	 * Variable reflecting whether or not the instance is terminated.
 	 */
 	private boolean isTerminated = false;
 	
@@ -222,12 +250,12 @@ public class World {
 	/**
 	 * Terminate this world.
 	 *
-	 * @post   This world is terminated.
-	 * @post   Each of the entities of this world is terminated.	//TODO alle entities daarin terminaten
+	 * @post   The instance is terminated.
+	 * @post   Each of the entities of the instance is terminated.
 	 */
-	public void terminate() {		//person line 49
+	public void terminate() {
 		if (!isTerminated()) {
-			this.isTerminated = true;
+			this.isTerminated = true;	//TODO alle entities daarin terminaten
 		}
 	}
 	
@@ -239,6 +267,15 @@ public class World {
 	public boolean isTerminated() {
 		return isTerminated;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//--------------basisfuncties entitylist
 	
@@ -256,6 +293,7 @@ public class World {
 	 * 		  	Entity to add to the world.
 	 * @throws	DoubleEntityException
 	 * 			An entity can only be ones in a world.
+	 * @note    Defensive
 	 */
 	public void addEntity(Entity entity) throws DoubleEntityException {
 		if (entities.contains(entity)) {
@@ -268,10 +306,11 @@ public class World {
 
 	/**
 	 * Removes an entity from the world.
-	 * @param 	entity
-	 * 		  	Entity to remove from the world.
-	 * @throws 	IllegalEntityException
-	 * 			The given entity must be in entities.
+	 * @param  entity
+	 * 		   Entity to remove from the world.
+	 * @throws IllegalEntityException
+	 * 		   The given entity must be in entities.
+	 * @note   Defensive
 	 */
 	public void removeEntity(Entity entity) throws IllegalEntityException {
 		if (entities.contains(entity)) {
@@ -281,6 +320,20 @@ public class World {
 			throw new IllegalEntityException();
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//---------------specifieke functies
 	
@@ -341,35 +394,63 @@ public class World {
 	
 	
 	
+	
+	
+	
+	
+	
 	//----------------Advancing time
+	
+	
+	
+	
+	/**
+	 * Simulates the world for time dt in a deterministic way.
+	 * @param Dt
+	 * 		  The time to simulate the world for.
+	 */
 	public void advanceTime(Double Dt) {
 		do {
 			
-			double firstCollisionTime = Double.POSITIVE_INFINITY;
+			double earliestCollisionTime = Double.POSITIVE_INFINITY;
 			Entity collisionFirstEntity = null;
 			Entity collisionSecondEntity = null;
+			
+			//if firstentity is not null but secondentity is, there is a wall collision
 			try {
-				for (int i = 0; i < entities.size(); i++)
+				for (int i = 0; i < entities.size(); i++) {
+					//detect wall collisions
+					double collisionTime = entities.get(i).getTimeToWallCollision();
+					if (earliestCollisionTime > collisionTime) {
+						earliestCollisionTime  = collisionTime;
+						collisionFirstEntity = entities.get(i);
+						collisionSecondEntity = null;
+					}
 					for(int j = i + 1; j < entities.size(); j++) {
-						double collisionTime = Entity.getTimeToCollision(entities.get(i), entities.get(j));
-						if (firstCollisionTime > collisionTime) {
-							firstCollisionTime = collisionTime;
+						//detect entity collisions
+						double collisionTime1 = Entity.getTimeToCollision(entities.get(i), entities.get(j));
+						if (earliestCollisionTime > collisionTime1) {
+							earliestCollisionTime = collisionTime1;
 							collisionFirstEntity = entities.get(i);
 							collisionSecondEntity = entities.get(j);
 						}
 					}
+				}
 			} catch (EntitiesOverlapException ex) { //should never happen..
 				throw new RuntimeException(ex); //FATAL ERROR
 				//TODO: opt einde zie ofda dees klopt
 			}
 			
 			
-			if (firstCollisionTime < Dt) { //collision happens before end Dt
+			if (earliestCollisionTime < Dt) { //collision happens before end Dt
 				for (Entity entity: entities)
-					entity.move(firstCollisionTime);
-				Dt -= firstCollisionTime;
+					entity.move(earliestCollisionTime);
+				Dt -= earliestCollisionTime;
 				
-				collideEntities(collisionFirstEntity, collisionSecondEntity);
+				if (collisionSecondEntity == null) //wall collision
+					collisionFirstEntity.collideWithWall();
+				else //entity collision
+					collideEntities(collisionFirstEntity, collisionSecondEntity);
 			} else
 				for (Entity entity: entities)
 					entity.move(Dt);
@@ -378,9 +459,32 @@ public class World {
 	}
 	
 	
-
+	/**
+	 * Collides the two entities and calls the proper handlers depending on the collision type.
+	 * 
+	 * @param collisionFirstEntity
+	 * @param collisionSecondEntity
+	 * 	      These are the two entities to collide.
+	 */
 	private void collideEntities(Entity collisionFirstEntity, Entity collisionSecondEntity) {
-		
+		if (collisionFirstEntity instanceof Ship && collisionSecondEntity instanceof Ship) {
+			Ship.collideEachother((Ship)collisionFirstEntity, (Ship)collisionSecondEntity);
+			
+		} else if (collisionFirstEntity instanceof Bullet && collisionSecondEntity instanceof Bullet) {
+			Bullet.collideEachother((Bullet)collisionFirstEntity, (Bullet)collisionSecondEntity);
+			
+		} else {
+			Ship ship;
+			Bullet bullet;
+			if (collisionFirstEntity instanceof Ship) {
+				ship = (Ship)collisionFirstEntity;
+				bullet = (Bullet)collisionSecondEntity;
+			} else {
+				ship = (Ship)collisionSecondEntity;
+				bullet = (Bullet)collisionFirstEntity;
+			}
+			bullet.hit(ship);
+		}
 	}
 	
 }
