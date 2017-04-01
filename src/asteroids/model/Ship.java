@@ -81,11 +81,11 @@ public class Ship extends Entity {
 	private double thrustforce=1.1*(Math.pow(10, 21));
 	
 	public void thrustOn(){
-		
+		this.acceleration=thrustforce/this.mass;
 	}
 	
 	public void thrustOff(){
-		
+		this.acceleration;
 	}
 
 	public void triggerHit() {

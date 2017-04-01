@@ -144,4 +144,14 @@ public class Vector2 {
 	public double[] toArray() {
 		return new double[] {this.x, this.y};
 	}
+	
+	/**
+	 * Converts the given vector to a vector with the same orientation and length 1
+	 * 
+	 * @return a vector with the same orientation as the given vector and length 1
+	 */
+	public Vector2 toUnitVector(){
+		double factor=Math.sqrt(this.pythagoras());
+		return new Vector2(this.x/factor,this.y/factor);
+	}
 }
