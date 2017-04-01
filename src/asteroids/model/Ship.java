@@ -54,7 +54,7 @@ public class Ship extends Entity {
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, orientation, mass);
 
-		//TODO: VRAAG: argument checking before super
+		//TODO: VRAAG: argument checking before super, gaat niet..
 
 		//DEFENSIVE
 		if (radius < MIN_RADIUS)
@@ -63,13 +63,26 @@ public class Ship extends Entity {
 	}
 
 	public void kill() {
-		// TODO Auto-generated method stub
+		// separate fun
+		terminate();
+	}	
+	
+	public void addBullet() {
+		// TODO add one bullet, when bullet returns to own ship
 		
 	}
 
-	public void addBullet() { //adds 1 bullet
-		// TODO Auto-generated method stub
+	public static void collideEachother(Ship firstShip, Ship secondShip) {
+		// TODO shit for bounce
 		
 	}
 
+	public void triggerHit() {
+		this.terminate();
+	}
+
+	public void triggerScoreOn(Ship ship) {
+		// TODO add score, this does nothing for now since there is no score system
+		
+	}
 }
