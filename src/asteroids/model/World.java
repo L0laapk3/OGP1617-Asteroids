@@ -3,9 +3,8 @@ package asteroids.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import asteroids.exceptions.DoubleEntityException;
-import asteroids.exceptions.IllegalEntityException;
-import asteroids.util.Vector2;
+import asteroids.exceptions.*;
+import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;
 
 public class World {
@@ -263,6 +262,7 @@ public class World {
 			throw new DoubleEntityException();
 		} else {
 			entities.add(entity);
+			entity.setWorld(this);
 		}
 	}
 
@@ -276,6 +276,7 @@ public class World {
 	public void removeEntity(Entity entity) throws IllegalEntityException {
 		if (entities.contains(entity)) {
 			entities.remove(entity);
+			entity.setWorld(null);
 		} else {
 			throw new IllegalEntityException();
 		}
@@ -335,9 +336,52 @@ public class World {
 		return bullets;
 	}
 	
+	
+	
+	
+	
+	
 	//----------------Advancing time
+	public void advanceTime(Double Dt) {
+		do {
+			
+			double firstCollisionTime = Double.POSITIVE_INFINITY;
+			Entity collisionFirstEntity = null;
+			Entity collisionSecondEntity = null;
+			try {
+				for (int i = 0; i < entities.size(); i++)
+					for(int j = 1; j < entities.size(); j++) {
+						double collisionTime = Entity.getTimeToCollision(entities.get(i), entities.get(j));
+						if (firstCollisionTime > collisionTime) {
+							firstCollisionTime = collisionTime;
+							collisionFirstEntity = entities.get(i);
+							collisionSecondEntity = entities.get(j);
+						}
+					}
+			} catch (EntitiesOverlapException ex) { //should never happen..
+				throw new RuntimeException(ex); //FATAL ERROR
+				//TODO: opt einde zie ofda dees klopt
+			}
+			
+			
+			if (firstCollisionTime < Dt) { //collision happens before end Dt
+				for (Entity entity: entities)
+					entity.move(firstCollisionTime);
+				Dt -= firstCollisionTime;
+				
+				collideEntities(collisionFirstEntity, collisionSecondEntity);
+			} else
+				for (Entity entity: entities)
+					entity.move(Dt);
+				Dt = (double)0;
+		} while (Dt > 0);
+	}
 	
 	
-	
+
+	private void collideEntities(Entity collisionFirstEntity, Entity collisionSecondEntity) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
