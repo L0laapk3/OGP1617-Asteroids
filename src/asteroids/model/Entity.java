@@ -248,7 +248,7 @@ public abstract class Entity {
 		 * @throws InvalidRadiusException
 		 * 		   The radius must not be smaller than MIN_RADIUS.
 		 */
-		public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+		public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 			
 			//setMaxSpeed(300000);
 			this.maxSpeed = 300000;
@@ -286,9 +286,6 @@ public abstract class Entity {
 			this.radius = radius;
 			
 			
-			
-			
-			//TODO: DEAL WITH MASS
 		}
 
 		
