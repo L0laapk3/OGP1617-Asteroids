@@ -14,8 +14,8 @@ public class Bullet extends Entity {
 	
 	
 	//TODO COMMENTS
-	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double direction, double mass, Ship parent) {
-		super(x, y, xVelocity, yVelocity, radius, direction, mass);
+	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double direction, Ship parent) {
+		super(x, y, xVelocity, yVelocity, radius, direction);
 		// TODO Auto-generated constructor stub
 		
 
