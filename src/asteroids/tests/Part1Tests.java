@@ -38,6 +38,7 @@ public class Part1Tests {
 	
 	@Test
 	public void testNewShip2_GivenParameters() throws IllegalArgumentException {
+		
 		Ship ship = new Ship(10, 20, 30, 40, 50, Math.PI, 1);
 		assertEquals(10, ship.getPosition().x, EPSILON);
 		assertEquals(20, ship.getPosition().y, EPSILON);

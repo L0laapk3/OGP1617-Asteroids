@@ -82,7 +82,7 @@ public class Ship extends Entity {
 	
 	public void thrustOn(){
 		this.acceleration=thrustforce/this.mass;
-	}
+	} 
 	
 	public void thrustOff(){
 		this.acceleration;

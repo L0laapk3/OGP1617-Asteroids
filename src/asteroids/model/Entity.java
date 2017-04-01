@@ -531,7 +531,31 @@ public abstract class Entity {
 		
 		
 		
-		
+
+		/**
+		 * Return the number of seconds until the first collision with the wall.
+		 * @return The time until the first collision. Returns positive infinity if the ship never collides with the border of the world.
+		 * 	     | 
+		 */
+		public double getTimeToWallCollision() {
+			double xCollisionTime;
+			if (velocity.x == 0)
+				xCollisionTime = Double.POSITIVE_INFINITY;
+			else if (velocity.x > 0)
+				xCollisionTime = (world.getWidth() - position.x) / velocity.x;
+			else
+				xCollisionTime = position.x / velocity.x;
+
+			double yCollisionTime;
+			if (velocity.y == 0)
+				yCollisionTime = Double.POSITIVE_INFINITY;
+			else if (velocity.y > 0)
+				yCollisionTime = (world.getWidth() - position.y) / velocity.y;
+			else
+				yCollisionTime = position.y / velocity.y;
+			
+			return Math.min(xCollisionTime, yCollisionTime);
+		}
 		
 		
 		/**
@@ -553,6 +577,8 @@ public abstract class Entity {
 		 */
 		public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {			
 			
+			
+			//TODO: AFRONDINGSSSHIT p9!!!!!
 			
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
@@ -657,11 +683,8 @@ public abstract class Entity {
 	public void setWorld(World world) {
 		this.world = world;
 	}
-
-	public double getTimeToWallCollision() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
+	
 
 	public void collideWithWall() {
 		// TODO Auto-generated method stub

@@ -7,6 +7,11 @@ import asteroids.exceptions.*;
 import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;
 
+
+//TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN
+
+
+
 public class World {
 	
 	/**
@@ -26,17 +31,17 @@ public class World {
 	public World(double width, double height) {
 		if (isValidWidth(width)) {		//moet het this.checkValidWidth zijn omdat die finctie niet static is?
 			this.width = width;
-		} else if (width>UPPER_BOUND_WIDTH) {
-			this.width=UPPER_BOUND_WIDTH;		
+		} else if (width > UPPER_BOUND_WIDTH) {
+			this.width = UPPER_BOUND_WIDTH;		
 		} else {
-			this.width=0;
+			this.width = 0;
 		}
 		if (isValidHeight(height)) {
 			this.height = height;
-		} else if (width>UPPER_BOUND_HEIGHT) {
-			this.height=UPPER_BOUND_HEIGHT;		
+		} else if (width > UPPER_BOUND_HEIGHT) {
+			this.height = UPPER_BOUND_HEIGHT;		
 		} else {
-			this.height=0;
+			this.height = 0;
 		}
 	}
 	
@@ -87,7 +92,7 @@ public class World {
 	 */
 	@Raw
 	public static boolean isValidUpperBoundHeight(double height) {
-		if ((height>=0) && (height<Double.POSITIVE_INFINITY)) {
+		if ((height >= 0) && (height < Double.POSITIVE_INFINITY)) {
 			return true;
 		} else {
 			return false;
@@ -161,7 +166,7 @@ public class World {
 	/**
 	 * Variable referencing the height of the given world
 	 */
-	private double height;
+	private final double height;
 	
 	/**
 	 * Return the height of this world.
@@ -169,7 +174,7 @@ public class World {
 	@Basic
 	@Raw
 	public double getHeight() {
-		return this.getHeight();
+		return this.height;
 	}
 	
 	/**
@@ -203,7 +208,7 @@ public class World {
 	/**
 	 * Variable referencing the width of the given world
 	 */
-	private double width;
+	private final double width;
 	
 	/**
 	 * Return the width of this world.
@@ -211,7 +216,7 @@ public class World {
 	@Basic
 	@Raw
 	public double getWidth() {
-		return this.getWidth();
+		return this.width;
 	}
 	
 	/**
