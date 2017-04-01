@@ -2,12 +2,10 @@ package asteroids.facade;
 
 import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.model.Ship;
-import asteroids.part1.facade.IFacade;
 import asteroids.util.ModelException;
 import asteroids.util.Vector2;
 
-public class Facade implements IFacade  {
-
+public class Facade implements asteroids.part2.facade.IFacade  {
 	
 	
 	
@@ -63,10 +61,12 @@ public class Facade implements IFacade  {
 	 * 		 | createShip(0, 0, 0, 0, 10, 0);
 	 * @return The newly created ship.
 	 */
-	@Override 
+	//not needed anymore
+	/*@Override 
+	@Deprecated
 	public Ship createShip() {
 		return new Ship();
-	}
+	}*/
 
 	
 	
@@ -96,9 +96,19 @@ public class Facade implements IFacade  {
 	 * 		   If new Ship() throws an exception. see @effect
 	 */
 	@Override
+	@Deprecated
 	public Ship createShip(double x, double y, double xVelocity, double yVelocity, double radius, double orientation) throws ModelException {
 		try {
 			return new Ship(x, y, xVelocity, yVelocity, radius, orientation);
+		} catch (IllegalArgumentException ex) {
+			throw new ModelException(ex);
+		}
+	}
+	
+	@Override
+	public Ship createShip(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass) throws ModelException {
+		try {
+			return new Ship(x, y, xVelocity, yVelocity, radius, orientation, mass);
 		} catch (IllegalArgumentException ex) {
 			throw new ModelException(ex);
 		}
