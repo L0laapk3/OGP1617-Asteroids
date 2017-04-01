@@ -76,6 +76,22 @@ public class Ship extends Entity {
 		// TODO shit for bounce
 		
 	}
+	
+	public static void collideEachother(Ship collisionFirstEntity, Ship collisionSecondEntity) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	//-------------Thrust functions
+	private double thrustforce=1.1*(Math.pow(10, 21));
+	
+	public void thrustOn(){
+		
+	}
+	
+	public void thrustOff(){
+		
+	}
 
 	public void triggerHit() {
 		this.terminate();
