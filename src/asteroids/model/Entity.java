@@ -68,7 +68,7 @@ public abstract class Entity {
 		private Vector2 velocity;
 		
 		/**
-		 * 
+		 * Sets the velocity
 		 * @param  xVelocity
 		 * 		   The velocity in the x direction.
 		 * @param  yVelocity
@@ -84,14 +84,22 @@ public abstract class Entity {
 		 * @note   This code is written in a total manner.
 		 */
 		@Raw
-		private void setVelocity(double xVelocity, double yVelocity) {
-			double speed = new Vector2(xVelocity, yVelocity).pythagoras();
+		void setVelocity(Vector2 velocity) {
+			double speed = velocity.pythagoras();
 			if (speed > this.maxSpeed) {
 				double scale = this.maxSpeed / speed;
-				this.velocity = new Vector2(xVelocity * scale, yVelocity * scale);
+				this.velocity = Vector2.multiply(velocity, scale);
 					//System.out.println("[WARN] speed exceeded this.maxSpeed while creating entity."); //for debugging possible problems in future code
 			} else
-				this.velocity = new Vector2(xVelocity, yVelocity);
+				this.velocity = velocity;
+		}
+		
+		/**
+		 * Sets the velocity
+		 * @effect setVelocity(new Vector2(xVelocity, yVelocity))
+		 */
+		void setVelocity(double xVelocity, double yVelocity) {
+			setVelocity(new Vector2(xVelocity, yVelocity));
 		}
 		
 		
@@ -130,6 +138,9 @@ public abstract class Entity {
 		 */
 		private final double radius;
 		
+		/**
+		 * constant for minimum radius.
+		 */
 		private final static double MIN_RADIUS = 10;
 		
 		/**
@@ -156,7 +167,7 @@ public abstract class Entity {
 			return radius >= MIN_RADIUS;
 		}
 		
-
+		
 		/**
 		 * Variable registering the orientation of the entity.
 		 */
@@ -687,5 +698,4 @@ public abstract class Entity {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

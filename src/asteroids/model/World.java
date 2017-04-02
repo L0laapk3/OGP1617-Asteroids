@@ -256,11 +256,16 @@ public class World {
 	 * Terminate this world.
 	 *
 	 * @post   The instance is terminated.
+	 * @post   All the Entities in this world are no longer bound to this world.
 	 * @post   Each of the entities of the instance is terminated.
 	 */
 	public void terminate() {
 		if (!isTerminated()) {
-			this.isTerminated = true;	//TODO alle entities daarin terminaten
+			this.isTerminated = true;
+			for(Entity entity : entities) {
+				//do not terminate, just set world to null
+				entity.setWorld(null);
+			}
 		}
 	}
 	
@@ -472,11 +477,12 @@ public class World {
 	 * 	      These are the two entities to collide.
 	 */
 	private void collideEntities(Entity collisionFirstEntity, Entity collisionSecondEntity) {
+		
 		if (collisionFirstEntity instanceof Ship && collisionSecondEntity instanceof Ship) {
-			Ship.collideEachother((Ship)collisionFirstEntity, (Ship)collisionSecondEntity);
+			Ship.collideWithSameType((Ship)collisionFirstEntity, (Ship)collisionSecondEntity);
 			
 		} else if (collisionFirstEntity instanceof Bullet && collisionSecondEntity instanceof Bullet) {
-			Bullet.collideEachother((Bullet)collisionFirstEntity, (Bullet)collisionSecondEntity);
+			Bullet.collideWithSameType((Bullet)collisionFirstEntity, (Bullet)collisionSecondEntity);
 			
 		} else {
 			Ship ship;

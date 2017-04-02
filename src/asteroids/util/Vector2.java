@@ -40,7 +40,7 @@ public class Vector2 {
 		this.y = y;
 	}
 
-
+	
 	
 	/**
 	 * Returns true if and only if both vectors have the same position
@@ -78,6 +78,21 @@ public class Vector2 {
 	@Immutable
 	public static Vector2 subtract(Vector2 firstVector, Vector2 secondVector) {
 		return new Vector2(firstVector.x - secondVector.x, firstVector.y - secondVector.y);
+	}
+
+
+	/**
+	 * Creates a new Vector2, that is the division of vector with value
+	 * 
+	 * @param  vector
+	 * 		   The vector to divide.
+	 * @param  value
+	 * 		   The value to divide the vector with.
+	 * @return new vector2 that is the result of the multiplication.
+	 */
+	@Immutable
+	public static Vector2 divide(Vector2 vector, double value) {
+		return new Vector2(vector.x / value, vector.y / value);
 	}
 	
 

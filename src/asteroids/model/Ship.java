@@ -131,9 +131,19 @@ public class Ship extends Entity {
 		
 	}
 
-	public static void collideEachother(Ship firstShip, Ship secondShip) {
-		// TODO shit for bounce
+	public static void collideWithSameType(Ship firstShip, Ship secondShip) {
 		
+		
+		// "als het fout is is het de prof zijn schuld dan moet hij de opgave maar fatsoenlijk schrijven" - rik
+		
+		double sigma = firstShip.getRadius() + secondShip.getRadius();
+		Vector2 J = Vector2.multiply(Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()), 2 * firstShip.getMass() * secondShip.getMass() * Vector2.dot(
+				Vector2.subtract(firstShip.getVelocity(), secondShip.getVelocity()), 
+				Vector2.subtract(firstShip.getPosition(), secondShip.getPosition())
+			) / (sigma*sigma * (firstShip.getMass() + secondShip.getMass())));
+		
+		firstShip.setVelocity(Vector2.add(firstShip.getVelocity(), Vector2.divide(J, firstShip.getMass())));
+		secondShip.setVelocity(Vector2.add(secondShip.getVelocity(), Vector2.divide(J, secondShip.getMass())));
 	}
 	
 	//-------------Thrust functions
@@ -147,10 +157,21 @@ public class Ship extends Entity {
 		this.setAcceleration(new Vector2(0,0));
 	}
 
+	/**
+	 * This function defines what will happen when the ship gets hit by a bullet: The ship gets terminated.
+	 * @post Terminate the ship.
+	 *     | this.terminate();
+	 */
 	public void triggerHit() {
 		this.terminate();
 	}
 
+	/**
+	 * This function defines the behaviour that happens when the ship gets a kill on another ship.
+	 * @post  Nothing will happen. (for now)
+	 * @param ship
+	 * 		| The ship that was killed.
+	 */
 	public void triggerScoreOn(Ship ship) {
 		// TODO add score, this does nothing for now since there is no score system
 		

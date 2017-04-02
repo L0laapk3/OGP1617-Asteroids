@@ -52,7 +52,7 @@ public class Bullet extends Entity {
 	 * @param firstBullet
 	 * @param secondBullet
 	 */
-	public static void collideEachother(Bullet firstBullet, Bullet secondBullet) {
+	public static void collideWithSameType(Bullet firstBullet, Bullet secondBullet) {
 		firstBullet.terminate();
 		secondBullet.terminate();
 	}
