@@ -13,54 +13,6 @@ public abstract class Entity {
 		private final double maxSpeed;
 		
 		
-		
-		private double rho;
-
-		public double getRho() {
-			return rho;
-		}
-
-		void setRho(double rho) {
-			this.rho = rho;
-			updateBaseMass();
-		}
-		
-		
-
-		/**
-		 * Gets the total mass of the entity.
-		 */
-		@Raw
-		public double getMass() {
-			return this.getBaseMass();
-		}
-		
-		
-		
-		/**
-		 * Variable storing the mass of the entity.
-		 */
-		private double baseMass;
-		
-		/**
-		 * Gets the unloaded mass of the entity.
-		 */
-		@Raw
-		@Basic
-		public double getBaseMass() {
-			return this.baseMass;
-		}
-		
-		/**
-		 * recalculates the mass of the ship.
-		 */
-		@Raw
-		void updateBaseMass() {
-			this.baseMass = 4 / 3 * Math.PI * this.radius*this.radius*this.radius * this.rho;
-		}
-		
-		
-		
 		/**
 		 * Set the maxSpeed of this entity to the given maxSpeed
 		 * 
@@ -78,9 +30,11 @@ public abstract class Entity {
 		}*/
 		
 		/**
-		 *  Returns the maxSpeed of the entity
+		 *  Returns the maximum Speed of the entity
+		 *  @return the maxSpeed of the entity
 		 */
 		@Raw
+		@Basic
 		public double getMaxSpeed() {
 			return this.maxSpeed;
 		}
@@ -352,6 +306,8 @@ public abstract class Entity {
 		
 		
 		
+		
+		
 		/**
 		 * Variable reflecting whether or not the instance is terminated.
 		 */
@@ -572,7 +528,7 @@ public abstract class Entity {
 		 * @param  entity2
 		 *         The second entity to measure the distance to.
 		 * @return True if the distance between the two entities is equal to or less than zero.
-		 *       | getDistanceBetween(entity1, entity2) <= 0
+		 *       | centerDifference.pythagoras() <= 0.99*(entity1.getRadius()+entity2.getRadius());	//to avoid rounding issues
 		 * @throws NullPointerException
 		 * 		   If entity1 or entity2 is null.
 		 */
@@ -581,7 +537,8 @@ public abstract class Entity {
 				throw new NullPointerException("entities cannot be null.");
 			if (entity1 == entity2) //optimisation
 				return true;
-			return getDistanceBetween(entity1, entity2) <= 0;
+			Vector2 centerDifference = new Vector2(entity1.getPosition().x-entity2.getPosition().x, entity1.getPosition().y-entity2.getPosition().y);
+			return  centerDifference.pythagoras() <= 0.99*(entity1.getRadius()+entity2.getRadius());
 		}
 
 		
@@ -709,7 +666,7 @@ public abstract class Entity {
 	 * @post  The position of this entity is the same as the given position.
 	 */
 	@Raw
-	void setPosition(Vector2 position) {
+	private void setPosition(Vector2 position) {
 		this.position = position;
 	}
 	/*
@@ -730,12 +687,31 @@ public abstract class Entity {
 	
 
 	//TODO: do stuff with world? maybe
+	/**
+	 * Variable registering the coordinates of the entity.
+	 */
 	private World world;
 	
+	/**
+	 *  Returns the world where the entity lives in
+	 *  @return the world if the entity
+	 */
+	@Raw
+	@Basic
 	public World getWorld() {
 		return world;
 	}
 
+	/**
+	 * Set the world of this entity to the given world
+	 * 
+	 * @param 	world
+	 * 			The new world for this entity
+	 * @post 	The world of this entity is the same as the given world
+	 * 		  | new.getWorld() == world
+	 */
+	@Raw
+	@Basic
 	public void setWorld(World world) {
 		this.world = world;
 	}

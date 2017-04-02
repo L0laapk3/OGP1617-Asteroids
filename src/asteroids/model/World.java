@@ -303,11 +303,31 @@ public class World {
 	 * 		  	Entity to add to the world.
 	 * @throws	DoubleEntityException
 	 * 			An entity can only be ones in a world.
+	 * @throws  NotWithinBoundariesException
+	 * 		    An entity must lay completely in a world.
+	 * @throws  EtitiesOverlapException
+	 * 			A new entity can not overlap with an existing entity in that world
 	 * @note    Defensive
 	 */
-	public void addEntity(Entity entity) throws DoubleEntityException {
+	//TODO uitzondering van de regels voor het herladen van een ship maken?
+	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException {
+		
 		if (entities.contains(entity)) {
 			throw new DoubleEntityException();
+		}
+		
+		for (Entity entityToCheck : entities){
+			if (Entity.overlap(entity, entityToCheck)){
+				throw new EntitiesOverlapException();
+			}
+		}
+		
+		double centerX=entity.getPosition().x;
+		double centerY=entity.getPosition().y;
+		
+		if (((centerX+entity.getRadius())>this.getWidth()) || ((centerX-entity.getRadius())<0) ||
+				((centerY+entity.getRadius())>this.getHeight()) || ((centerY-entity.getRadius())<0)){
+			throw new NotWithinBoundariesException();			
 		} else {
 			entities.add(entity);
 			entity.setWorld(this);
@@ -352,17 +372,21 @@ public class World {
 	 * Gets entity from given position in world.
 	 * @param  position
 	 * 		   The position to scan for entities.
-	 * @return The entity on given position if there is an entity on that position.
+	 * @return The entities on given position if there is an entity on that position.
 	 * @return null if no entity is found.
 	 */
-	public Entity getEntityFromPosition(Vector2 position) {									//TODO: er van uit gegaan dat er maar 1 ding op dezelfde plaats kan zijn
+	public List<Entity> getEntityFromPosition(Vector2 position) {									
 		if (!isValidHeight(position.y) || !isValidWidth(position.x))
 			return null;
-		
+		List<Entity> entitiesFound = new ArrayList<Entity>();
 		for (Entity entity : entities)
 			if (Vector2.equals(entity.getPosition(), position))
-				return entity;
-		return null;
+				entitiesFound.add(entity);
+		if (entitiesFound.isEmpty()){
+			return null;
+		} else {
+			return entitiesFound;
+		}
 	}
 	
 	
@@ -371,8 +395,7 @@ public class World {
 	 * @return A list with all the entities in the world.
 	 */
 	public List<Entity> getAllEntities() {
-		return new ArrayList<Entity>(entities);							//betekent dit dat er een nieuwe arraylist wordt gemaakt en deze wordt dan
-																		//gevuld met alle entities?
+		return new ArrayList<Entity>(entities);							
 	}
 	
 	/**
