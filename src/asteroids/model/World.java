@@ -400,6 +400,33 @@ public class World {
 	}
 	
 	
+	/**
+	 * Gets all entities on which collision physics has to apply on.
+	 * @return A list of entites on which collision physics has to apply on.
+	 */
+	public List<Entity> getAllEntitiesWithCollision() {
+		List<Entity> entitiesWithCollision = new ArrayList<Entity>();
+		for (Entity entity: entities)
+			if (!(entity instanceof Bullet) || !((Bullet)entity).isLoadedInParent())
+				entitiesWithCollision.add(entity);
+		return entitiesWithCollision;
+	}
+	
+
+	
+	/**
+	 * Gets all loaded bullets. The opposite of getAllEntitiesWithCollision.
+	 * @return A list of all the loaded bullets in this world.
+	 */
+	public List<Bullet> getAllLoadedBullets() {
+		List<Bullet> entitiesWithoutCollision = new ArrayList<Bullet>();
+		for (Entity entity: entities)
+			if ((entity instanceof Bullet) && ((Bullet)entity).isLoadedInParent())
+				entitiesWithoutCollision.add((Bullet)entity);
+		return entitiesWithoutCollision;
+	}
+	
+	
 	
 	
 	
@@ -421,6 +448,8 @@ public class World {
 	 */
 	public void advanceTime(Double Dt) {
 		do {
+			//do not simulate collision physics for loaded bullets.
+			List<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 			
 			double earliestCollisionTime = Double.POSITIVE_INFINITY;
 			Entity collisionFirstEntity = null;
@@ -428,21 +457,23 @@ public class World {
 			
 			//if firstentity is not null but secondentity is, there is a wall collision
 			try {
-				for (int i = 0; i < entities.size(); i++) {
+				for (int i = 0; i < entitiesWithCollision.size(); i++) {
+					
+					
 					//detect wall collisions
-					double collisionTime = entities.get(i).getTimeToWallCollision();
+					double collisionTime = entitiesWithCollision.get(i).getTimeToWallCollision();
 					if (earliestCollisionTime > collisionTime) {
 						earliestCollisionTime  = collisionTime;
-						collisionFirstEntity = entities.get(i);
+						collisionFirstEntity = entitiesWithCollision.get(i);
 						collisionSecondEntity = null;
 					}
-					for(int j = i + 1; j < entities.size(); j++) {
+					for(int j = i + 1; j < entitiesWithCollision.size(); j++) {
 						//detect entity collisions
-						double collisionTime1 = Entity.getTimeToCollision(entities.get(i), entities.get(j));
+						double collisionTime1 = Entity.getTimeToCollision(entitiesWithCollision.get(i), entitiesWithCollision.get(j));
 						if (earliestCollisionTime > collisionTime1) {
 							earliestCollisionTime = collisionTime1;
-							collisionFirstEntity = entities.get(i);
-							collisionSecondEntity = entities.get(j);
+							collisionFirstEntity = entitiesWithCollision.get(i);
+							collisionSecondEntity = entitiesWithCollision.get(j);
 						}
 					}
 				}
@@ -453,7 +484,7 @@ public class World {
 			
 			
 			if (earliestCollisionTime < Dt) { //collision happens before end Dt
-				for (Entity entity: entities)
+				for (Entity entity: entitiesWithCollision)
 					entity.move(earliestCollisionTime);
 				Dt -= earliestCollisionTime;
 				
@@ -462,10 +493,15 @@ public class World {
 				else //entity collision
 					collideEntities(collisionFirstEntity, collisionSecondEntity);
 			} else
-				for (Entity entity: entities)
+				for (Entity entity: entitiesWithCollision)
 					entity.move(Dt);
 				Dt = (double)0;
 		} while (Dt > 0);
+		
+		
+		//set loaded bullets' location to their parent.
+		for (Bullet loadedBullet : getAllLoadedBullets())
+			loadedBullet.setPosition(loadedBullet.getParent().getPosition());
 	}
 	
 	

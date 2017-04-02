@@ -10,7 +10,15 @@ public class Bullet extends Entity {
 	}
 	
 	private final Ship parent;
+	private boolean loadedInParent = true;
+
+	public boolean isLoadedInParent() {
+		return loadedInParent;
+	}
 	
+	void setLoadedInParent(boolean loadedInParent) {
+		this.loadedInParent = loadedInParent;
+	}
 	
 	
 	//TODO COMMENTS
@@ -18,6 +26,8 @@ public class Bullet extends Entity {
 		super(x, y, xVelocity, yVelocity, radius, direction);
 		// TODO Auto-generated constructor stub
 		
+		
+		this.setRho(7.8 * Math.pow(10,  12)); //constant for this class
 
 		this.parent = parent;
 	}
@@ -36,8 +46,9 @@ public class Bullet extends Entity {
 	 */
 	public void hit(Ship ship) {
 		if (ship == parent) {
-			parent.addBullet();
-			terminate();
+			setPosition(parent.getPosition());
+			setVelocity(parent.getVelocity());
+			setAcceleration(parent.getAcceleration());
 		} else {
 			parent.triggerScoreOn(ship); //does nothing (part 3?)
 			ship.triggerHit();

@@ -1,5 +1,8 @@
 package asteroids.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import asteroids.exceptions.*;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
@@ -28,12 +31,90 @@ public class Ship extends Entity {
 
 	private static final double MIN_RADIUS = 10;
 
+	
+	
+	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
+	
+	
+	public List<Bullet> getLoadedBullets() {
+		return new ArrayList<Bullet>(loadedBullets);
+	}
+	
+	public void loadBullet(Bullet bullet) {
+		//TODO: LOADBULLET
+		//ook in bullet zelf setten
+		updateLoadMass();
+	}
+	
+	
+	/**
+	 * Checks if there is a bullet available in the ship's magazine.
+	 * @return true if and only if there is at least 1 bullet loaded in the ship.
+	 */
+	public boolean hasBullet() {
+		return loadedBullets.size() > 0;
+	}
+	
+	/**
+	 * Attempts to shoot a bullet from the ship.
+	 * @post   Shoots a bullet, only if there is one available.
+	 * @return false if there is no bullet loaded in the ship.
+	 * @return true if it succesfully shot a bullet from the ship.
+	 */
+	public boolean shootBullet() {
+		if (hasBullet())
+			return false;
+		shootBullet(loadedBullets.get(0));
+		return true;
+	}
+	/**
+	 * Shoots the given bullet from the ship.
+	 * @param bullet
+	 * 	      The bullet to shoot
+	 */
+	public void shootBullet(Bullet bullet) {
+		//throw error if not in shit
+		//TODO: shootbullet
+		updateLoadMass();
+	}
+	
+	
 
+	/**
+	 * The total mass of the load.
+	 */
+	private double loadMass = 0;
+	
+	public double getLoadMass() {
+		return this.loadMass;
+	}
+	
+	void updateLoadMass() {
+		loadMass = 0;
+		for (Bullet bullet : loadedBullets)
+			loadMass += bullet.getMass();
+	}
+	
+
+
+	/**
+	 * Gets the total mass of the ship.
+	 */
+	@Raw
+	@Override
+	public double getMass() {
+		return super.getMass() + this.getLoadMass();
+	}
+	
+	
+	
+	
+	
 	
 	
 	@Deprecated
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)  throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		this(x, y, xVelocity, yVelocity, radius, orientation, 1.42*Math.pow(10,12),1);
+		this(x, y, xVelocity, yVelocity, radius, orientation, 1.42*Math.pow(10, 12));
 	}
 
 	/**
@@ -74,7 +155,7 @@ public class Ship extends Entity {
 	 * 		 | else
 	 * 		 |	  new.getRho=1.42*10^12
 	 */
-	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double rho, double mass) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double rho) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, orientation);
 		
 		//TOTAL
@@ -83,13 +164,9 @@ public class Ship extends Entity {
 		} else {
 			this.rho = 1.42*Math.pow(10,12);
 		}
+		updateBaseMass();
 		
-		//TOTAL
-		if (this.isValidMass(mass)) {
-			this.mass = mass;
-		} else {
-			this.mass = 1;
-		}
+		
 		
 		//DEFENSIVE
 		if (radius < MIN_RADIUS)
@@ -97,26 +174,18 @@ public class Ship extends Entity {
 		
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	//------------------RHO
 	/**
 	 * Variable holding the mass density of the ship
 	 */
-	private double rho;
-	
-	/**
-	 * Set the mass density of the ship to the given mass density
-	 * 
-	 * @param 	rho
-	 * 			The new mass density.
-	 * @post 	The mass density of this ship is equal to the given rho.
-	 * 		  | new.getRho() == rho
-	 */
-	@Raw
-	public void setRho(double rho){
-		if (isValidMass(rho)) {
-			this.rho=rho;
-		}
-	}
+	private final double rho;
 	
 	/**
 	 * Check whether the mass density is valid for a ship.
@@ -145,6 +214,13 @@ public class Ship extends Entity {
 	public double getRho() {
 		return this.rho;
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	//---------------MASS
 	/**
@@ -183,27 +259,14 @@ public class Ship extends Entity {
 		}
 	}
 	
-	/**
-	 * Return the mass of the ship.
-	 * 
-	 * @return the mass of the ship
-	 */
-	@Basic
-	@Raw
-	public double getMass() {
-		return this.mass;
-	}
-	
 	
 	public void kill() {
-		// separate fun
+		//TODO: separate function, wtf
 		terminate();
-	}	
-	
-	public void addBullet() {
-		// TODO add one bullet, when bullet returns to own ship
-		
 	}
+	
+	
+	
 
 	public static void collideWithSameType(Ship firstShip, Ship secondShip) {
 		

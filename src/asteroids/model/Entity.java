@@ -13,6 +13,54 @@ public abstract class Entity {
 		private final double maxSpeed;
 		
 		
+		
+		private double rho;
+
+		public double getRho() {
+			return rho;
+		}
+
+		void setRho(double rho) {
+			this.rho = rho;
+			updateBaseMass();
+		}
+		
+		
+
+		/**
+		 * Gets the total mass of the entity.
+		 */
+		@Raw
+		public double getMass() {
+			return this.getBaseMass();
+		}
+		
+		
+		
+		/**
+		 * Variable storing the mass of the entity.
+		 */
+		private double baseMass;
+		
+		/**
+		 * Gets the unloaded mass of the entity.
+		 */
+		@Raw
+		@Basic
+		public double getBaseMass() {
+			return this.baseMass;
+		}
+		
+		/**
+		 * recalculates the mass of the ship.
+		 */
+		@Raw
+		void updateBaseMass() {
+			this.baseMass = 4 / 3 * Math.PI * this.radius*this.radius*this.radius * this.rho;
+		}
+		
+		
+		
 		/**
 		 * Set the maxSpeed of this entity to the given maxSpeed
 		 * 
@@ -661,7 +709,7 @@ public abstract class Entity {
 	 * @post  The position of this entity is the same as the given position.
 	 */
 	@Raw
-	private void setPosition(Vector2 position) {
+	void setPosition(Vector2 position) {
 		this.position = position;
 	}
 	/*
