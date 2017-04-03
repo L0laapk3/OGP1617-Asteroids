@@ -4,7 +4,7 @@ package asteroids.exceptions;
 public class IllegalEntityException extends IllegalArgumentException {
 
 	  public IllegalEntityException() {
-	    super("The time parameter cannot be negative.");
+	    super("The given Entity must be a valid entity.");
 	  }
 	  
 	  public IllegalEntityException(String message) {

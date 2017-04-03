@@ -75,7 +75,7 @@ public class Ship extends Entity {
 	 * Attempts to shoot a bullet from the ship.
 	 * @post   Shoots a bullet, only if there is one available.
 	 * @return false if there is no bullet loaded in the ship.
-	 * @return true if it succesfully shot a bullet from the ship.
+	 * @return true if it successfully shot a bullet from the ship.
 	 */
 	public boolean shootBullet() {
 		if (!hasBullet())

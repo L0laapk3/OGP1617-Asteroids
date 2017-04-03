@@ -4,7 +4,7 @@ package asteroids.exceptions;
 public class NotWithinBoundariesException extends IllegalArgumentException {
 
 	  public NotWithinBoundariesException() {
-	    super("The time parameter cannot be negative.");
+	    super("The given enity does not lay fully within the boundaries of the selected world.");
 	  }
 	  
 	  public NotWithinBoundariesException(String message) {
