@@ -1,7 +1,7 @@
 package asteroids.exceptions;
 
 @SuppressWarnings("serial")
-public class InvalidVelocityException extends IllegalArgumentException {
+public class InvalidVelocityException extends Exception {
 
 	  public InvalidVelocityException() {
 	    super("The Velocity of the ship is not valid.");

@@ -1,7 +1,7 @@
 package asteroids.exceptions;
 
 @SuppressWarnings("serial")
-public class InvalidPositionException extends IllegalArgumentException {
+public class InvalidPositionException extends Exception {
 
 	  public InvalidPositionException() {
 	    super("The Position of the ship is not valid.");
