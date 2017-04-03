@@ -26,21 +26,9 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 public class Ship extends Entity {
 
-	
+	//TODO: EACH SHIP SHALL PROVIDE METHODS TO INSPECT THE SHIPS ACCELERATION ?
 	
 	private static final double MIN_RADIUS_SHIP = 10;
-	
-	/**
-	 * Check whether the radius is valid for a entity.
-	 * 
-	 * @param  radius
-	 * 		   The radius to check.
-	 * @return True if and only if given radius is not smaller than MIN_RADIUS.
-	 *       | result == (radius >= MIN_RADIUS)
-	 */
-	public boolean isValidRadius(double radius) {
-		return radius >= this.getMinRadius();
-	}
 	
 	
 	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
@@ -50,10 +38,12 @@ public class Ship extends Entity {
 		return new ArrayList<Bullet>(loadedBullets);
 	}
 	
-	public void loadBullet(Bullet bullet) {
-		//TODO: LOADBULLET
-		//ook in bullet zelf setten
-		updateLoadMass();
+	void loadBullet(Bullet bullet) {
+		loadedBullets.add(bullet);
+	}
+
+	void unloadBullet(Bullet bullet) {
+		loadedBullets.remove(bullet);
 	}
 	
 	
@@ -72,7 +62,7 @@ public class Ship extends Entity {
 	 * @return true if it succesfully shot a bullet from the ship.
 	 */
 	public boolean shootBullet() {
-		if (hasBullet())
+		if (!hasBullet())
 			return false;
 		shootBullet(loadedBullets.get(0));
 		return true;
@@ -81,10 +71,11 @@ public class Ship extends Entity {
 	 * Shoots the given bullet from the ship.
 	 * @param bullet
 	 * 	      The bullet to shoot
+	 * @note  defensive
 	 */
 	public void shootBullet(Bullet bullet) {
 		//throw error if not in shit
-		//TODO: shootbullet
+		//TODO: shootbullet hier nog alles schrijven
 		updateLoadMass();
 	}
 	
@@ -197,16 +188,6 @@ public class Ship extends Entity {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	public void kill() {
-		//TODO: separate function, wtf
-		terminate();
-	}
 	
 	
 	

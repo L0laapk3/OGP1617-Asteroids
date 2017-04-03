@@ -4,7 +4,7 @@ package asteroids.exceptions;
 public class DoubleEntityException extends IllegalArgumentException {
 
 	  public DoubleEntityException() {
-	    super("The time parameter cannot be negative.");
+	    super("This entity is already in this world.");
 	  }
 	  
 	  public DoubleEntityException(String message) {

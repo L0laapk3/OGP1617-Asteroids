@@ -1,8 +1,6 @@
 package asteroids.model;
 
 import be.kuleuven.cs.som.annotate.*;
-import asteroids.exceptions.*;
-
 
 /**
  * A class to define bullets.
@@ -62,19 +60,6 @@ public class Bullet extends Entity {
 	 */
 	void setLoadedInParent(boolean loadedInParent) {
 		this.loadedInParent = loadedInParent;
-
-		
-	void load() {
-		if (this.parent == null)
-			throw new NoParentShipException();
-		this.parent.loadBullet(this);
-		this.loadedInParent = true;
-	}
-	
-	void shoot() {
-		this.loadedInParent = false;
-		this.parent.unloadBullet(this);
-		//TODO: SET VELOCITY etc
 	}
 	
 	

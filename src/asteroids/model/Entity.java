@@ -338,7 +338,7 @@ public abstract class Entity {
 		 * @return True if and only if given radius is not smaller than MIN_RADIUS.
 		 *       | result == (radius >= MIN_RADIUS)
 		 */
-		public boolean isValidRadius(double radius){
+		public boolean isValidRadius(double radius) {
 			return radius >= this.getMinRadius();
 		}
 		
@@ -628,7 +628,7 @@ public abstract class Entity {
 		public void turn(double angle) {
 			this.orientation = (this.orientation + angle) % (2*Math.PI);
 			if (this.orientation < 0) //due to the way java calculates %, we need to add 2*PI to keep this number positive.
-				this.orientation += (2*Math.PI); //TODO: SHITVRAAG MOET SETTER GEBRUIEK OFNIE OFWA????
+				this.orientation += (2*Math.PI);
 		}
 		
 		
@@ -878,7 +878,6 @@ public abstract class Entity {
 	
 	
 
-	//TODO: do stuff with world? maybe
 	/**
 	 * Variable registering the coordinates of the entity.
 	 */

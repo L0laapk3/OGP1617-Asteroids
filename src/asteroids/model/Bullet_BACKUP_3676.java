@@ -1,8 +1,10 @@
 package asteroids.model;
 
+<<<<<<< HEAD
 import be.kuleuven.cs.som.annotate.*;
+=======
 import asteroids.exceptions.*;
-
+>>>>>>> afbf603264e3abcaf228e3fd7c62fddf61ae7396
 
 /**
  * A class to define bullets.
@@ -54,6 +56,7 @@ public class Bullet extends Entity {
 		return loadedInParent;
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Sets the isLoadedInParent variable to true or false
 	 * 
@@ -62,8 +65,7 @@ public class Bullet extends Entity {
 	 */
 	void setLoadedInParent(boolean loadedInParent) {
 		this.loadedInParent = loadedInParent;
-
-		
+=======
 	void load() {
 		if (this.parent == null)
 			throw new NoParentShipException();
@@ -75,6 +77,7 @@ public class Bullet extends Entity {
 		this.loadedInParent = false;
 		this.parent.unloadBullet(this);
 		//TODO: SET VELOCITY etc
+>>>>>>> afbf603264e3abcaf228e3fd7c62fddf61ae7396
 	}
 	
 	
