@@ -413,7 +413,7 @@ public abstract class Entity {
 		 */
 		public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 			
-			//setMaxSpeed(300000);
+			//setMaxSpeed(300000); //gaat niet want final
 			this.maxSpeed = 300000;
 			
 			
