@@ -527,11 +527,24 @@ public abstract class Entity {
 		 * variable to declare the acceleration of the given entity
 		 */		
 		private Vector2 acceleration = new Vector2(0,0);
-
+		
+		/**
+		 * returns the acceleration of this entity.
+		 * @return The acceleration of this entity.
+		 */
+		@Basic 
+		@Raw
 		public Vector2 getAcceleration() {
 			return acceleration;
 		}
-
+		
+		/**
+		 * sets the acceleration of this entity to the given acceleration
+		 * @param acceleration
+		 * 		  The new acceleration 
+		 * @post  The given acceleration becomes the new acceleration from this entity.
+		 * 		| new.getAcceleration = acceleration 
+		 */
 		public void setAcceleration(Vector2 acceleration) {
 			this.acceleration = acceleration;
 		}
