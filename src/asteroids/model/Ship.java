@@ -25,23 +25,39 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: COMMENTS VERDER AFWERKEN, SHIT OVER BULLETS OOK NOG
 
 public class Ship extends Entity {
-
-	//TODO: EACH SHIP SHALL PROVIDE METHODS TO INSPECT THE SHIPS ACCELERATION ?
 	
+	/**
+	 * Variable holding the minimum radius from a ship.
+	 */
 	private static final double MIN_RADIUS_SHIP = 10;
 	
-	
+	/**
+	 * ArrayList holding the loaded bullets from the ship
+	 */
 	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
-	
 	
 	public List<Bullet> getLoadedBullets() {
 		return new ArrayList<Bullet>(loadedBullets);
 	}
 	
+	/**
+	 * function to load a bullet to this ship
+	 * @param bullet
+	 * 		  The bullet that has to be loaded.
+	 * @post  The given bullet will be added to the list with loaded bullets from this ship.
+	 * 		| new.getLoadedBullets.contains(bullet) = true
+	 */
 	void loadBullet(Bullet bullet) {
 		loadedBullets.add(bullet);
 	}
-
+	
+	/**
+	 * function to unload a bullet to this ship
+	 * @param bullet
+	 * 		  The bullet that has to be unloaded.
+	 * @post  The given bullet will be removed to the list with loaded bullets from this ship.
+	 * 		| new.getLoadedBullets.contains(bullet) = false
+	 */
 	void unloadBullet(Bullet bullet) {
 		loadedBullets.remove(bullet);
 	}
@@ -194,9 +210,6 @@ public class Ship extends Entity {
 	
 
 	public static void collideWithSameType(Ship firstShip, Ship secondShip) {
-		
-		
-		// "als het fout is is het de prof zijn schuld dan moet hij de opgave maar fatsoenlijk schrijven" - rik
 		
 		double sigma = firstShip.getRadius() + secondShip.getRadius();
 		Vector2 J = Vector2.multiply(Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()), 2 * firstShip.getMass() * secondShip.getMass() * Vector2.dot(
