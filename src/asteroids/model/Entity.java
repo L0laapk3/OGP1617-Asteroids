@@ -272,7 +272,7 @@ public abstract class Entity {
 		 * 		 | radius >= 0
 		 */
 		public static boolean isValidMinRadius(double radius) {
-			return radius >= 0;
+			return radius >= 0 && radius < Double.POSITIVE_INFINITY;
 		}
 		
 		/**
@@ -285,14 +285,18 @@ public abstract class Entity {
 		 * @throws InvalidRadiusException
 		 * 		   If the radius is not valid the function will throw a InvalidRadiusException
 		 * 		 | !isValidRadius throw InvalidRadiusException 
+		 * @note   total
 		 */
 		@Raw
 		void setMinRadius(double radius) throws InvalidRadiusException {				
-			if(isValidMinRadius(radius)){
-				MIN_RADIUS=radius;
+			if(isValidMinRadius(radius)) {
+				MIN_RADIUS = radius;
 			} else {
-				throw new InvalidRadiusException();
+				throw new InvalidRadiusException("Minimum radius is invalid");
 			}
+			
+			if (MIN_RADIUS <= this.getRadius())
+				throw new InvalidRadiusException();
 		}
 		
 		

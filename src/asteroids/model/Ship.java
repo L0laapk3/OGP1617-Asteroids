@@ -80,6 +80,7 @@ public class Ship extends Entity {
 	}
 	
 	
+	
 
 	/**
 	 * The total mass of the load.

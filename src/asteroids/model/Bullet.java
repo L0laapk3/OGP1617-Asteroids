@@ -52,8 +52,6 @@ public class Bullet extends Entity {
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double direction, Ship parent) {
 		super(x, y, xVelocity, yVelocity, radius, direction);
 		this.setMinRadius(MIN_RADIUS_BULLET);
-		// MOET ER HIER NOG IETS GEBEUREN OFWA
-		
 
 		setRho(7.8 * Math.pow(10,  12)); //constant for this class
 		
