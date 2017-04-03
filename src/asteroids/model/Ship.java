@@ -5,9 +5,12 @@ import java.util.List;
 
 import asteroids.exceptions.*;
 import asteroids.util.Vector2;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
+
+//TODO: ALLE FUNCTIES MOETEN ECHT WEL GEORDEND WORDEN ZODAT DIE LUIE ASSISTENTEN HET KUNNEN VINDEN
 
 
 /**
@@ -26,6 +29,11 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 public class Ship extends Entity {
 
+	/**
+	 * Constant that defines how fast the ship shoots its bullets.
+	 */
+	private static final double BULLET_LAUNCHING_SPEED = 250;
+	
 	//TODO: EACH SHIP SHALL PROVIDE METHODS TO INSPECT THE SHIPS ACCELERATION ?
 	
 	private static final double MIN_RADIUS_SHIP = 10;
@@ -34,9 +42,6 @@ public class Ship extends Entity {
 	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
 	
 	
-	public List<Bullet> getLoadedBullets() {
-		return new ArrayList<Bullet>(loadedBullets);
-	}
 	
 	void loadBullet(Bullet bullet) {
 		loadedBullets.add(bullet);
@@ -71,11 +76,27 @@ public class Ship extends Entity {
 	 * Shoots the given bullet from the ship.
 	 * @param bullet
 	 * 	      The bullet to shoot
+	 * @throws UndefinedCollisionBehaviourException 
 	 * @note  defensive
 	 */
-	public void shootBullet(Bullet bullet) {
-		//throw error if not in shit
-		//TODO: shootbullet hier nog alles schrijven
+	public void shootBullet(Bullet bullet) throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
+		if (this.getWorld() == null)
+			throw new NoWorldException();
+		if (this.getWorld() != bullet.getWorld())
+			throw new MisMatchWorldsException("Bullet and ship must be in the same world.");
+		if (bullet.getParent() != this)
+			throw new InvalidParentShipException();
+		if (!loadedBullets.contains(bullet))
+			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
+		
+		bullet.setLoadedInParent(false);
+		this.unloadBullet(bullet);
+		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
+		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
+		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
+		if (collidesWith != null)
+			Collisions.collide(bullet, collidesWith);
+		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 		updateLoadMass();
 	}
 	
@@ -117,7 +138,20 @@ public class Ship extends Entity {
 	
 	
 	
+	/**
+	 * Gets the number of bullets in ship.
+	 * @return The number of bullets that the ship has loaded.
+	 */
+	public int getNumberOfBullets() {
+		return loadedBullets.size();
+	}
 	
+	/**
+	 * Returns a list of all the loaded bullets in the ship.
+	 */
+	public List<Bullet> getLoadedBullets() {
+		return new ArrayList<Bullet>(loadedBullets);
+	}
 	
 	
 	
@@ -192,8 +226,15 @@ public class Ship extends Entity {
 	
 	
 	
-
-	public static void collideWithSameType(Ship firstShip, Ship secondShip) {
+	/**
+	 * Recalculates the velocity of the two ships, when they bounce
+	 * @param firstShip
+	 * 		  The first ship that collides.
+	 * @param secondShip
+	 * 		  The second ships that collides.
+	 * @post  The Velocity of the two ships will be updated according to the laws of physics.
+	 */
+	static void collideShips(Ship firstShip, Ship secondShip) {
 		
 		
 		// "als het fout is is het de prof zijn schuld dan moet hij de opgave maar fatsoenlijk schrijven" - rik
@@ -212,7 +253,7 @@ public class Ship extends Entity {
 	/**
 	 * Variable that holds whether the thruster is on or of
 	 */
-	private boolean thrusterState=false;
+	private boolean thrusterState = false;
 	
 	/**
 	 * function that returns the Thrusterstate of the ship

@@ -508,7 +508,7 @@ public class World {
 						}
 					}
 				}
-			} catch (EntitiesOverlapException ex) { //should never happen..
+			} catch (EntitiesOverlapException ex) { //should never happen, this should always get caught on adding the entities to the world instead of now.
 				throw new RuntimeException(ex); //FATAL ERROR
 				//TODO: opt einde zie ofda dees klopt
 			}
@@ -538,31 +538,29 @@ public class World {
 	
 	/**
 	 * Collides the two entities and calls the proper handlers depending on the collision type.
-	 * 
-	 * @param collisionFirstEntity
+	 * @invar Both entities must be in the same world. (not null)
+	 * @param first
+	 * 	      This is the first entity to collide.
 	 * @param collisionSecondEntity
-	 * 	      These are the two entities to collide.
+	 *        This is the second entity to collide.
 	 */
-	private void collideEntities(Entity collisionFirstEntity, Entity collisionSecondEntity) {
-		
-		if (collisionFirstEntity instanceof Ship && collisionSecondEntity instanceof Ship) {
-			Ship.collideWithSameType((Ship)collisionFirstEntity, (Ship)collisionSecondEntity);
-			
-		} else if (collisionFirstEntity instanceof Bullet && collisionSecondEntity instanceof Bullet) {
-			Bullet.collideWithSameType((Bullet)collisionFirstEntity, (Bullet)collisionSecondEntity);
-			
-		} else {
-			Ship ship;
-			Bullet bullet;
-			if (collisionFirstEntity instanceof Ship) {
-				ship = (Ship)collisionFirstEntity;
-				bullet = (Bullet)collisionSecondEntity;
-			} else {
-				ship = (Ship)collisionSecondEntity;
-				bullet = (Bullet)collisionFirstEntity;
-			}
-			bullet.hit(ship);
-		}
+	private void collideEntities(Entity first, Entity second) {
+		Collisions.collide(first, second);
+	}
+
+	
+	/**
+	 * Searches if given entity is colliding with another entity.
+	 * @param entity
+	 * @return The entity that it overlaps with if there is one.
+	 * @return Null if there is no entity that overlaps with the given entity.
+	 */
+	@Raw
+	public Entity findOverlap(Entity entity) {
+		for (Entity other : entities)
+			if (Entity.overlap(entity, other))
+				return other;
+		return null;
 	}
 	
 }

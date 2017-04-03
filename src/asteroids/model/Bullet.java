@@ -66,15 +66,9 @@ public class Bullet extends Entity {
 		
 	void load() {
 		if (this.parent == null)
-			throw new NoParentShipException();
+			throw new InvalidParentShipException();
 		this.parent.loadBullet(this);
 		this.loadedInParent = true;
-	}
-	
-	void shoot() {
-		this.loadedInParent = false;
-		this.parent.unloadBullet(this);
-		//TODO: SET VELOCITY etc
 	}
 	
 	
@@ -130,15 +124,17 @@ public class Bullet extends Entity {
 		terminate();
 	}
 
-
-
+	
 	/**
-	 * Function to handle the collision of two bullets. Both bullets are terminated.
-	 * @param firstBullet
-	 * @param secondBullet
+	 * Handles the collision between two bullets..
+	 * @param  first
+	 * 		   The first bullet to collide.
+	 * @param  second
+	 *         The second bullet to collide.
+	 * @post   Both bullets are terminated.
 	 */
-	public static void collideWithSameType(Bullet firstBullet, Bullet secondBullet) {
-		firstBullet.terminate();
-		secondBullet.terminate();
+	static void collideBullets(Bullet first, Bullet second) {
+		first.terminate();
+		second.terminate();
 	}
 }

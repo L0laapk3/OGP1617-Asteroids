@@ -881,8 +881,6 @@ public abstract class Entity {
 	
 	
 	
-	
-	
 
 	/**
 	 * Variable registering the coordinates of the entity.
