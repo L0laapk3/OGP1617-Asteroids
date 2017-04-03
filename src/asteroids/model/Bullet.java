@@ -3,7 +3,7 @@ package asteroids.model;
 public class Bullet extends Entity {
 
 	
-	
+	private static final double MIN_RADIUS_BULLET=1;
 	
 	/**
 	 * Returns the ship that originally shot this bullet.
@@ -27,6 +27,7 @@ public class Bullet extends Entity {
 	//TODO COMMENTS
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double direction, Ship parent) {
 		super(x, y, xVelocity, yVelocity, radius, direction);
+		this.setMinRadius(MIN_RADIUS_BULLET);
 		// TODO Auto-generated constructor stub
 		
 
@@ -66,4 +67,9 @@ public class Bullet extends Entity {
 		firstBullet.terminate();
 		secondBullet.terminate();
 	}
+	
+	/**
+	 * Variable that holds the minimum radius from a bullet
+	 */
+	private static double MIN_RADIUS = 1;
 }

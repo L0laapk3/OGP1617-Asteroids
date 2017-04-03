@@ -210,22 +210,84 @@ public abstract class Entity {
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * Variable that holds the minimum radius from a ship
+		 */
+		
+		private static double MIN_RADIUS;
+		
+		
+		/**
+		 * Returns the minimum radius of the entity
+		 * 
+		 * @return MIN_RADIUS
+		 * 		   Returns the minimum radius of the entity
+		 */
+		@Basic
+		@Raw
+		public double getMinRadius() {
+			return MIN_RADIUS;
+		}		
+
+		/**
+		 * Checks if a radius is a valid MinRadius
+		 * @param radius
+		 * @return True if and only if the radius is greater than 0.
+		 * 		 | radius >= 0
+		 */
 		public static boolean isValidMinRadius(double radius) {
 			return radius >= 0;
 		}
 		
-		
 		/**
-		 * Return the MIN_RADIUS of entity.
+		 * Set the minimum radius from a ship to the given radius
 		 * 
-		 * @return The radius.
+		 * @param  radius
+		 * 		   The new minimum radius.
+		 * @post   The new minimum radius is equal to the given radius, if this radius is invalid an InvalidRadiusException is thrown.
+		 * 		 | new.getMinRadius = radius
+		 * @throws InvalidRadiusException
+		 * 		   If the radius is not valid the function will throw a InvalidRadiusException
+		 * 		 | !isValidRadius throw InvalidRadiusException 
 		 */
-		@Basic
-		@Immutable
 		@Raw
-		public static double getValidMinRadius() {
-			return MIN_RADIUS;			
+		void setMinRadius(double radius) throws InvalidRadiusException {				
+			if(isValidMinRadius(radius)){
+				MIN_RADIUS=radius;
+			} else {
+				throw new InvalidRadiusException();
+			}
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		/**
 		 * Variable registering the size of the entity.
@@ -242,6 +304,19 @@ public abstract class Entity {
 		@Raw
 		public double getRadius() {
 			return this.radius;
+		}
+		
+
+		/**
+		 * Check whether the radius is valid for a entity.
+		 * 
+		 * @param  radius
+		 * 		   The radius to check.
+		 * @return True if and only if given radius is not smaller than MIN_RADIUS.
+		 *       | result == (radius >= MIN_RADIUS)
+		 */
+		public boolean isValidRadius(double radius){
+			return radius >= this.getMinRadius();
 		}
 		
 		
@@ -738,7 +813,7 @@ public abstract class Entity {
 	 * @post  The position of this entity is the same as the given position.
 	 */
 	@Raw
-	private void setPosition(Vector2 position) {
+	void setPosition(Vector2 position) {
 		this.position = position;
 	}
 	/*
