@@ -787,7 +787,7 @@ public abstract class Entity {
 		public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {			
 			
 			
-			//TODO: ACCELERATIE??
+			//ACCELERATIE??
 			
 			//foute berekeningen die geen rekening houden met acceleratie..
 			

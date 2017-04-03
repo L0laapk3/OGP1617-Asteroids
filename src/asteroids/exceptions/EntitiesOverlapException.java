@@ -4,7 +4,7 @@ package asteroids.exceptions;
 public class EntitiesOverlapException extends Exception {
 
 	  public EntitiesOverlapException() {
-	    super("The given ships should not overlap.");
+	    super("The given entities should not overlap.");
 	  }
 	  
 	  public EntitiesOverlapException(String message) {

@@ -28,25 +28,38 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: COMMENTS VERDER AFWERKEN, SHIT OVER BULLETS OOK NOG
 
 public class Ship extends Entity {
-
+	
 	/**
 	 * Constant that defines how fast the ship shoots its bullets.
 	 */
 	private static final double BULLET_LAUNCHING_SPEED = 250;
 	
-	//TODO: EACH SHIP SHALL PROVIDE METHODS TO INSPECT THE SHIPS ACCELERATION ?
-	
 	private static final double MIN_RADIUS_SHIP = 10;
 	
-	
+	/**
+	 * ArrayList holding the loaded bullets from the ship
+	 */
 	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
 	
 	
-	
+	/**
+	 * function to load a bullet to this ship
+	 * @param bullet
+	 * 		  The bullet that has to be loaded.
+	 * @post  The given bullet will be added to the list with loaded bullets from this ship.
+	 * 		| new.getLoadedBullets.contains(bullet) = true
+	 */
 	void loadBullet(Bullet bullet) {
 		loadedBullets.add(bullet);
 	}
-
+	
+	/**
+	 * function to unload a bullet to this ship
+	 * @param bullet
+	 * 		  The bullet that has to be unloaded.
+	 * @post  The given bullet will be removed to the list with loaded bullets from this ship.
+	 * 		| new.getLoadedBullets.contains(bullet) = false
+	 */
 	void unloadBullet(Bullet bullet) {
 		loadedBullets.remove(bullet);
 	}
@@ -64,7 +77,7 @@ public class Ship extends Entity {
 	 * Attempts to shoot a bullet from the ship.
 	 * @post   Shoots a bullet, only if there is one available.
 	 * @return false if there is no bullet loaded in the ship.
-	 * @return true if it succesfully shot a bullet from the ship.
+	 * @return true if it successfully shot a bullet from the ship.
 	 */
 	public boolean shootBullet() {
 		if (!hasBullet())
@@ -235,9 +248,6 @@ public class Ship extends Entity {
 	 * @post  The Velocity of the two ships will be updated according to the laws of physics.
 	 */
 	static void collideShips(Ship firstShip, Ship secondShip) {
-		
-		
-		// "als het fout is is het de prof zijn schuld dan moet hij de opgave maar fatsoenlijk schrijven" - rik
 		
 		double sigma = firstShip.getRadius() + secondShip.getRadius();
 		Vector2 J = Vector2.multiply(Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()), 2 * firstShip.getMass() * secondShip.getMass() * Vector2.dot(

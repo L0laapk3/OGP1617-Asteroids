@@ -16,7 +16,6 @@ import asteroids.exceptions.*;
  * @author   Rik Pauwels
  */
 
-//TODO: COMMENTS VERDER AFWERKEN
 public class Bullet extends Entity {
 
 	/**
