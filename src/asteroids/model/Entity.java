@@ -10,7 +10,7 @@ public abstract class Entity {
 		/**
 		 * Constant for the maximum velocity.
 		 */
-		private final double maxSpeed;
+		private double maxSpeed;
 		
 		
 		/**
@@ -22,12 +22,12 @@ public abstract class Entity {
 		 * 		  | new.getMaxSpeed() == maxSpeed
 		 */
 		//TODO VRAAG: in constructor: final
-		/*@Raw
+		@Raw
 		private void setMaxSpeed(double maxSpeed) {
 			if (Entity.isValidMaxSpeed(maxSpeed)) {
 				this.maxSpeed = maxSpeed;
 			}
-		}*/
+		}
 		
 		/**
 		 *  Returns the maximum Speed of the entity
@@ -45,11 +45,11 @@ public abstract class Entity {
 		 * @param 	maxSpeed
 		 * 			The maxSpeed to be checked.
 		 * @return	True if and only if the maxSpeed is 0 or more and less than infinity.
-		 * 		  | result == (maxSpeed>=0) && (maxSpeed<infinity) 
+		 * 		  | result == (maxSpeed>=0) && (maxSpeed<300000) 
 		 */
 		@Raw
 		public static boolean isValidMaxSpeed(double maxSpeed) {
-			if ((maxSpeed >= 0) && (maxSpeed < Double.POSITIVE_INFINITY)) {
+			if ((maxSpeed >= 0) && (maxSpeed < 300000)) {
 				return true;
 			} else {
 				return false;
@@ -134,16 +134,31 @@ public abstract class Entity {
 			}
 		}	
 		
-
+		
+		
+		public abstract void setMinRadius(double radius);
+		
+		public static boolean isValidMinRadius(double radius){
+			return radius >= 0;
+		}
+		
+		
+		/**
+		 * Return the MIN_RADIUS of entity.
+		 * 
+		 * @return The radius.
+		 */
+		@Basic
+		@Immutable
+		@Raw
+		public static double getValidMinRadius(){
+			return MIN_RADIUS;			
+		}
+		
 		/**
 		 * Variable registering the size of the entity.
 		 */
 		private final double radius;
-		
-		/**
-		 * constant for minimum radius.
-		 */
-		private final static double MIN_RADIUS = 10;
 		
 		/**
 		 * Return the radius of entity.
@@ -155,18 +170,6 @@ public abstract class Entity {
 		@Raw
 		public double getRadius() {
 			return this.radius;
-		}
-		
-		/**
-		 * Check whether the radius is valid for a entity.
-		 * 
-		 * @param  radius
-		 * 		   The radius to check.
-		 * @return True if and only if given radius is not smaller than MIN_RADIUS.
-		 *       | result == (radius >= MIN_RADIUS)
-		 */
-		public boolean isValidRadius(double radius) {
-			return radius >= MIN_RADIUS;
 		}
 		
 		

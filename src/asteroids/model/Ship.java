@@ -29,8 +29,54 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 public class Ship extends Entity {
 
-	private static final double MIN_RADIUS = 10;
-
+	/**
+	 * Variable that holds the minimum radius from a ship
+	 */
+	private static double MIN_RADIUS = 10;
+	
+	/**
+	 * Set the minimum radius from a ship to the given radius
+	 * 
+	 * @param  radius
+	 * 		   The new minimum radius.
+	 * @post   The new minimum radius is equal to the given radius, if this radius is invalid an InvalidRadiusException is thrown.
+	 * 		 | new.getMinRadius = radius
+	 * @throws InvalidRadiusException
+	 * 		   If the radius is not valid the function will throw a InvalidRadiusException
+	 * 		 | !isValidRadius throw InvalidRadiusException 
+	 */
+	@Raw
+	public void setMinRadius(double radius) throws InvalidRadiusException {				//TODO: waarom weent hij als ik dit static zet?
+		if(isValidRadius(radius)){
+			MIN_RADIUS=radius;
+		} else {
+			throw new InvalidRadiusException();
+		}
+	}
+	
+	/**
+	 * Returns the minimum radius of the ships
+	 * 
+	 * @return MIN_RADIUS
+	 * 		   Returns the minimum radius of the ships
+	 */
+	@Basic
+	@Raw
+	public static double getMinRadius() {
+		return MIN_RADIUS;
+	}
+	
+	/**
+	 * Check whether the radius is valid for a entity.
+	 * 
+	 * @param  radius
+	 * 		   The radius to check.
+	 * @return True if and only if given radius is not smaller than MIN_RADIUS.
+	 *       | result == (radius >= MIN_RADIUS)
+	 */
+	public static boolean isValidRadius(double radius) {
+		return radius >= getMinRadius();
+	}
 	
 	
 	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
