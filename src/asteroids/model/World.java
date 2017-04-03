@@ -293,11 +293,18 @@ public class World {
 	 * Variable referencing a list collecting all the ships and bullets
 	 * in this world.
 	 * 
-	 * @invar Each entity registered in the referenced list is not terminated 	//TODO: dit in orde brengen
+	 * @invar Each entity registered in the referenced list is not terminated 	//
+	 * @invar The position of all entities must lay fully within the world.
+	 * @invar Entites cannot overlap, with the exception of bullets loaded in their ships.
 	 */
 	private final List<Entity> entities = new ArrayList<Entity>();
 	
 	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	 * Adds an entity to the world.
 	 * @param 	entity
 	 * 		  	Entity to add to the world.
@@ -309,21 +316,22 @@ public class World {
 	 * 			A new entity can not overlap with an existing entity in that world
 	 * @note    Defensive
 	 */
-	//TODO uitzondering van de regels voor het herladen van een ship maken?
 	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException {
 		
 		if (entities.contains(entity)) {
 			throw new DoubleEntityException();
 		}
 		
-		for (Entity entityToCheck : entities){
-			if (Entity.overlap(entity, entityToCheck)){
+		for (Entity entityToCheck : entities) {
+			if (Entity.overlap(entity, entityToCheck)												      //mag niet overlappen
+					&& !((entity instanceof Bullet) && (((Bullet)entity).getParent() == entityToCheck))   //behalve als het een bullet geladen in dat ship
+					&& !((entityToCheck instanceof Bullet) && (((Bullet)entityToCheck).getParent() == entity))) {
 				throw new EntitiesOverlapException();
 			}
 		}
 		
-		double centerX=entity.getPosition().x;
-		double centerY=entity.getPosition().y;
+		double centerX = entity.getPosition().x;
+		double centerY = entity.getPosition().y;
 		
 		if (((centerX+entity.getRadius())>this.getWidth()) || ((centerX-entity.getRadius())<0) ||
 				((centerY+entity.getRadius())>this.getHeight()) || ((centerY-entity.getRadius())<0)){
@@ -347,7 +355,7 @@ public class World {
 			entities.remove(entity);
 			entity.setWorld(null);
 		} else {
-			throw new IllegalEntityException();
+			throw new IllegalEntityException("An entity that did not exist in this world has been tried to remove from that world.");
 		}
 	}
 	

@@ -13,25 +13,22 @@ import be.kuleuven.cs.som.annotate.Raw;
 /**
  * A class to define ships.
  * 
- * @invar Both the x and y coordinate of the position of the ship must not be NaN or infinity.
- *      | isValidPosition(getPosition())
- * @invar The initial orientation of the ship must be between 0 and 2*PI.
- *      | isValidOrientation(getOrientation())
- * @invar The radius must be bigger than MIN_RADIUS.
- * 		| isValidRadius(getRadius())
- * @invar The mass of the ship will always be greater than 4/3*PI*radius^3*(mass density)
- * 		| this.isValidMass(mass)
+ * @effect   Entity
+ * @invar    The radius must be bigger than MIN_RADIUS for Ship.
+ * 		   | isValidRadius(getRadius())
  * 
- * @version  1.0
+ * @version  2.0
  * @author   Kris Keersmaekers
  * @author   Rik Pauwels
  */
+
+//TODO: COMMENTS VERDER AFWERKEN, SHIT OVER BULLETS OOK NOG
 
 public class Ship extends Entity {
 
 	
 	
-	private static final double MIN_RADIUS_SHIP=10;
+	private static final double MIN_RADIUS_SHIP = 10;
 	
 	/**
 	 * Check whether the radius is valid for a entity.

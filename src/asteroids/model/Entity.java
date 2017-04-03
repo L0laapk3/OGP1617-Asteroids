@@ -4,6 +4,30 @@ import asteroids.exceptions.*;
 import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;
 
+
+
+
+
+/**
+ * A class to define entities.
+ * 
+ * @invar    Both the x and y coordinate of the position of the entities must not be NaN or infinity.
+ *         | isValidPosition(getPosition())
+ * @invar    The initial orientation of the entity must be between 0 and 2*PI.
+ *         | isValidOrientation(getOrientation())
+ * @invar    The radius must be bigger than MIN_RADIUS.
+ * 		   | isValidRadius(getRadius())
+ * @invar    The mass of the entity will always be equal to or greater than 4/3*PI*radius^3*(mass density)
+ * 		   | this.isValidMass(mass)
+ * @invar    Velocity must be valid.
+ * 		   | this.isValidVelocity(getVelocity)
+ * 
+ * @version  1.0
+ * @author   Kris Keersmaekers
+ * @author   Rik Pauwels
+ */
+
+//TODO: COMMENTS VERDER AFWERKEN
 public abstract class Entity {
 		
 
@@ -95,7 +119,6 @@ public abstract class Entity {
 		 * @post 	The maxSpeed of this entity is the same as the given maxSpeed
 		 * 		  | new.getMaxSpeed() == maxSpeed
 		 */
-		//TODO VRAAG: in constructor: final
 		@Raw
 		private void setMaxSpeed(double maxSpeed) {
 			if (Entity.isValidMaxSpeed(maxSpeed)) {
@@ -465,15 +488,17 @@ public abstract class Entity {
 		 * Terminate this world.
 		 *
 		 * @post   The instance is terminated.
-		 * @post   Each of the entities of the instance is terminated.
+		 * @post   If the entity is in a world, The entity is removed properly from the world first.
 		 */
 		public void terminate() {
+			if (this.getWorld() != null)
+				this.getWorld().removeEntity(this);
 			if (!isTerminated())
 				this.isTerminated = true;
 		}
 		
 		/**
-		 * Check whether this world is terminated.
+		 * Check whether this entity is terminated.
 		 */
 		@Basic
 		@Raw
@@ -532,6 +557,22 @@ public abstract class Entity {
 		 * @note   	This is written in a defensive manner.
 		 */
 		public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
+			
+			
+			//foute berekeningen die geen rekening houden met acceleratie..
+			
+			this.position = Vector2.add(this.position, Vector2.multiply(this.velocity, dt));	
+			this.setVelocity(Vector2.add(this.velocity, Vector2.multiply(this.getAcceleration(), dt)));
+
+		}
+		
+		
+		/*
+		public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
+		
+		
+			//juiste berekingen die rekening houden met acceleratie
+		
 			OGUtil.throwErrorIfInvalidNumbers(dt);
 			if (!isValidDeltaTime(dt))
 				throw new NegativeTimeException();
@@ -550,7 +591,7 @@ public abstract class Entity {
 			this.position = Vector2.add(Vector2.add(this.position, Vector2.multiply(this.velocity, dt)), Vector2.multiply(getAcceleration(), 1/2*Math.pow(dtPossible, 2)));	
 			this.velocity = Vector2.add(this.velocity, Vector2.multiply(this.getAcceleration(), dtPossible));
 
-		}
+		}*/
 		
 		
 		/**
@@ -697,21 +738,24 @@ public abstract class Entity {
 		 * 	     | 
 		 */
 		public double getTimeToWallCollision() {
+			
+			//foute berekeningen die geen rekening hoduen met acceleratie
+			
 			double xCollisionTime;
 			if (velocity.x == 0)
 				xCollisionTime = Double.POSITIVE_INFINITY;
 			else if (velocity.x > 0)
-				xCollisionTime = (world.getWidth() - position.x) / velocity.x;
+				xCollisionTime = (world.getWidth() - position.x - this.radius) / velocity.x;
 			else
-				xCollisionTime = position.x / velocity.x;
+				xCollisionTime = (position.x + this.radius) / velocity.x;
 
 			double yCollisionTime;
 			if (velocity.y == 0)
 				yCollisionTime = Double.POSITIVE_INFINITY;
 			else if (velocity.y > 0)
-				yCollisionTime = (world.getWidth() - position.y) / velocity.y;
+				yCollisionTime = (world.getWidth() - position.y - this.radius) / velocity.y;
 			else
-				yCollisionTime = position.y / velocity.y;
+				yCollisionTime = (position.y + this.radius) / velocity.y;
 			
 			return Math.min(xCollisionTime, yCollisionTime);
 		}
@@ -737,8 +781,9 @@ public abstract class Entity {
 		public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {			
 			
 			
-			//TODO: AFRONDINGSSSHIT p9!!!!!
 			//TODO: ACCELERATIE??
+			
+			//foute berekeningen die geen rekening houden met acceleratie..
 			
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
@@ -866,7 +911,9 @@ public abstract class Entity {
 	
 
 	public void collideWithWall() {
-		// TODO Auto-generated method stub
-		
+		if ((this.position.x - 1.01 * this.radius) <= 0 || (this.position.x + 1.01 * this.radius) >= this.getWorld().getWidth())
+			this.setPosition(new Vector2(-this.position.x, this.position.y));
+		if ((this.position.y - 1.01 * this.radius) <= 0 || (this.position.y + 1.01 * this.radius) >= this.getWorld().getHeight())
+			this.setPosition(new Vector2(this.position.x, -this.position.y));
 	}
 }
