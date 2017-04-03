@@ -29,6 +29,10 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 public class Ship extends Entity {
 
+	
+	
+	
+	
 	/**
 	 * Variable that holds the minimum radius from a ship
 	 */
@@ -206,11 +210,10 @@ public class Ship extends Entity {
 		
 		//TOTAL
 		if (isValidRho(rho)) {
-			this.rho = rho;
+			setRho(rho);
 		} else {
-			this.rho = 1.42*Math.pow(10,12);
+			setRho(1.42*Math.pow(10, 12));
 		}
-		updateBaseMass();
 		
 		
 		
@@ -222,44 +225,7 @@ public class Ship extends Entity {
 	
 	
 	
-	
-	
-	
-	
-	
-	//------------------RHO
-	/**
-	 * Variable holding the mass density of the ship
-	 */
-	private final double rho;
-	
-	/**
-	 * Check whether the mass density is valid for a ship.
-	 * 
-	 * @param  rho
-	 * 		   The mass density to check.
-	 * @return True if and only if the given rho is between 1.42*10^12 kg/km^3 and positive infinity.
-	 *       | result == (mass >= 0) && (mass < Double.POSITIVE_INFINITY)
-	 */
-	@Raw
-	public static boolean isValidRho(double rho){
-		if (( rho >= 1.42*Math.pow(10, 12)) && (rho < Double.POSITIVE_INFINITY)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * Return the mass density of the ship.
-	 * 
-	 * @return the mass density of the ship
-	 */
-	@Basic
-	@Raw
-	public double getRho() {
-		return this.rho;
-	}
+
 	
 	
 	

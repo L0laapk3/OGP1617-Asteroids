@@ -13,6 +13,80 @@ public abstract class Entity {
 		private double maxSpeed;
 		
 		
+		
+
+		
+		//------------------RHO
+		/**
+		 * Variable holding the mass density of the ship
+		 */
+		double rho;
+		
+		/**
+		 * Check whether the mass density is valid for a ship.
+		 * 
+		 * @param  rho
+		 * 		   The mass density to check.
+		 * @return True if and only if the given rho is between 1.42*10^12 kg/km^3 and positive infinity.
+		 *       | result == (mass >= 0) && (mass < Double.POSITIVE_INFINITY)
+		 */
+		@Raw
+		public static boolean isValidRho(double rho) {
+			return ( rho >= 1.42*Math.pow(10, 12)) && (rho < Double.POSITIVE_INFINITY);
+		}
+		
+		/**
+		 * Gets the rho value of the ship.
+		 */
+		public double getRho() {
+			return this.rho;
+		}
+		
+		
+		void setRho(double rho) {
+			this.rho = rho;
+			updateBaseMass();
+		}
+		
+		
+		
+		
+
+		/**
+		 * Gets the total mass of the entity.
+		 */
+		@Raw
+		public double getMass() {
+			return this.getBaseMass();
+		}
+		
+		
+		
+		/**
+		 * Variable storing the mass of the entity.
+		 */
+		private double baseMass;
+		
+		/**
+		 * Gets the unloaded mass of the entity.
+		 */
+		@Raw
+		@Basic
+		public double getBaseMass() {
+			return this.baseMass;
+		}
+		
+		/**
+		 * recalculates the mass of the ship.
+		 */
+		@Raw
+		void updateBaseMass() {
+			this.baseMass = 4 / 3 * Math.PI * this.radius*this.radius*this.radius * this.rho;
+		}
+		
+		
+		
+		
 		/**
 		 * Set the maxSpeed of this entity to the given maxSpeed
 		 * 
@@ -136,9 +210,7 @@ public abstract class Entity {
 		
 		
 		
-		public abstract void setMinRadius(double radius);
-		
-		public static boolean isValidMinRadius(double radius){
+		public static boolean isValidMinRadius(double radius) {
 			return radius >= 0;
 		}
 		
@@ -151,7 +223,7 @@ public abstract class Entity {
 		@Basic
 		@Immutable
 		@Raw
-		public static double getValidMinRadius(){
+		public static double getValidMinRadius() {
 			return MIN_RADIUS;			
 		}
 		
@@ -303,9 +375,6 @@ public abstract class Entity {
 			
 			
 		}
-
-		
-		
 		
 		
 		

@@ -2,6 +2,9 @@ package asteroids.model;
 
 public class Bullet extends Entity {
 
+	
+	
+	
 	/**
 	 * Returns the ship that originally shot this bullet.
 	 */
@@ -26,8 +29,8 @@ public class Bullet extends Entity {
 		super(x, y, xVelocity, yVelocity, radius, direction);
 		// TODO Auto-generated constructor stub
 		
-		
-		this.setRho(7.8 * Math.pow(10,  12)); //constant for this class
+
+		setRho(7.8 * Math.pow(10,  12)); //constant for this class
 
 		this.parent = parent;
 	}
@@ -45,15 +48,11 @@ public class Bullet extends Entity {
 	 * @param  ship
 	 */
 	public void hit(Ship ship) {
-		if (ship == parent) {
-			setPosition(parent.getPosition());
-			setVelocity(parent.getVelocity());
-			setAcceleration(parent.getAcceleration());
-		} else {
-			parent.triggerScoreOn(ship); //does nothing (part 3?)
-			ship.triggerHit();
-			terminate();
-		}
+		assert(ship != parent); //"Loaded bullets should be excluded from the collision engine.")
+		
+		parent.triggerScoreOn(ship); //does nothing for now (part 3?)
+		ship.triggerHit();
+		terminate();
 	}
 
 
