@@ -338,7 +338,7 @@ public abstract class Entity {
 		 */
 		public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 			
-			//setMaxSpeed(300000);
+			//setMaxSpeed(300000); //gaat niet want final
 			this.maxSpeed = 300000;
 			
 			
@@ -738,7 +738,7 @@ public abstract class Entity {
 	 * @post  The position of this entity is the same as the given position.
 	 */
 	@Raw
-	private void setPosition(Vector2 position) {
+	void setPosition(Vector2 position) {
 		this.position = position;
 	}
 	/*

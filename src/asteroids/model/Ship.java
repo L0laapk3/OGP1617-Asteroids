@@ -135,10 +135,17 @@ public class Ship extends Entity {
 	 */
 	private double loadMass = 0;
 	
+	/**
+	 * Gets the total mass of the loaded bullets.
+	 */
 	public double getLoadMass() {
 		return this.loadMass;
 	}
-	
+
+	/**
+	 * A function to update the total mass of the loaded bullets.
+	 * @post Computes the total mass of the loaded bullets.
+	 */
 	void updateLoadMass() {
 		loadMass = 0;
 		for (Bullet bullet : loadedBullets)
@@ -234,43 +241,6 @@ public class Ship extends Entity {
 	
 	
 	
-	//---------------MASS
-	/**
-	 * Variable holding the mass of the ship
-	 */
-	private double mass;
-	
-	/**
-	 * Set the mass of the ship to the given mass
-	 * 
-	 * @param 	mass
-	 * 			The new mass.
-	 * @post 	The mass of this ship is equal to the given mass.
-	 * 		  | new.getMass=mass
-	 */
-	@Raw
-	public void setMass(double mass) {
-		if (isValidMass(mass)) {
-			this.mass=mass;
-		}
-	}
-	
-	/**
-	 * Check whether the mass is valid for a ship.
-	 * 
-	 * @param  mass
-	 * 		   The mass to check.
-	 * @return True if and only if the given orientation is between 0 and positive infinity.
-	 *       | result == (mass >= 0) && (mass < Double.POSITIVE_INFINITY)
-	 */
-	public boolean isValidMass(double mass) {
-		if (mass >= 4/3*Math.PI*Math.pow(this.getRadius(), 3)*this.rho) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	
 	public void kill() {
 		//TODO: separate function, wtf
@@ -308,14 +278,14 @@ public class Ship extends Entity {
 	 */
 	@Basic
 	@Raw
-	public boolean getThrusterstate(){
+	public boolean getThrusterstate() {
 		return this.thrusterState;
 	}
 	
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private double thrustforce=1.1*(Math.pow(10, 21));
+	private static final double thrustforce = 1.1*(Math.pow(10, 21));
 	
 	
 	/**
