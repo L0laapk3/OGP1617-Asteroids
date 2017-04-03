@@ -284,25 +284,24 @@ public class Ship extends Entity {
 	
 	/**
 	 * function that calculates the acceleration of the ship
-	 * @effect this function calculates the acceleration of the ship and sets it using setAccelaration
+	 * @effect this function calculates the acceleration of the ship and sets it using setAccelaration when the thruster must be active 
 	 * 		 | this.setAcceleration(this.getAcceleration()* thrustforce/this.getMass()));
-			 | thrusterState = true;
-	 */
-	public void thrustOn() {
-		this.setAcceleration(Vector2.multiply(this.getAcceleration(), thrustforce/this.getMass()));
-		thrusterState = true;
-	} 
-
-	/**
-	 * function that sets the acceleration of the ship to (0,0)
-	 * @effect this function sets the acceleration to (0,0) using setAccelaration
+	 *	     | thrusterState = true;
+     * @effect this function sets the acceleration to (0,0) using setAccelaration when the thruster must be inactive
 	 * 		 | this.setAcceleration(new Vector2(0,0));
-			 | thrusterState = false;
+	 *		 | thrusterState = false;
 	 */
-	public void thrustOff() {
-		this.setAcceleration(new Vector2(0,0));
-		thrusterState = false;
-	}
+	public void thrustOnOff(boolean state) {
+		if (state) {
+			this.setAcceleration(Vector2.multiply(this.getAcceleration(), thrustforce/this.getMass()));
+			thrusterState = true;
+		} else {
+			this.setAcceleration(new Vector2(0,0));
+			thrusterState = false;
+		}
+		
+		
+	} 
 
 	/**
 	 * This function defines what will happen when the ship gets hit by a bullet: The ship gets terminated.
