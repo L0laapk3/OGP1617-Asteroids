@@ -62,7 +62,7 @@ public class Bullet extends Entity {
 	 */
 	void setLoadedInParent(boolean loadedInParent) {
 		this.loadedInParent = loadedInParent;
-
+	}
 		
 	void load() {
 		if (this.parent == null)

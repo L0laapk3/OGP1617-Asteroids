@@ -283,9 +283,11 @@ public abstract class Entity {
 		 * @post   The new minimum radius is equal to the given radius, if this radius is invalid an InvalidRadiusException is thrown.
 		 * 		 | new.getMinRadius = radius
 		 * @throws InvalidRadiusException
-		 * 		   If the radius is not valid the function will throw a InvalidRadiusException
+		 * 		   If the minimum radius is not valid the function will throw a InvalidRadiusException
 		 * 		 | !isValidRadius throw InvalidRadiusException 
-		 * @note   total
+		 * @throws InvalidRadiusException
+		 * 		   If the existing radius of the ship is smaller than the new min radius.
+		 *       | MIN_RADIUS <= this.getRadius() throw InvalidRadiusException
 		 */
 		@Raw
 		void setMinRadius(double radius) throws InvalidRadiusException {				
