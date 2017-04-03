@@ -48,7 +48,6 @@ public class Vector2 {
 	@Immutable
 	public static boolean equals(Vector2 firstVector, Vector2 secondVector) {
 		return firstVector.x == secondVector.x && firstVector.y == secondVector.y;
-		//TODO afrondingsshit
 	}
 	
 	

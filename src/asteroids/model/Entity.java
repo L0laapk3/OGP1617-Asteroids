@@ -393,9 +393,8 @@ public abstract class Entity {
 		 * @post   Each of the entities of the instance is terminated.
 		 */
 		public void terminate() {
-			if (!isTerminated()) {
-				this.isTerminated = true;	//TODO alle entities daarin terminaten
-			}
+			if (!isTerminated())
+				this.isTerminated = true;
 		}
 		
 		/**
@@ -664,6 +663,7 @@ public abstract class Entity {
 			
 			
 			//TODO: AFRONDINGSSSHIT p9!!!!!
+			//TODO: ACCELERATIE??
 			
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");

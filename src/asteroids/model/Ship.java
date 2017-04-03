@@ -326,7 +326,7 @@ public class Ship extends Entity {
 	 * 		| The ship that was killed.
 	 */
 	public void triggerScoreOn(Ship ship) {
-		// TODO add score, this does nothing for now since there is no score system
+		//add score, this does nothing for now since there is no score system
 		
 	}
 }
