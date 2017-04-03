@@ -154,8 +154,8 @@ public class Ship extends Entity {
 	 * 		   The mass of the newly created ship.
 	 * @param  rho
 	 * 		   The mass density of the newly created ship
-	 * @effect This new ship is initialized as a new Entity with given position, velocity, radius, orientation and mass
-	 * 		 | super(x,y,xVelocity,yVelocity,radius,orientation,mass)
+	 * @effect This new ship is initialized as a new Entity with given position, velocity, radius and orientation.
+	 * 		 | super(x,y,xVelocity,yVelocity,radius,orientation)
 	 * @post   The radius of this new ship is equal to the given radius if the radius is valid otherwise this function throws an InvalidRadiusException.
 	 * 		 | if (radius < MIN_RADIUS)
 	 * 		 |    new.getRadius=radius
