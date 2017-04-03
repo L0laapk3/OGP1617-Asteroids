@@ -1,6 +1,8 @@
 package asteroids.model;
 
+import be.kuleuven.cs.som.annotate.*;
 import asteroids.exceptions.*;
+
 
 /**
  * A class to define bullets.
@@ -17,23 +19,51 @@ import asteroids.exceptions.*;
 //TODO: COMMENTS VERDER AFWERKEN
 public class Bullet extends Entity {
 
-	
+	/**
+	 * Variable holding the minimum radius from a bullet.
+	 */
 	private static final double MIN_RADIUS_BULLET = 1;
 	
 	/**
-	 * Returns the ship that originally shot this bullet.
+	 * Variable holding the parent from the bullet.
 	 */
+	private final Ship parent;
+	
+	/**
+	 * Returns the ship that originally shot this bullet.
+	 * @return The parent of the bullet.
+	 */
+	@Basic
+	@Raw
 	public Ship getParent() {
 		return this.parent;
 	}
 	
-	private final Ship parent;
+	/**
+	 * Variable holding whether the bullet is loaded in his parent.
+	 */
 	private boolean loadedInParent = true;
 
+	/**
+	 * Returns whether the bullet is loaded.
+	 * @return True if and only if the bullet is loaded in his parent.
+	 */
+	@Basic
+	@Raw
 	public boolean isLoadedInParent() {
 		return loadedInParent;
 	}
 	
+	/**
+	 * Sets the isLoadedInParent variable to true or false
+	 * 
+	 * @param  loadedInParent
+	 * 		 | The state of the ship (loaded is true and unloaded is false)
+	 */
+	void setLoadedInParent(boolean loadedInParent) {
+		this.loadedInParent = loadedInParent;
+
+		
 	void load() {
 		if (this.parent == null)
 			throw new NoParentShipException();
@@ -48,10 +78,32 @@ public class Bullet extends Entity {
 	}
 	
 	
-	//TODO COMMENTS
-	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double direction, Ship parent) {
-		super(x, y, xVelocity, yVelocity, radius, direction);
-		this.setMinRadius(MIN_RADIUS_BULLET);
+	/**
+	 * Function to make a new bullet.
+	 * @param  x
+	 * 	       The x coordinate where the new bullet has to be created.
+	 * @param  y
+	 *         The y coordinate where the new bullet has to be created.
+	 * @param  xVelocity
+	 * 		   The initial speed in the x direction of the new bullet.
+	 * @param  yVelocity
+	 * 		   The initial speed in the y direction of the new bullet.
+	 * @param  orientation
+	 * 		   The direction that the new bullet is initially pointed at.
+	 * @param  radius
+	 * 		   The size of the newly created bullet.
+	 * @param  mass
+	 * 		   The mass of the newly created bullet.
+	 * @parent 
+	 * @effect This new bullet is initialized as a new Entity with given position, velocity, radius and orientation.
+	 * 		 | super(x,y,xVelocity,yVelocity,radius,orientation)
+	 * @post   The minimum radius of the bullet is set to MIN_RADIUS_BULLET.
+	 * @post   The parent of this bullet will be set to the given parent.
+	 * @post   The mass density from this bullet is set to 7.8*10^12 kg/km^3
+	 */
+	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, Ship parent) {
+		super(x, y, xVelocity, yVelocity, radius, orientation);
+		this.setMinRadius(MIN_RADIUS_BULLET);		
 
 		setRho(7.8 * Math.pow(10,  12)); //constant for this class
 		
