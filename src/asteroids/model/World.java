@@ -473,11 +473,12 @@ public class World {
 	
 	
 	/**
-	 * Simulates the world for time dt in a deterministic way.
+	 * Simulates the world for time Dt.
 	 * @param Dt
 	 * 		  The time to simulate the world for.
+	 * @post  Simulates the world for Dt seconds.
 	 */
-	public void advanceTime(Double Dt) {
+	public void evolve(Double Dt) {
 		do {
 			//do not simulate collision physics for loaded bullets.
 			List<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
