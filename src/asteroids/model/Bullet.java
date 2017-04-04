@@ -63,7 +63,7 @@ public class Bullet extends Entity {
 		this.loadedInParent = loadedInParent;
 	}
 		
-	void load() {
+	public void load() {
 		if (this.parent == null)
 			throw new InvalidParentShipException();
 		this.parent.loadBullet(this);
