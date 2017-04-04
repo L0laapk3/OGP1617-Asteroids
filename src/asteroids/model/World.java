@@ -421,6 +421,9 @@ public class World {
 		for (Entity entity: entities)
 			if (entity instanceof Ship)
 				ships.add((Ship)entity);
+		//TODO hier ook prints gezet voor testen
+		System.out.print("Entities bij het oproepen van getAllShips: ");
+		System.out.println(entities);
 		return ships;
 	}
 	

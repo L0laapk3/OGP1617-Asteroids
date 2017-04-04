@@ -317,7 +317,17 @@ public class WorldView2<F extends IFacade> extends JPanel implements KeyListener
 	protected boolean isPlayerActive(Ship ship) {
 		try {
 			Set<? extends Ship> ships = facade.getWorldShips(world);
+			
+			boolean firstCheck = ships != null;
+			boolean secondCheck = ships.contains(ship);
+			
+			//TODO zelf geschreven => ships is leeg
+			System.out.println(Boolean.toString(firstCheck));
+			System.out.println(Boolean.toString(secondCheck));
+			System.out.println(ships);
+			
 			return ships != null && ships.contains(ship);
+			
 		} catch (ModelException e) {
 			handleError(e);
 		}

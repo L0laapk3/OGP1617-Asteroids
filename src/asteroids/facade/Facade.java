@@ -3,9 +3,12 @@ package asteroids.facade;
 import java.util.Collection;
 import java.util.Set;
 
+import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.model.Bullet;
 import asteroids.model.CollisionInformation;
 import asteroids.model.Entity;
@@ -586,6 +589,9 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Return all ships located within <code>world</code>.
 	 */
 	public Set<Ship> getWorldShips(World world) throws ModelException {
+		//TODO dit heb ik ook veranderd om te testen
+		
+		System.out.println(world.getAllShips());
 		return world.getAllShips(); //TODO: oftewel convert, oftewel in world alles veranderen
 	}
 
@@ -599,29 +605,45 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	/**
 	 * Add <code>ship</code> to <code>world</code>.
 	 */
-	public void addShipToWorld(World world, Ship ship) {
-		ship.setWorld(world);
+	public void addShipToWorld(World world, Ship ship) throws ModelException {
+		try {
+			world.addEntity(ship);
+		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex){
+			throw new ModelException(ex);
+		}
 	}
 
 	/**
 	 * Remove <code>ship</code> from <code>world</code>.
 	 */
-	public void removeShipFromWorld(World world, Ship ship) {
-		ship.setWorld(null);
+	public void removeShipFromWorld(World world, Ship ship) throws ModelException {
+		try {
+			world.removeEntity(ship);
+		} catch (IllegalEntityException ex){
+			throw new ModelException(ex);
+		}
 	}
 
 	/**
 	 * Add <code>bullet</code> to <code>world</code>.
 	 */
-	public void addBulletToWorld(World world, Bullet bullet) {
-		bullet.setWorld(world);
+	public void addBulletToWorld(World world, Bullet bullet) throws ModelException {
+		try {
+			world.addEntity(bullet);
+		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex){
+			throw new ModelException(ex);
+		}
 	}
 
 	/**
 	 * Remove <code>ship</code> from <code>world</code>.
 	 */
-	public void removeBulletFromWorld(World world, Bullet bullet) {
-		bullet.setWorld(null);
+	public void removeBulletFromWorld(World world, Bullet bullet) throws ModelException {
+		try {
+			world.removeEntity(bullet);
+		} catch (IllegalEntityException ex){
+			throw new ModelException(ex);
+		}
 	}
 
 	
