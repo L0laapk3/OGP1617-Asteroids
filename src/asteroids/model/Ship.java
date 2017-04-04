@@ -319,10 +319,10 @@ public class Ship extends Entity {
 	 */
 	public void thrustOnOff(boolean state) {
 		if (state) {
-			this.setAcceleration(Vector2.multiply(this.getAcceleration(), thrustforce/this.getMass()));
+			this.setAcceleration(thrustforce / this.getMass());
 			thrusterState = true;
 		} else {
-			this.setAcceleration(new Vector2(0,0));
+			this.setAcceleration(0);
 			thrusterState = false;
 		}
 	} 

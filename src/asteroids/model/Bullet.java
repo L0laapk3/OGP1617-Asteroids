@@ -50,7 +50,7 @@ public class Bullet extends Entity {
 	/**
 	 * Variable holding whether the bullet is loaded in his parent.
 	 */
-	private boolean loadedInParent = true;
+	private boolean loadedInParent = false;
 
 	/**
 	 * Returns whether the bullet is loaded.
@@ -68,7 +68,9 @@ public class Bullet extends Entity {
 	 * @param  loadedInParent
 	 * 		 | The state of the ship (loaded is true and unloaded is false)
 	 */
-	void setLoadedInParent(boolean loadedInParent) {
+	void setLoadedInParent(boolean loadedInParent) throws NoParentException {
+		if (this.getParent() == null)
+			throw new NoParentException();
 		this.loadedInParent = loadedInParent;
 	}
 	
@@ -122,7 +124,8 @@ public class Bullet extends Entity {
 	public void hit(Ship ship) {
 		assert(ship != parent); //"Loaded bullets should be excluded from the collision engine.")
 		
-		parent.triggerScoreOn(ship); //does nothing for now (part 3?)
+		if (parent != null)
+			parent.triggerScoreOn(ship); //does nothing for now (part 3?)
 		ship.triggerHit();
 		terminate();
 	}

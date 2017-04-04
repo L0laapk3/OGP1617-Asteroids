@@ -440,7 +440,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Return the acceleration of <code>ship</code>.
 	 */
 	public double getShipAcceleration(Ship ship) {
-		return ship.getAcceleration().pythagoras();
+		return ship.getAccelerationVector().pythagoras();
 	}
 
 
@@ -787,18 +787,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 */
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
 		try {
-			Set<CollisionInformation> allCollisions = world.evolve(dt);
-			if (collisionListener == null)
-				return;
-			for (CollisionInformation collInfo : allCollisions) {
-				if (collInfo.isWallCollision()) {
-					Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition();
-					collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
-				} else {
-					Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity);
-					collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
-				}
-			}
+			world.evolve(dt, collisionListener);
 		} catch (EntitiesOverlapException ex) {
 			throw new ModelException(ex);
 		}

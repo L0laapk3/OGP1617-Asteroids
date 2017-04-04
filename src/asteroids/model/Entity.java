@@ -526,7 +526,9 @@ public abstract class Entity {
 		/**
 		 * variable to declare the acceleration of the given entity
 		 */		
-		private Vector2 acceleration = new Vector2(0,0);
+		private double acceleration = 0;
+		
+
 		
 		/**
 		 * returns the acceleration of this entity.
@@ -534,8 +536,17 @@ public abstract class Entity {
 		 */
 		@Basic 
 		@Raw
-		public Vector2 getAcceleration() {
+		public double getAcceleration() {
 			return acceleration;
+		}
+		
+		/**
+		 * returns the acceleration vector of this entity.
+		 * @return The acceleration vector of this entity.
+		 */
+		@Raw
+		public Vector2 getAccelerationVector() {
+			return new Vector2(Math.cos(this.getOrientation()) * acceleration, Math.sin(this.getOrientation()) * acceleration);
 		}
 		
 		/**
@@ -545,7 +556,7 @@ public abstract class Entity {
 		 * @post  The given acceleration becomes the new acceleration from this entity.
 		 * 		| new.getAcceleration = acceleration 
 		 */
-		public void setAcceleration(Vector2 acceleration) {
+		public void setAcceleration(double acceleration) {
 			this.acceleration = acceleration;
 		}
 		
@@ -581,7 +592,7 @@ public abstract class Entity {
 			//foute berekeningen die geen rekening houden met acceleratie..
 			
 			this.position = Vector2.add(this.position, Vector2.multiply(this.velocity, dt));	
-			this.setVelocity(Vector2.add(this.velocity, Vector2.multiply(this.getAcceleration(), dt)));
+			this.setVelocity(Vector2.add(this.velocity, Vector2.multiply(this.getAccelerationVector(), dt)));
 
 		}
 		
@@ -830,6 +841,11 @@ public abstract class Entity {
 			return -(vr + Math.sqrt(d)) / vv;	
 		}
 
+		
+		
+		
+		
+		
 
 		/**
 		 * Return the first position where <code>entity1</code> and <code>entity2</code>
@@ -844,6 +860,33 @@ public abstract class Entity {
 		 * 		   The first entity of the collision.
 		 * @param  entity2
 		 *         The second entity of the collision.
+		 * @effect getCollisionPosition(entity1, entity2, getTimeToCollision(entity1, entity2));
+		 * @return The position where the two entities will first touch.
+		 * @return If the entities never collide, this function will return null.
+		 * @throws NullPointerException
+		 * 		   entity1 or entity2 should not be null.
+		 * @throws EntitiesOverlapException
+		 * 		   The entities should not overlap already.
+		 */
+		
+		public static Vector2 getCollisionPosition(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
+			double Dt = getTimeToCollision(entity1, entity2); //will throw error if entities overlap as expected
+			return getCollisionPosition(entity1, entity2, Dt);
+		}
+		
+		
+		
+		
+
+		/**
+		 * Return the position where entity1 and entity2 will collide at time Dt.
+		 * 
+		 * @param  entity1
+		 * 		   The first entity of the collision.
+		 * @param  entity2
+		 *         The second entity of the collision.
+		 * @param  Dt
+		 * 		   Time of the collision.
 		 * @effect First, the program calculates when the two entities are going to collide.
 		 *         Then, the collision positions are calculated.
 		 *         Lastly, an imaginary line is drawn between the centers of the two entities,
@@ -853,24 +896,29 @@ public abstract class Entity {
 		 *       | entity1NewPos = entity2.position + entity2.velocity * dt
 		 *       | delta = entity2NewPos - entity1NewPos
 		 *       | result == entity1NewPos + delta * (entity1.radius / (entity1.radius + entity2.radius))
-		 * @return The position where the two entities will first touch. If the entities never collide, this function will return null.
+		 * @return The position where the two entities will first touch.
+		 * @return If the entities never collide, this function will return null.
 		 * @throws NullPointerException
 		 * 		   entity1 or entity2 should not be null.
 		 * @throws EntitiesOverlapException
 		 * 		   The entities should not overlap already.
 		 */
-		public static Vector2 getCollisionPosition(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
-			double dt = getTimeToCollision(entity1, entity2); //will throw error if entities overlap as expected
-			if (dt == Double.POSITIVE_INFINITY)
+		@Raw
+		static Vector2 getCollisionPosition(Entity entity1, Entity entity2, double Dt) {
+			//TODO: moet hier die 99% 101% shiet nie in?
+			if (Dt == Double.POSITIVE_INFINITY)
 				return null;
-			Vector2 entity1NewPos = Vector2.add(entity1.position, Vector2.multiply(entity1.velocity, dt));
-			Vector2 entity2NewPos = Vector2.add(entity2.position, Vector2.multiply(entity2.velocity, dt));
+			Vector2 entity1NewPos = Vector2.add(entity1.position, Vector2.multiply(entity1.velocity, Dt));
+			Vector2 entity2NewPos = Vector2.add(entity2.position, Vector2.multiply(entity2.velocity, Dt));
 			Vector2 delta = Vector2.subtract(entity2NewPos, entity1NewPos);
 			return Vector2.add(entity1NewPos, Vector2.multiply(delta, entity1.radius / (entity1.radius + entity2.radius)));
 		}
 		
 		
 		
+		
+		
+
 		/**
 		 * Gets the coordinates of the collision of the entity with a wall, if there is any.
 		 * @return The position of the collision with the wall if there is a collision with a wall.
@@ -878,6 +926,17 @@ public abstract class Entity {
 		 */
 		public Vector2 getWallCollisionPosition() {
 			double Dt = this.getTimeToWallCollision();
+			return getWallCollisionPosition(Dt);
+		}
+		
+
+		/**
+		 * Gets the coordinates of the collision of the entity with a wall at given time.
+		 * @return The position of the collision with the wall if there is a collision with a wall.
+		 * @return Null if there is no collision with a wall.
+		 */
+		@Raw
+		Vector2 getWallCollisionPosition(double Dt) {
 			Vector2 newpos = Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), Dt));
 			if ((newpos.x - 1.01 * this.radius) <= 0)
 				return new Vector2(0, newpos.y);
@@ -953,11 +1012,28 @@ public abstract class Entity {
 	}
 	
 	
-
-	public void collideWithWall() {
+	/**
+	 * Internal function that bounces the entity off a wall.
+	 * @post Changes the velocity when a ship bounces against the wall of the world.
+	 * @post 
+	 */
+	@Raw
+	void collideWithWall() {
 		if ((this.position.x - 1.01 * this.radius) <= 0 || (this.position.x + 1.01 * this.radius) >= this.getWorld().getWidth())
 			this.setPosition(new Vector2(-this.position.x, this.position.y));
 		if ((this.position.y - 1.01 * this.radius) <= 0 || (this.position.y + 1.01 * this.radius) >= this.getWorld().getHeight())
 			this.setPosition(new Vector2(this.position.x, -this.position.y));
+	}
+
+	/**
+	 * Applies acceleration to entity.
+	 * @param Dt
+	 * 		  For how much time acceleration needs to be applied to the entity.
+	 */
+	public void accelerate(double Dt) {
+		if (this.getAcceleration() == 0)
+			return; //optimalisation
+		//System.out.println(Vector2.multiply(this.getAccelerationVector(), Dt).x); //TODO: weg
+		this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), Dt)));
 	}
 }

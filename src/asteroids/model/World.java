@@ -8,6 +8,7 @@ import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.part2.CollisionListener;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -15,6 +16,7 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 //TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
+//TODO: OVERAL RAW????
 
 
 public class World {
@@ -515,6 +517,21 @@ public class World {
 	
 	
 	
+	/**
+	 * Moves and then accelerates all entities.
+	 * @param Dt
+	 * 		  Time to move and accelerate all entities with.
+	 * @param entitiesWithCollision
+	 * 		  All entities that need to be moved and accelerated (usually all entities with collision.)
+	 */
+	void doTime(double Dt, Set<Entity> entitiesWithCollision) {
+		for (Entity entity: entitiesWithCollision) {
+			entity.move(Dt);
+			entity.accelerate(Dt);
+		}
+	}
+	
+	
 	
 	
 	/**
@@ -523,28 +540,35 @@ public class World {
 	 * 		  The time to simulate the world for.
 	 * @post  Simulates the world for Dt seconds.
 	 */
-	public Set<CollisionInformation> evolve(Double Dt) throws EntitiesOverlapException {
+	public void evolve(Double Dt, CollisionListener collisionListener) throws EntitiesOverlapException {
 		//do not simulate collision physics for loaded bullets.
 		Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
-		Set<CollisionInformation> allCollisions = new HashSet<CollisionInformation>();
+		
+		//TODO: SOMS BLIJFT HIJ VASTZITTEN IN EEN LOOP, IK VERMOED DAT TIMETONEXTCOLLISION 0 IS HEEL DE TIJD OFZO?? DOOR AFRONDING
 		do {
 			CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
 
 			
 			
 			if (collInfo.timeToCollision < Dt) { //collision happens before end Dt
-				for (Entity entity: entitiesWithCollision)
-					entity.move(collInfo.timeToCollision);
+				doTime(collInfo.timeToCollision, entitiesWithCollision);
 				Dt -= collInfo.timeToCollision;
 				
-				if (collInfo.isWallCollision()) //wall collision
+				if (collInfo.isWallCollision()) { //wall collision
 					collInfo.firstEntity.collideWithWall();
-				else //entity collision
+					if (collisionListener != null) {
+						Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(collInfo.timeToCollision);
+						collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
+					}
+				} else { //entity collision
 					collideEntities(collInfo.firstEntity, collInfo.secondEntity);
-				allCollisions.add(collInfo);
+					if (collisionListener != null) {
+						Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision);
+						collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
+					}
+				}
 			} else {
-				for (Entity entity: entitiesWithCollision)
-					entity.move(Dt);
+				doTime(Dt, entitiesWithCollision);
 				Dt = (double)0;
 			}
 		} while (Dt > 0);
@@ -554,8 +578,6 @@ public class World {
 		for (Bullet loadedBullet : getAllLoadedBullets()) {
 			loadedBullet.setPosition(loadedBullet.getParent().getPosition());
 		}
-		
-		return allCollisions;
 	}
 	
 	
