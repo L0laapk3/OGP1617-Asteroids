@@ -7,6 +7,7 @@ import java.util.Set;
 import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.part2.CollisionListener;
 import asteroids.util.Vector2;
@@ -17,6 +18,8 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 //TODO: OVERAL RAW????
+//TODO: OVERAL THROWS KUUTT
+//TODO: Alle andere schepen vliegen precies in dezelfde richting bij het spawnen, als ze botsen hebben ze precies een oneindige massa, of anders is de botscode fout ofzo voor nieuwe snelheden
 
 
 public class World {
@@ -481,7 +484,7 @@ public class World {
 	//----------------Advancing time
 	
 	
-	public CollisionInformation getNextCollision(Set<Entity> entities) throws EntitiesOverlapException {
+	public CollisionInformation getNextCollision(Set<Entity> entities) throws EntitiesOverlapException, NoWorldException {
 		double earliestCollisionTime = Double.POSITIVE_INFINITY;
 		Entity collisionFirstEntity = null;
 		Entity collisionSecondEntity = null;
@@ -540,12 +543,12 @@ public class World {
 	 * 		  The time to simulate the world for.
 	 * @post  Simulates the world for Dt seconds.
 	 */
-	public void evolve(Double Dt, CollisionListener collisionListener) throws EntitiesOverlapException {
+	public void evolve(Double Dt, CollisionListener collisionListener) throws EntitiesOverlapException, NoWorldException {
 		//do not simulate collision physics for loaded bullets.
-		Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 		
 		//TODO: SOMS BLIJFT HIJ VASTZITTEN IN EEN LOOP, IK VERMOED DAT TIMETONEXTCOLLISION 0 IS HEEL DE TIJD OFZO?? DOOR AFRONDING
 		do {
+			Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 			CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
 
 			

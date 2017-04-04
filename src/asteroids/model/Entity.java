@@ -496,7 +496,7 @@ public abstract class Entity {
 		 * @post   The instance is terminated.
 		 * @post   If the entity is in a world, The entity is removed properly from the world first.
 		 */
-		public void terminate() {
+		public void terminate() throws IllegalEntityException {
 			if (this.getWorld() != null)
 				this.getWorld().removeEntity(this);
 			if (!isTerminated())
@@ -767,7 +767,9 @@ public abstract class Entity {
 		 * @return The time until the first collision. Returns positive infinity if the ship never collides with the border of the world.
 		 * 	     | 
 		 */
-		public double getTimeToWallCollision() {
+		public double getTimeToWallCollision() throws NoWorldException {
+			if (this.world == null)
+				throw new NoWorldException();
 			
 			//foute berekeningen die geen rekening hoduen met acceleratie
 			
@@ -860,7 +862,7 @@ public abstract class Entity {
 		 * 		   The first entity of the collision.
 		 * @param  entity2
 		 *         The second entity of the collision.
-		 * @effect getCollisionPosition(entity1, entity2, getTimeToCollision(entity1, entity2));
+		 * @effect getCollisionPosition(entity1, entity2, getTimeToCollision(entity1, entity2))
 		 * @return The position where the two entities will first touch.
 		 * @return If the entities never collide, this function will return null.
 		 * @throws NullPointerException
