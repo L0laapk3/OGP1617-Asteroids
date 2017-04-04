@@ -14,7 +14,7 @@ import asteroids.exceptions.UndefinedCollisionBehaviourException;
 
 
 /**
- * Helper class to define the behaviour between two entities.
+ * Helper class to define the behavior between two entities.
  */
 public class Collisions {
 	/**

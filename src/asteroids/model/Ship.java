@@ -1,6 +1,7 @@
 package asteroids.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import asteroids.exceptions.*;
@@ -49,8 +50,22 @@ public class Ship extends Entity {
 	 * @post  The given bullet will be added to the list with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullet) = true
 	 */
-	void loadBullet(Bullet bullet) {
+	public void loadBullet(Bullet bullet) {
 		loadedBullets.add(bullet);
+	}
+	
+	/**
+	 * function to load a bullet to this ship
+	 * @param A collection of bullets
+	 * 		  The collection of bullets that has to be loaded.
+	 * @post  The given bullets will be added to the list with loaded bullets from this ship.
+	 * 		| new.getLoadedBullets.contains(bullets) = true
+	 */
+	//TODO deze fuctie is nieuw aangemaakt om de dingen uit facade te kunnen maken
+	public void loadBullet(Collection<Bullet> bullets) {
+		for (Bullet bullet:bullets) {
+			loadedBullets.add(bullet);
+		}
 	}
 	
 	/**
@@ -60,7 +75,7 @@ public class Ship extends Entity {
 	 * @post  The given bullet will be removed to the list with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullet) = false
 	 */
-	void unloadBullet(Bullet bullet) {
+	public void unloadBullet(Bullet bullet) {
 		loadedBullets.remove(bullet);
 	}
 	
@@ -299,8 +314,6 @@ public class Ship extends Entity {
 			this.setAcceleration(new Vector2(0,0));
 			thrusterState = false;
 		}
-		
-		
 	} 
 
 	/**

@@ -779,6 +779,22 @@ public abstract class Entity {
 			return Math.min(xCollisionTime, yCollisionTime);
 		}
 		
+		/**
+		 * A function that calculates the entity's place after dt time.
+		 * @param  dt
+		 * 		   The time that the entity has to travel.
+		 * @return The position from the entity after dt time. If dt is equal to positive infinity the function returns null.
+		 */
+		public double[] getEntityPlaceAftherDtTime(double dt) {
+			if (dt == Double.POSITIVE_INFINITY) {
+				return null;
+			}
+			double x = this.getPosition().x+this.getVelocity().x*dt;
+			double y = this.getPosition().y+this.getVelocity().y*dt;
+			double place[] = {x, y};
+			return place;
+		}
+		
 		
 		/**
 		 * Return the number of seconds until the first collision between

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
 import asteroids.model.Bullet;
 import asteroids.model.Entity;
 import asteroids.model.Ship;
@@ -211,41 +213,6 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 		return ship.getRadius();
 	}
 	
-	
-	
-
-
-	
-	
-	
-	
-	
-
-	/**
-	 * Update <code>ship</code>'s position, assuming it moves <code>dt</code>
-	 * seconds at its current velocity.
-	 * 
-	 * @param  ship
-	 * 		   The ship that should move forward.
-	 * @param  dt
-	 * 		   The amount of time that the ship should move forward.
-	 * @effect Moves the ship forward in time by given amount.
-	 *       | ship.move(dt) 
-	 * @throws ModelException
-	 * 		   Ship parameter should not be null.
-	 * @throws ModelException
-	 * 		   If ship.move() throws an exception. See @effect
-	 * @note   This is written in a defensive manner.
-	 */
-	@Override
-	public void move(Ship ship, double dt) throws ModelException {
-		throwErrorIfInvalidShip(ship);
-		try {
-			ship.move(dt);
-		} catch (IllegalArgumentException ex) {
-			throw new ModelException(ex);
-		}
-	}
 
 	
 	/**
@@ -462,13 +429,15 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * of the parameter <code>active</code>.
 	 */
 	public void setThrusterActive(Ship ship, boolean active) {
-		ship.tr
+		ship.thrustOnOff(active);
 	}
 
 	/**
 	 * Return the acceleration of <code>ship</code>.
 	 */
-	public double getShipAcceleration(Ship ship) throws ModelException;
+	public double getShipAcceleration(Ship ship) {
+		return ship.getAcceleration().pythagoras();
+	}
 
 	/**
 	 * This method is deprecated; you should not implement nor use it.
@@ -494,39 +463,57 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * 
 	 * The bullet is not located in a world nor loaded on a ship.
 	 */
-	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException;
+	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException {
+		try {
+			Bullet bullet = new Bullet(x, y, xVelocity, yVelocity, radius, 0, null); //TODO ik heb 0 en null toegevoegd, mag dit?
+		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
+			throw new ModelException(ex);
+		}
+	}
 
 	/**
 	 * Terminate <code>bullet</code>.
 	 */
-	public void terminateBullet(Bullet bullet) throws ModelException;
+	public void terminateBullet(Bullet bullet) {
+		bullet.terminate();
+	}
 
 	/**
 	 * Check whether <code>bullet</code> is terminated.
 	 */
-	public boolean isTerminatedBullet(Bullet bullet) throws ModelException;
+	public boolean isTerminatedBullet(Bullet bullet) {
+		return bullet.isTerminated();
+	}
 
 	/**
 	 * Return the position of <code>ship</code> as an array containing the
 	 * x-coordinate, followed by the y-coordinate.
 	 */
-	public double[] getBulletPosition(Bullet bullet) throws ModelException;
+	public double[] getBulletPosition(Bullet bullet) {
+		return bullet.getPosition().toArray();
+	}
 
 	/**
 	 * Return the velocity of <code>ship</code> as an array containing the
 	 * velocity along the X-axis, followed by the velocity along the Y-axis.
 	 */
-	public double[] getBulletVelocity(Bullet bullet) throws ModelException;
+	public double[] getBulletVelocity(Bullet bullet) {
+		return bullet.getVelocity().toArray();
+	}
 
 	/**
 	 * Return the radius of <code>bullet</code>.
 	 */
-	public double getBulletRadius(Bullet bullet) throws ModelException;
+	public double getBulletRadius(Bullet bullet) {
+		return bullet.getRadius();
+	}
 
 	/**
 	 * Return the mass of <code>bullet</code>.
 	 */
-	public double getBulletMass(Bullet bullet) throws ModelException;
+	public double getBulletMass(Bullet bullet) {
+		return bullet.getMass();
+	}
 
 	/**
 	 * Return the world in which <code>bullet</code> is positioned.
@@ -534,19 +521,29 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * This method must return null if a bullet is not positioned in a world, or
 	 * if it is positioned on a ship.
 	 */
-	public World getBulletWorld(Bullet bullet) throws ModelException;
+	public World getBulletWorld(Bullet bullet) {
+		return bullet.getWorld();
+	}
 
 	/**
 	 * Return the ship in which <code>bullet</code> is positioned.
 	 * 
 	 * This method must return null if a bullet is not positioned on a ship.
 	 */
-	public Ship getBulletShip(Bullet bullet) throws ModelException;
+	public Ship getBulletShip(Bullet bullet) {	//TODO mag deze logica? anders moeten we nieuwe variabelen maken in onze classes
+		if (bullet.isLoadedInParent()) {
+			return bullet.getParent();
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Return the ship that fired <code>bullet</code>.
 	 */
-	public Ship getBulletSource(Bullet bullet) throws ModelException;
+	public Ship getBulletSource(Bullet bullet) {  //TODO moet deze null geven als het op het schip is?
+		return bullet.getParent();
+	}
 
 
 	/**************
@@ -557,23 +554,32 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Create a new world with the given <code>width</code> and
 	 * <code>height</code>.
 	 */
-	public World createWorld(double width, double height) throws ModelException;
+	public World createWorld(double width, double height) {
+		World world = new World(width, height);
+	}
 
 	/**
 	 * Terminate <code>world</code>.
 	 */
-	public void terminateWorld(World world) throws ModelException;
+	public void terminateWorld(World world) {
+		world.terminate();
+	}
 
 	/**
 	 * Check whether <code>world</code> is terminated.
 	 */
-	public boolean isTerminatedWorld(World world) throws ModelException;
+	public boolean isTerminatedWorld(World world) {
+		return world.isTerminated();
+	}
 
 	/**
 	 * Return the size of <code>world</code> as an array containing the width,
 	 * followed by the height.
 	 */
-	public double[] getWorldSize(World world) throws ModelException;
+	public double[] getWorldSize(World world) {
+		double size[] = {world.getHeight(), world.getWidth()};
+		return size;
+	}
 
 	/**
 	 * Return all ships located within <code>world</code>.
@@ -588,22 +594,30 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	/**
 	 * Add <code>ship</code> to <code>world</code>.
 	 */
-	public void addShipToWorld(World world, Ship ship) throws ModelException;
+	public void addShipToWorld(World world, Ship ship) {
+		ship.setWorld(world);
+	}
 
 	/**
 	 * Remove <code>ship</code> from <code>world</code>.
 	 */
-	public void removeShipFromWorld(World world, Ship ship) throws ModelException;
+	public void removeShipFromWorld(World world, Ship ship) {
+		ship.setWorld(null);
+	}
 
 	/**
 	 * Add <code>bullet</code> to <code>world</code>.
 	 */
-	public void addBulletToWorld(World world, Bullet bullet) throws ModelException;
+	public void addBulletToWorld(World world, Bullet bullet) {
+		bullet.setWorld(world);
+	}
 
 	/**
 	 * Remove <code>ship</code> from <code>world</code>.
 	 */
-	public void removeBulletFromWorld(World world, Bullet bullet) throws ModelException;
+	public void removeBulletFromWorld(World world, Bullet bullet) {
+		bullet.setWorld(null);
+	}
 
 	
 	/**************
@@ -620,29 +634,39 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	/**
 	 * Return the number of bullets loaded on <code>ship</code>.
 	 */
-	public int getNbBulletsOnShip(Ship ship) throws ModelException;
+	public int getNbBulletsOnShip(Ship ship) {
+		return ship.getLoadedBullets().size();
+	}
 
 	/**
 	 * Load <code>bullet</code> on <code>ship</code>.
 	 */
-	public void loadBulletOnShip(Ship ship, Bullet bullet) throws ModelException;
+	public void loadBulletOnShip(Ship ship, Bullet bullet) {
+		ship.loadBullet(bullet); 			//TODO ik heb hiervoor loadbullet van niks naar public gezet
+	}
 
 	/**
 	 * Load <code>bullet</code> on <code>ship</code>.
 	 * 
 	 * For students working alone, this method must not do anything.
 	 */
-	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) throws ModelException;
+	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) {
+		ship.loadBullet(bullets);
+	}
 
 	/**
 	 * Remove <code>ship</code> from <code>ship</code>.
 	 */
-	public void removeBulletFromShip(Ship ship, Bullet bullet) throws ModelException;
+	public void removeBulletFromShip(Ship ship, Bullet bullet) throws ModelException {
+		ship.unloadBullet(bullet);  		//TODO ik heb de functie hier ook naar public gezet
+	}
 
 	/**
 	 * <code>ship</code> fires a bullet.
 	 */
-	public void fireBullet(Ship ship) throws ModelException;
+	public void fireBullet(Ship ship) {
+		ship.shootBullet(ship.getLoadedBullets().get(0));
+	}
 	
 
 	/******************
@@ -653,25 +677,41 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Return the shortest time in which the given entity will collide with the
 	 * boundaries of its world.
 	 */
-	public double getTimeCollisionBoundary(Object object) throws ModelException;
+	public double getTimeCollisionBoundary(Object object) {
+		return ((Entity)object).getTimeToWallCollision();
+	}
 
 	/**
 	 * Return the first position at which the given entity will collide with the
 	 * boundaries of its world.
 	 */
-	public double[] getPositionCollisionBoundary(Object object) throws ModelException;
+	public double[] getPositionCollisionBoundary(Object object) {
+		return ((Entity)object).getEntityPlaceAftherDtTime(((Entity)object).getTimeToWallCollision());		//TODO nieuw gemaakte functie nakijken
+	}
 
 	/**
 	 * Return the shortest time in which the first entity will collide with the
 	 * second entity.
 	 */
-	public double getTimeCollisionEntity(Object entity1, Object entity2) throws ModelException;
+	public double getTimeCollisionEntity(Object entity1, Object entity2) throws ModelException {
+		try{
+			Entity.getTimeToCollision((Entity)entity1, (Entity)entity2);
+		} catch (NullPointerException | EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
+	}
 
 	/**
 	 * Return the first position at which the first entity will collide with the
 	 * second entity.
 	 */
-	public double[] getPositionCollisionEntity(Object entity1, Object entity2) throws ModelException;
+	public double[] getPositionCollisionEntity(Object entity1, Object entity2) throws ModelException {
+		try {
+			Entity.getCollisionPosition((Entity)entity1, (Entity)entity2);
+		} catch (NullPointerException | EntitiesOverlapException ex) {
+			throw new ModelException(ex);			
+		}
+	}
 
 	/**
 	 * Return the time that must pass before a boundary collision or an entity
@@ -702,7 +742,10 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Return the entity at the given <code>position</code> in the given
 	 * <code>world</code>.
 	 */
-	public Object getEntityAt(World world, double x, double y) throws ModelException;
+	public Object getEntityAt(World world, double x, double y) {
+		Vector2 place = new Vector2 (x,y);
+		return world.getEntityFromPosition(place);
+	}
 
 	/**
 	 * Return a set of all the entities in the given world.

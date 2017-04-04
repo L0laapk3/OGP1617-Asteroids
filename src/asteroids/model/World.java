@@ -380,10 +380,11 @@ public class World {
 	 * Gets entity from given position in world.
 	 * @param  position
 	 * 		   The position to scan for entities.
-	 * @return The entities on given position if there is an entity on that position.
+	 * @return The entity on the given position if there is an entity on that position. If there are more entities and there is a ship there it will
+	 * 		   return the ship, if there are only bullets it will return the first bullet.
 	 * @return null if no entity is found.
 	 */
-	public List<Entity> getEntityFromPosition(Vector2 position) {									
+	public Entity getEntityFromPosition(Vector2 position) {									
 		if (!isValidHeight(position.y) || !isValidWidth(position.x))
 			return null;
 		List<Entity> entitiesFound = new ArrayList<Entity>();
@@ -393,8 +394,15 @@ public class World {
 		if (entitiesFound.isEmpty()){
 			return null;
 		} else {
-			return entitiesFound;
+			for (Entity entity: entitiesFound){
+				if (entity instanceof Entity) {
+					return entity;
+				} else {
+					return entitiesFound.get(0);
+				}
+			}
 		}
+		return null;
 	}
 	
 	
