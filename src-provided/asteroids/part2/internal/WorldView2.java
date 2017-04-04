@@ -322,9 +322,9 @@ public class WorldView2<F extends IFacade> extends JPanel implements KeyListener
 			boolean secondCheck = ships.contains(ship);
 			
 			//TODO zelf geschreven => ships is leeg
-			System.out.println(Boolean.toString(firstCheck));
-			System.out.println(Boolean.toString(secondCheck));
-			System.out.println(ships);
+			System.out.println(Boolean.toString(firstCheck));   //TODO: WEG
+			System.out.println(Boolean.toString(secondCheck));  //TODO: WEG
+			System.out.println(ships);  						//TODO: WEG
 			
 			return ships != null && ships.contains(ship);
 			

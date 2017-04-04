@@ -1031,9 +1031,11 @@ public abstract class Entity {
 	 * 		  For how much time acceleration needs to be applied to the entity.
 	 */
 	public void accelerate(double Dt) {
+		
+		//TODO: ACCELERATIE WERKT NIET, ERGENS....
 		if (this.getAcceleration() == 0)
 			return; //optimalisation
-		//System.out.println(Vector2.multiply(this.getAccelerationVector(), Dt).x); //TODO: weg
+		System.out.println(this.getAccelerationVector().x); //TODO: weg
 		this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), Dt)));
 	}
 }

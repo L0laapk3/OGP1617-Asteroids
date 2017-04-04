@@ -592,14 +592,14 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 		//TODO dit heb ik ook veranderd om te testen
 		
 		System.out.println(world.getAllShips());
-		return world.getAllShips(); //TODO: oftewel convert, oftewel in world alles veranderen
+		return world.getAllShips();
 	}
 
 	/**
 	 * Return all bullets located in <code>world</code>.
 	 */
 	public Set<Bullet> getWorldBullets(World world) throws ModelException {
-		return world.getAllBullets(); //TODO: zelfde als hierboven
+		return world.getAllBullets();
 	}
 
 	/**
@@ -657,7 +657,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * For students working alone, this method may return null.
 	 */
 	public Set<Bullet> getBulletsOnShip(Ship ship) throws ModelException {
-		return ship.getLoadedBullets(); //TODO: zelfde als hier boven goven goven
+		return ship.getLoadedBullets();
 	}
 
 	/**
@@ -715,7 +715,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * boundaries of its world.
 	 */
 	public double[] getPositionCollisionBoundary(Object object) {
-		return ((Entity)object).getWallCollisionPosition().toProfNotation();		//TODO nieuw gemaakte functie nakijken
+		return ((Entity)object).getWallCollisionPosition().toProfNotation();
 	}
 
 	/**
@@ -806,7 +806,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Return a set of all the entities in the given world.
 	 */
 	public Set<Entity> getEntities(World world) throws ModelException {
-		return world.getAllEntities(); //TODO zelfde als heir boven boven boven
+		return world.getAllEntities();
 	}
 
 }
