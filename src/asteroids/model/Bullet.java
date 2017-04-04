@@ -26,7 +26,7 @@ public class Bullet extends Entity {
 	/**
 	 * Variable holding the parent from the bullet.
 	 */
-	private final Ship parent;
+	private Ship parent;
 	
 	/**
 	 * Returns the ship that originally shot this bullet.
@@ -36,6 +36,15 @@ public class Bullet extends Entity {
 	@Raw
 	public Ship getParent() {
 		return this.parent;
+	}
+	
+	/**
+	 * Sets the ship that this bullet belongs to.
+	 */
+	@Basic
+	@Raw
+	void setParent(Ship parent) {
+		this.parent = parent;
 	}
 	
 	/**
@@ -62,13 +71,9 @@ public class Bullet extends Entity {
 	void setLoadedInParent(boolean loadedInParent) {
 		this.loadedInParent = loadedInParent;
 	}
-		
-	public void load() {
-		if (this.parent == null)
-			throw new InvalidParentShipException();
-		this.parent.loadBullet(this);
-		this.loadedInParent = true;
-	}
+	
+	
+	
 	
 	
 	/**

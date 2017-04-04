@@ -45,14 +45,21 @@ public class Ship extends Entity {
 	
 	/**
 	 * function to load a bullet to this ship
-	 * @param bullet
-	 * 		  The bullet that has to be loaded.
-	 * @post  The given bullet will be added to the Set with loaded bullets from this ship.
-	 * 		| new.getLoadedBullets.contains(bullet) = true
+	 * @param  bullet
+	 * 		   The bullet that has to be loaded.
+	 * @post   The given bullet will be added to the Set with loaded bullets from this ship.
+	 * 		 | new.getLoadedBullets.contains(bullet) = true
+	 * @throws NullPointerException
+	 * 		   bullet must not be null.
 	 */
-	public void loadBullet(Bullet bullet) {
+	public void loadBullet(Bullet bullet) throws NullPointerException {
 		//TODO: defensive, normaal, total (DESTRUCTION) ??????????
+
+		if (bullet == null)
+			throw new NullPointerException();
+		bullet.setParent(this);
 		loadedBullets.add(bullet);
+		bullet.setLoadedInParent(true);
 	}
 	
 	/**
@@ -63,19 +70,25 @@ public class Ship extends Entity {
 	 * 		| new.getLoadedBullets.contains(bullets) = true
 	 */
 	public void loadBullet(Collection<Bullet> bullets) {
-		for (Bullet bullet:bullets) {
-			loadedBullets.add(bullet);
+		for (Bullet bullet : bullets) {
+			this.loadBullet(bullet);
 		}
 	}
 	
 	/**
 	 * function to unload a bullet to this ship
-	 * @param bullet
-	 * 		  The bullet that has to be unloaded.
-	 * @post  The given bullet will be removed to the Set with loaded bullets from this ship.
-	 * 		| new.getLoadedBullets.contains(bullet) = false
+	 * @param  bullet
+	 * 		   The bullet that has to be unloaded.
+	 * @post   The given bullet will be removed to the Set with loaded bullets from this ship.
+	 * 		 | new.getLoadedBullets.contains(bullet) = false
+	 * @throws NullPointerException
+	 * 		   bullet must not be null.
 	 */
-	public void unloadBullet(Bullet bullet) {
+	public void unloadBullet(Bullet bullet) throws NullPointerException {
+		if (bullet == null)
+			throw new NullPointerException();
+		bullet.setParent(null);
+		bullet.setLoadedInParent(false);
 		loadedBullets.remove(bullet);
 	}
 	
@@ -94,7 +107,7 @@ public class Ship extends Entity {
 	 * @return false if there is no bullet loaded in the ship.
 	 * @return true if it successfully shot a bullet from the ship.
 	 */
-	public boolean shootBullet() {
+	public boolean shootBullet() throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		if (!hasBullet())
 			return false;
 		shootBullet(loadedBullets.iterator().next()); //gets one (pseudo)random bullet

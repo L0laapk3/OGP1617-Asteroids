@@ -14,7 +14,7 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 
 //TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+//TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 
 
 public class World {
@@ -551,8 +551,9 @@ public class World {
 		
 		
 		//set loaded bullets' location to their parent.
-		for (Bullet loadedBullet : getAllLoadedBullets())
+		for (Bullet loadedBullet : getAllLoadedBullets()) {
 			loadedBullet.setPosition(loadedBullet.getParent().getPosition());
+		}
 		
 		return allCollisions;
 	}
