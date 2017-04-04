@@ -7,6 +7,7 @@ import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.model.Bullet;
+import asteroids.model.CollisionInformation;
 import asteroids.model.Entity;
 import asteroids.model.Ship;
 import asteroids.model.World;
@@ -113,7 +114,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	public Ship createShip(double x, double y, double xVelocity, double yVelocity, double radius, double orientation) throws ModelException {
 		try {
 			return new Ship(x, y, xVelocity, yVelocity, radius, orientation);
-		} catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -121,8 +122,8 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	@Override
 	public Ship createShip(double x, double y, double xVelocity, double yVelocity, double radius, double direction, double mass) throws ModelException {
 		try {
-			return new Ship(x, y, xVelocity, yVelocity, radius, direction, mass);;
-		} catch (IllegalArgumentException ex) {
+			return new Ship(x, y, xVelocity, yVelocity, radius, direction, mass);
+		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -143,7 +144,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	@Override
 	public double[] getShipPosition(Ship ship) throws ModelException {
 		throwErrorIfInvalidShip(ship);
-		return ship.getPosition().toArray();
+		return ship.getPosition().toProfNotation();
 	}
 
 	
@@ -170,7 +171,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	public double[] getShipVelocity(Ship ship) {
 		if(isInvalidShip(ship))
 			return null;
-		return ship.getVelocity().toArray();
+		return ship.getVelocity().toProfNotation();
 	}
 
 	
@@ -379,7 +380,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 			Vector2 collisionPosition = Ship.getCollisionPosition(ship1, ship2);
 			if (collisionPosition == null)
 				return null;
-			return collisionPosition.toArray();
+			return collisionPosition.toProfNotation();
 		} catch (IllegalArgumentException | EntitiesOverlapException ex) {
 			throw new ModelException(ex);
 		}
@@ -439,19 +440,19 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 		return ship.getAcceleration().pythagoras();
 	}
 
-	/**
-	 * This method is deprecated; you should not implement nor use it.
-	 * 
-	 * 
-	 * @deprecated Since part 2 of the project. This behavior is now triggered
-	 *             through the {@link #evolve(World, double, CollisionListener)}
-	 *             method.
-	 */
-	@Override
-	@Deprecated
-	default void move(Ship ship, double dt) throws ModelException {
-		// do nothing; this behaviour is now triggered by the evolve method.
-	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**************
 	 * BULLET: Basic methods
@@ -465,7 +466,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 */
 	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException {
 		try {
-			Bullet bullet = new Bullet(x, y, xVelocity, yVelocity, radius, 0, null); //TODO ik heb 0 en null toegevoegd, mag dit?
+			return new Bullet(x, y, xVelocity, yVelocity, radius, 0, null); //sgoed
 		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
 			throw new ModelException(ex);
 		}
@@ -490,7 +491,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * x-coordinate, followed by the y-coordinate.
 	 */
 	public double[] getBulletPosition(Bullet bullet) {
-		return bullet.getPosition().toArray();
+		return bullet.getPosition().toProfNotation();
 	}
 
 	/**
@@ -498,7 +499,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * velocity along the X-axis, followed by the velocity along the Y-axis.
 	 */
 	public double[] getBulletVelocity(Bullet bullet) {
-		return bullet.getVelocity().toArray();
+		return bullet.getVelocity().toProfNotation();
 	}
 
 	/**
@@ -555,7 +556,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * <code>height</code>.
 	 */
 	public World createWorld(double width, double height) {
-		World world = new World(width, height);
+		return new World(width, height);
 	}
 
 	/**
@@ -584,12 +585,16 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	/**
 	 * Return all ships located within <code>world</code>.
 	 */
-	public Set<? extends Ship> getWorldShips(World world) throws ModelException;
+	public Set<Ship> getWorldShips(World world) throws ModelException {
+		return world.getAllShips(); //TODO: oftewel convert, oftewel in world alles veranderen
+	}
 
 	/**
 	 * Return all bullets located in <code>world</code>.
 	 */
-	public Set<? extends Bullet> getWorldBullets(World world) throws ModelException;
+	public Set<Bullet> getWorldBullets(World world) throws ModelException {
+		return world.getAllBullets(); //TODO: zelfde als hierboven
+	}
 
 	/**
 	 * Add <code>ship</code> to <code>world</code>.
@@ -629,7 +634,9 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * 
 	 * For students working alone, this method may return null.
 	 */
-	public Set<? extends Bullet> getBulletsOnShip(Ship ship) throws ModelException;
+	public Set<Bullet> getBulletsOnShip(Ship ship) throws ModelException {
+		return ship.getLoadedBullets(); //TODO: zelfde als hier boven goven goven
+	}
 
 	/**
 	 * Return the number of bullets loaded on <code>ship</code>.
@@ -695,7 +702,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 */
 	public double getTimeCollisionEntity(Object entity1, Object entity2) throws ModelException {
 		try{
-			Entity.getTimeToCollision((Entity)entity1, (Entity)entity2);
+			return Entity.getTimeToCollision((Entity)entity1, (Entity)entity2);
 		} catch (NullPointerException | EntitiesOverlapException ex) {
 			throw new ModelException(ex);
 		}
@@ -707,7 +714,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 */
 	public double[] getPositionCollisionEntity(Object entity1, Object entity2) throws ModelException {
 		try {
-			Entity.getCollisionPosition((Entity)entity1, (Entity)entity2);
+			return (Entity.getCollisionPosition((Entity)entity1, (Entity)entity2)).toProfNotation();
 		} catch (NullPointerException | EntitiesOverlapException ex) {
 			throw new ModelException(ex);			
 		}
@@ -718,14 +725,34 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * collision will take place in the given world. Positive Infinity is
 	 * returned if no collision will occur.
 	 */
-	public double getTimeNextCollision(World world) throws ModelException;
+	public double getTimeNextCollision(World world) throws ModelException {
+		try {
+			return world.getNextCollision(world.getAllEntitiesWithCollision()).timeToCollision;
+		} catch (EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
+	}
 
 	/**
 	 * Return the position of the first boundary collision or entity collision
 	 * that will take place in the given world. Null is returned if no collision
 	 * will occur.
 	 */
-	public double[] getPositionNextCollision(World world) throws ModelException;
+	public double[] getPositionNextCollision(World world) throws ModelException {
+		CollisionInformation collInfo;
+		try {
+			collInfo = world.getNextCollision(world.getAllEntitiesWithCollision());
+			if (Double.isInfinite(collInfo.timeToCollision))
+				return null;
+			if (collInfo.isWallCollision())
+				return collInfo.firstEntity.getWallCollisionPosition().toProfNotation();
+			else
+				return Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity).toProfNotation();
+		} catch (EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
+		
+	}
 
 	/**
 	 * Advance <code>world</code> by <code>dt<code> seconds. 
@@ -736,20 +763,24 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * <code>collisionListener</code> is <code>null</code>, do not call its
 	 * notify methods.
 	 */
-	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException;
+	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
+		
+	}
 
 	/**
 	 * Return the entity at the given <code>position</code> in the given
 	 * <code>world</code>.
 	 */
 	public Object getEntityAt(World world, double x, double y) {
-		Vector2 place = new Vector2 (x,y);
+		Vector2 place = new Vector2(x, y);
 		return world.getEntityFromPosition(place);
 	}
 
 	/**
 	 * Return a set of all the entities in the given world.
 	 */
-	public Set<? extends Object> getEntities(World world) throws ModelException;
+	public Set<Entity> getEntities(World world) throws ModelException {
+		return world.getAllEntities(); //TODO zelfde als heir boven boven boven
+	}
 
 }

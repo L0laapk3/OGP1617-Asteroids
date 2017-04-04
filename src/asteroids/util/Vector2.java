@@ -155,7 +155,7 @@ public class Vector2 {
 	 * 
 	 * @return array of 2 doubles with values {x, y}
 	 */
-	public double[] toArray() {
+	public double[] toProfNotation() {
 		return new double[] {this.x, this.y};
 	}
 	

@@ -877,6 +877,25 @@ public abstract class Entity {
 			Vector2 delta = Vector2.subtract(entity2NewPos, entity1NewPos);
 			return Vector2.add(entity1NewPos, Vector2.multiply(delta, entity1.radius / (entity1.radius + entity2.radius)));
 		}
+		
+		
+		
+		/**
+		 * Gets the coordinates of the collision of the entity with a wall, if there is any.
+		 * @return The position of the collision with the wall if there is a collision with a wall.
+		 * @return Null if there is no collision with a wall.
+		 */
+		public Vector2 getWallCollisionPosition() {
+			if ((this.position.x - 1.01 * this.radius) <= 0)
+				return new Vector2(0, this.position.y);
+			if((this.position.x + 1.01 * this.radius) >= this.getWorld().getWidth())
+				return new Vector2(this.getWorld().getWidth(), this.position.y);
+			if ((this.position.y - 1.01 * this.radius) <= 0)
+				return new Vector2(this.position.x, 0);
+			if ((this.position.y + 1.01 * this.radius) >= this.getWorld().getHeight())
+				return new Vector2(this.position.x, this.getWorld().getHeight());
+			return null;
+		}
 
 
 	

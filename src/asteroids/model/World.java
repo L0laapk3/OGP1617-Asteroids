@@ -478,6 +478,39 @@ public class World {
 	//----------------Advancing time
 	
 	
+	public CollisionInformation getNextCollision(List<Entity> entities) throws EntitiesOverlapException {
+		double earliestCollisionTime = Double.POSITIVE_INFINITY;
+		Entity collisionFirstEntity = null;
+		Entity collisionSecondEntity = null;
+		//if firstentity is not null but secondentity is, there is a wall collision
+		
+		for (int i = 0; i < entities.size(); i++) {
+			
+			
+			//detect wall collisions
+			double collisionTime = entities.get(i).getTimeToWallCollision();
+			if (earliestCollisionTime > collisionTime) {
+				earliestCollisionTime  = collisionTime;
+				collisionFirstEntity = entities.get(i);
+				collisionSecondEntity = null;
+			}
+			for(int j = i + 1; j < entities.size(); j++) {
+				//detect entity collisions
+				double collisionTime1 = Entity.getTimeToCollision(entities.get(i), entities.get(j));
+				if (earliestCollisionTime > collisionTime1) {
+					earliestCollisionTime = collisionTime1;
+					collisionFirstEntity = entities.get(i);
+					collisionSecondEntity = entities.get(j);
+				}
+			}
+		}
+		
+		
+		return new CollisionInformation(collisionFirstEntity, collisionSecondEntity, earliestCollisionTime);
+	}
+	
+	
+	
 	
 	
 	/**
@@ -486,56 +519,28 @@ public class World {
 	 * 		  The time to simulate the world for.
 	 * @post  Simulates the world for Dt seconds.
 	 */
-	public void evolve(Double Dt) {
+	public void evolve(Double Dt) throws EntitiesOverlapException {
+		//do not simulate collision physics for loaded bullets.
+		List<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 		do {
-			//do not simulate collision physics for loaded bullets.
-			List<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
-			
-			double earliestCollisionTime = Double.POSITIVE_INFINITY;
-			Entity collisionFirstEntity = null;
-			Entity collisionSecondEntity = null;
-			
-			//if firstentity is not null but secondentity is, there is a wall collision
-			try {
-				for (int i = 0; i < entitiesWithCollision.size(); i++) {
-					
-					
-					//detect wall collisions
-					double collisionTime = entitiesWithCollision.get(i).getTimeToWallCollision();
-					if (earliestCollisionTime > collisionTime) {
-						earliestCollisionTime  = collisionTime;
-						collisionFirstEntity = entitiesWithCollision.get(i);
-						collisionSecondEntity = null;
-					}
-					for(int j = i + 1; j < entitiesWithCollision.size(); j++) {
-						//detect entity collisions
-						double collisionTime1 = Entity.getTimeToCollision(entitiesWithCollision.get(i), entitiesWithCollision.get(j));
-						if (earliestCollisionTime > collisionTime1) {
-							earliestCollisionTime = collisionTime1;
-							collisionFirstEntity = entitiesWithCollision.get(i);
-							collisionSecondEntity = entitiesWithCollision.get(j);
-						}
-					}
-				}
-			} catch (EntitiesOverlapException ex) { //should never happen, this should always get caught on adding the entities to the world instead of now.
-				throw new RuntimeException(ex); //FATAL ERROR
-				//TODO: opt einde zie ofda dees klopt
-			}
+			CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
+
 			
 			
-			if (earliestCollisionTime < Dt) { //collision happens before end Dt
+			if (collInfo.timeToCollision < Dt) { //collision happens before end Dt
 				for (Entity entity: entitiesWithCollision)
-					entity.move(earliestCollisionTime);
-				Dt -= earliestCollisionTime;
+					entity.move(collInfo.timeToCollision);
+				Dt -= collInfo.timeToCollision;
 				
-				if (collisionSecondEntity == null) //wall collision
-					collisionFirstEntity.collideWithWall();
+				if (collInfo.isWallCollision()) //wall collision
+					collInfo.firstEntity.collideWithWall();
 				else //entity collision
-					collideEntities(collisionFirstEntity, collisionSecondEntity);
-			} else
+					collideEntities(collInfo.firstEntity, collInfo.secondEntity);
+			} else {
 				for (Entity entity: entitiesWithCollision)
 					entity.move(Dt);
 				Dt = (double)0;
+			}
 		} while (Dt > 0);
 		
 		
