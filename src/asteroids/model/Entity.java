@@ -789,7 +789,11 @@ public abstract class Entity {
 			else
 				yCollisionTime = (position.y + this.radius) / velocity.y;
 			
-			return Math.min(xCollisionTime, yCollisionTime);
+			double Dt = Math.min(xCollisionTime, yCollisionTime);
+			if (Dt <= 0)
+				return Double.POSITIVE_INFINITY; //already collided
+			else
+				return Dt;
 		}
 		
 		
@@ -840,7 +844,11 @@ public abstract class Entity {
 			double d = vr*vr - vv*(rr - sigma*sigma);
 			if (d <= 0)
 				return Double.POSITIVE_INFINITY;
-			return -(vr + Math.sqrt(d)) / vv;	
+			double Dt = -(vr + Math.sqrt(d)) / vv;
+			if (Dt <= 0)
+				return Double.POSITIVE_INFINITY; //already collided
+			else
+				return Dt;
 		}
 
 		
@@ -872,8 +880,7 @@ public abstract class Entity {
 		 */
 		
 		public static Vector2 getCollisionPosition(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
-			double Dt = getTimeToCollision(entity1, entity2); //will throw error if entities overlap as expected
-			return getCollisionPosition(entity1, entity2, Dt);
+			return getCollisionPosition(entity1, entity2, getTimeToCollision(entity1, entity2));
 		}
 		
 		
@@ -927,8 +934,7 @@ public abstract class Entity {
 		 * @return Null if there is no collision with a wall.
 		 */
 		public Vector2 getWallCollisionPosition() {
-			double Dt = this.getTimeToWallCollision();
-			return getWallCollisionPosition(Dt);
+			return getWallCollisionPosition(this.getTimeToWallCollision());
 		}
 		
 
