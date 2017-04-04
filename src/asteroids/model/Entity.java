@@ -250,7 +250,7 @@ public abstract class Entity {
 		 * Variable that holds the minimum radius from a ship
 		 */
 		
-		private static double MIN_RADIUS;
+		private double MIN_RADIUS = 0;
 		
 		
 		/**
@@ -297,7 +297,7 @@ public abstract class Entity {
 				throw new InvalidRadiusException("Minimum radius is invalid");
 			}
 			
-			if (MIN_RADIUS <= this.getRadius())
+			if (MIN_RADIUS > this.getRadius())
 				throw new InvalidRadiusException();
 		}
 		
@@ -779,21 +779,12 @@ public abstract class Entity {
 			return Math.min(xCollisionTime, yCollisionTime);
 		}
 		
-		/**
-		 * A function that calculates the entity's place after dt time.
-		 * @param  dt
-		 * 		   The time that the entity has to travel.
-		 * @return The position from the entity after dt time. If dt is equal to positive infinity the function returns null.
-		 */
-		public double[] getEntityPlaceAftherDtTime(double dt) {
-			if (dt == Double.POSITIVE_INFINITY) {
-				return null;
-			}
-			double x = this.getPosition().x+this.getVelocity().x*dt;
-			double y = this.getPosition().y+this.getVelocity().y*dt;
-			double place[] = {x, y};
-			return place;
-		}
+		
+		
+		
+		
+		
+		
 		
 		
 		/**

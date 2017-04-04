@@ -51,6 +51,7 @@ public class Ship extends Entity {
 	 * 		| new.getLoadedBullets.contains(bullet) = true
 	 */
 	public void loadBullet(Bullet bullet) {
+		//TODO: defensive, normaal, total (DESTRUCTION) ??????????
 		loadedBullets.add(bullet);
 	}
 	
@@ -61,7 +62,6 @@ public class Ship extends Entity {
 	 * @post  The given bullets will be added to the Set with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullets) = true
 	 */
-	//TODO deze fuctie is nieuw aangemaakt om de dingen uit facade te kunnen maken
 	public void loadBullet(Collection<Bullet> bullets) {
 		for (Bullet bullet:bullets) {
 			loadedBullets.add(bullet);
@@ -226,6 +226,10 @@ public class Ship extends Entity {
 	 * 		 | else
 	 * 		 |	  new.getRho=1.42*10^12
 	 */
+	
+	
+	
+	//createShip(width / 2., height / 2., 1, 6, 40, 0, 3e17);
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double rho) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, orientation);
 		this.setMinRadius(MIN_RADIUS_SHIP);
@@ -236,12 +240,6 @@ public class Ship extends Entity {
 		} else {
 			setRho(1.42*Math.pow(10, 12));
 		}
-		
-		
-		
-		//DEFENSIVE
-		if (radius < MIN_RADIUS_SHIP)
-			throw new InvalidRadiusException();
 		
 	}
 	

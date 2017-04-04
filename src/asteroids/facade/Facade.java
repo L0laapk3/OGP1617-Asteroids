@@ -531,7 +531,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * 
 	 * This method must return null if a bullet is not positioned on a ship.
 	 */
-	public Ship getBulletShip(Bullet bullet) {	//TODO mag deze logica? anders moeten we nieuwe variabelen maken in onze classes
+	public Ship getBulletShip(Bullet bullet) {
 		if (bullet.isLoadedInParent()) {
 			return bullet.getParent();
 		} else {
@@ -542,7 +542,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	/**
 	 * Return the ship that fired <code>bullet</code>.
 	 */
-	public Ship getBulletSource(Bullet bullet) {  //TODO moet deze null geven als het op het schip is?
+	public Ship getBulletSource(Bullet bullet) {  //TODO moet deze null geven als het op het schip is? ik denk het niet
 		return bullet.getParent();
 	}
 
@@ -649,7 +649,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Load <code>bullet</code> on <code>ship</code>.
 	 */
 	public void loadBulletOnShip(Ship ship, Bullet bullet) {
-		ship.loadBullet(bullet); 			//TODO ik heb hiervoor loadbullet van niks naar public gezet
+		ship.loadBullet(bullet);
 	}
 
 	/**
@@ -665,7 +665,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Remove <code>ship</code> from <code>ship</code>.
 	 */
 	public void removeBulletFromShip(Ship ship, Bullet bullet) throws ModelException {
-		ship.unloadBullet(bullet);  		//TODO ik heb de functie hier ook naar public gezet
+		ship.unloadBullet(bullet); 
 	}
 
 	/**
@@ -764,7 +764,22 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * notify methods.
 	 */
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
-		
+		try {
+			Set<CollisionInformation> allCollisions = world.evolve(dt);
+			if (collisionListener == null)
+				return;
+			for (CollisionInformation collInfo : allCollisions) {
+				if (collInfo.isWallCollision()) {
+					Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition();
+					collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
+				} else {
+					Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity);
+					collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
+				}
+			}
+		} catch (EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
 	}
 
 	/**

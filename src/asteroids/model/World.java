@@ -520,9 +520,10 @@ public class World {
 	 * 		  The time to simulate the world for.
 	 * @post  Simulates the world for Dt seconds.
 	 */
-	public void evolve(Double Dt) throws EntitiesOverlapException {
+	public Set<CollisionInformation> evolve(Double Dt) throws EntitiesOverlapException {
 		//do not simulate collision physics for loaded bullets.
 		Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
+		Set<CollisionInformation> allCollisions = new HashSet<CollisionInformation>();
 		do {
 			CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
 
@@ -537,6 +538,7 @@ public class World {
 					collInfo.firstEntity.collideWithWall();
 				else //entity collision
 					collideEntities(collInfo.firstEntity, collInfo.secondEntity);
+				allCollisions.add(collInfo);
 			} else {
 				for (Entity entity: entitiesWithCollision)
 					entity.move(Dt);
@@ -548,6 +550,8 @@ public class World {
 		//set loaded bullets' location to their parent.
 		for (Bullet loadedBullet : getAllLoadedBullets())
 			loadedBullet.setPosition(loadedBullet.getParent().getPosition());
+		
+		return allCollisions;
 	}
 	
 	
