@@ -672,7 +672,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * <code>ship</code> fires a bullet.
 	 */
 	public void fireBullet(Ship ship) {
-		ship.shootBullet(ship.getLoadedBullets().get(0));
+		ship.shootBullet();
 	}
 	
 

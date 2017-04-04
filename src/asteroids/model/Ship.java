@@ -1,8 +1,8 @@
 package asteroids.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import asteroids.exceptions.*;
 import asteroids.util.Vector2;
@@ -38,16 +38,16 @@ public class Ship extends Entity {
 	private static final double MIN_RADIUS_SHIP = 10;
 	
 	/**
-	 * ArrayList holding the loaded bullets from the ship
+	 * HashSet holding the loaded bullets from the ship
 	 */
-	private List<Bullet> loadedBullets = new ArrayList<Bullet>();
+	private Set<Bullet> loadedBullets = new HashSet<Bullet>();
 	
 	
 	/**
 	 * function to load a bullet to this ship
 	 * @param bullet
 	 * 		  The bullet that has to be loaded.
-	 * @post  The given bullet will be added to the list with loaded bullets from this ship.
+	 * @post  The given bullet will be added to the Set with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullet) = true
 	 */
 	public void loadBullet(Bullet bullet) {
@@ -58,7 +58,7 @@ public class Ship extends Entity {
 	 * function to load a bullet to this ship
 	 * @param A collection of bullets
 	 * 		  The collection of bullets that has to be loaded.
-	 * @post  The given bullets will be added to the list with loaded bullets from this ship.
+	 * @post  The given bullets will be added to the Set with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullets) = true
 	 */
 	//TODO deze fuctie is nieuw aangemaakt om de dingen uit facade te kunnen maken
@@ -72,7 +72,7 @@ public class Ship extends Entity {
 	 * function to unload a bullet to this ship
 	 * @param bullet
 	 * 		  The bullet that has to be unloaded.
-	 * @post  The given bullet will be removed to the list with loaded bullets from this ship.
+	 * @post  The given bullet will be removed to the Set with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullet) = false
 	 */
 	public void unloadBullet(Bullet bullet) {
@@ -97,7 +97,7 @@ public class Ship extends Entity {
 	public boolean shootBullet() {
 		if (!hasBullet())
 			return false;
-		shootBullet(loadedBullets.get(0));
+		shootBullet(loadedBullets.iterator().next()); //gets one (pseudo)random bullet
 		return true;
 	}
 	/**
@@ -175,10 +175,10 @@ public class Ship extends Entity {
 	}
 	
 	/**
-	 * Returns a list of all the loaded bullets in the ship.
+	 * Returns a Set of all the loaded bullets in the ship.
 	 */
-	public List<Bullet> getLoadedBullets() {
-		return new ArrayList<Bullet>(loadedBullets);
+	public Set<Bullet> getLoadedBullets() {
+		return new HashSet<Bullet>(loadedBullets);
 	}
 	
 	

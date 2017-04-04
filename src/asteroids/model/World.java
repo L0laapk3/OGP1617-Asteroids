@@ -1,11 +1,16 @@
 package asteroids.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
-import asteroids.exceptions.*;
-import asteroids.util.*;
-import be.kuleuven.cs.som.annotate.*;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.util.Vector2;
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
 
 
 //TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -287,17 +292,17 @@ public class World {
 	
 	
 	
-	//--------------basisfuncties entitylist
+	//--------------basisfuncties entitySet
 	
 	/**
-	 * Variable referencing a list collecting all the ships and bullets
+	 * Variable referencing a Set collecting all the ships and bullets
 	 * in this world.
 	 * 
-	 * @invar Each entity registered in the referenced list is not terminated 	//
+	 * @invar Each entity registered in the referenced Set is not terminated 	//
 	 * @invar The position of all entities must lay fully within the world.
 	 * @invar Entites cannot overlap, with the exception of bullets loaded in their ships.
 	 */
-	private final List<Entity> entities = new ArrayList<Entity>();
+	private final Set<Entity> entities = new HashSet<Entity>();
 	
 	/**
 	 * 
@@ -380,46 +385,39 @@ public class World {
 	 * Gets entity from given position in world.
 	 * @param  position
 	 * 		   The position to scan for entities.
-	 * @return The entity on the given position if there is an entity on that position. If there are more entities and there is a ship there it will
-	 * 		   return the ship, if there are only bullets it will return the first bullet.
+	 * @return If there is a ship on the given position, a ship will always be returned.
+	 * @return If there are only non-ship entities on that position, a
 	 * @return null if no entity is found.
 	 */
 	public Entity getEntityFromPosition(Vector2 position) {									
 		if (!isValidHeight(position.y) || !isValidWidth(position.x))
 			return null;
-		List<Entity> entitiesFound = new ArrayList<Entity>();
+		
 		for (Entity entity : entities)
-			if (Vector2.equals(entity.getPosition(), position))
-				entitiesFound.add(entity);
-		if (entitiesFound.isEmpty()){
-			return null;
-		} else {
-			for (Entity entity: entitiesFound){
-				if (entity instanceof Entity) {
+			if (Vector2.equals(entity.getPosition(), position)) {
+				if (entity instanceof Bullet && ((Bullet)entity).isLoadedInParent())
+					return ((Bullet)entity).getParent();
+				else
 					return entity;
-				} else {
-					return entitiesFound.get(0);
-				}
 			}
-		}
 		return null;
 	}
 	
 	
 	/**
 	 * Gets all entities from the world.
-	 * @return A list with all the entities in the world.
+	 * @return A Set with all the entities in the world.
 	 */
-	public List<Entity> getAllEntities() {
-		return new ArrayList<Entity>(entities);							
+	public Set<Entity> getAllEntities() {
+		return new HashSet<Entity>(entities);							
 	}
 	
 	/**
 	 * Gets all ships from the world.
-	 * @return A list with all the entities in the world.
+	 * @return A Set with all the entities in the world.
 	 */
-	public List<Ship> getAllShips() {
-		List<Ship> ships = new ArrayList<Ship>();
+	public Set<Ship> getAllShips() {
+		Set<Ship> ships = new HashSet<Ship>();
 		for (Entity entity: entities)
 			if (entity instanceof Ship)
 				ships.add((Ship)entity);
@@ -428,10 +426,10 @@ public class World {
 	
 	/**
 	 * Gets all bullets from the world.
-	 * @return A list with all the entities in the world.
+	 * @return A Set with all the entities in the world.
 	 */
-	public List<Bullet> getAllBullets() {
-		List<Bullet> bullets = new ArrayList<Bullet>();
+	public Set<Bullet> getAllBullets() {
+		Set<Bullet> bullets = new HashSet<Bullet>();
 		for (Entity entity: entities)
 			if (entity instanceof Bullet)
 				bullets.add((Bullet)entity);
@@ -441,10 +439,10 @@ public class World {
 	
 	/**
 	 * Gets all entities on which collision physics has to apply on.
-	 * @return A list of entites on which collision physics has to apply on.
+	 * @return A Set of entites on which collision physics has to apply on.
 	 */
-	public List<Entity> getAllEntitiesWithCollision() {
-		List<Entity> entitiesWithCollision = new ArrayList<Entity>();
+	public Set<Entity> getAllEntitiesWithCollision() {
+		Set<Entity> entitiesWithCollision = new HashSet<Entity>();
 		for (Entity entity: entities)
 			if (!(entity instanceof Bullet) || !((Bullet)entity).isLoadedInParent())
 				entitiesWithCollision.add(entity);
@@ -455,10 +453,10 @@ public class World {
 	
 	/**
 	 * Gets all loaded bullets. The opposite of getAllEntitiesWithCollision.
-	 * @return A list of all the loaded bullets in this world.
+	 * @return A Set of all the loaded bullets in this world.
 	 */
-	public List<Bullet> getAllLoadedBullets() {
-		List<Bullet> entitiesWithoutCollision = new ArrayList<Bullet>();
+	public Set<Bullet> getAllLoadedBullets() {
+		Set<Bullet> entitiesWithoutCollision = new HashSet<Bullet>();
 		for (Entity entity: entities)
 			if ((entity instanceof Bullet) && ((Bullet)entity).isLoadedInParent())
 				entitiesWithoutCollision.add((Bullet)entity);
@@ -478,31 +476,34 @@ public class World {
 	//----------------Advancing time
 	
 	
-	public CollisionInformation getNextCollision(List<Entity> entities) throws EntitiesOverlapException {
+	public CollisionInformation getNextCollision(Set<Entity> entities) throws EntitiesOverlapException {
 		double earliestCollisionTime = Double.POSITIVE_INFINITY;
 		Entity collisionFirstEntity = null;
 		Entity collisionSecondEntity = null;
 		//if firstentity is not null but secondentity is, there is a wall collision
 		
-		for (int i = 0; i < entities.size(); i++) {
-			
+		Iterator<Entity> it = entities.iterator();
+		Set<Entity> past = new HashSet<Entity>();
+		while (it.hasNext()) {
+			Entity first = it.next();
 			
 			//detect wall collisions
-			double collisionTime = entities.get(i).getTimeToWallCollision();
+			double collisionTime = first.getTimeToWallCollision();
 			if (earliestCollisionTime > collisionTime) {
 				earliestCollisionTime  = collisionTime;
-				collisionFirstEntity = entities.get(i);
+				collisionFirstEntity = first;
 				collisionSecondEntity = null;
 			}
-			for(int j = i + 1; j < entities.size(); j++) {
+			for(Entity second : past) {
 				//detect entity collisions
-				double collisionTime1 = Entity.getTimeToCollision(entities.get(i), entities.get(j));
+				double collisionTime1 = Entity.getTimeToCollision(first, second);
 				if (earliestCollisionTime > collisionTime1) {
 					earliestCollisionTime = collisionTime1;
-					collisionFirstEntity = entities.get(i);
-					collisionSecondEntity = entities.get(j);
+					collisionFirstEntity = first;
+					collisionSecondEntity = second;
 				}
 			}
+			past.add(first);
 		}
 		
 		
@@ -521,7 +522,7 @@ public class World {
 	 */
 	public void evolve(Double Dt) throws EntitiesOverlapException {
 		//do not simulate collision physics for loaded bullets.
-		List<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
+		Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 		do {
 			CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
 
