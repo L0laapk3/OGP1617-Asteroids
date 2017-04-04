@@ -877,14 +877,16 @@ public abstract class Entity {
 		 * @return Null if there is no collision with a wall.
 		 */
 		public Vector2 getWallCollisionPosition() {
-			if ((this.position.x - 1.01 * this.radius) <= 0)
-				return new Vector2(0, this.position.y);
-			if((this.position.x + 1.01 * this.radius) >= this.getWorld().getWidth())
-				return new Vector2(this.getWorld().getWidth(), this.position.y);
-			if ((this.position.y - 1.01 * this.radius) <= 0)
-				return new Vector2(this.position.x, 0);
-			if ((this.position.y + 1.01 * this.radius) >= this.getWorld().getHeight())
-				return new Vector2(this.position.x, this.getWorld().getHeight());
+			double Dt = this.getTimeToWallCollision();
+			Vector2 newpos = Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), Dt));
+			if ((newpos.x - 1.01 * this.radius) <= 0)
+				return new Vector2(0, newpos.y);
+			if((newpos.x + 1.01 * this.radius) >= this.getWorld().getWidth())
+				return new Vector2(this.getWorld().getWidth(), newpos.y);
+			if ((newpos.y - 1.01 * this.radius) <= 0)
+				return new Vector2(newpos.x, 0);
+			if ((newpos.y + 1.01 * this.radius) >= this.getWorld().getHeight())
+				return new Vector2(newpos.x, this.getWorld().getHeight());
 			return null;
 		}
 
