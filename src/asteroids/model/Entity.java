@@ -460,7 +460,7 @@ public abstract class Entity {
 			if (OGUtil.isInvalidNumber(xVelocity) || OGUtil.isInvalidNumber(yVelocity))
 				this.velocity = new Vector2(0, 0);
 			else {
-				setVelocity(xVelocity, yVelocity);
+				this.setVelocity(xVelocity, yVelocity);
 			}
 			
 			
@@ -778,8 +778,11 @@ public abstract class Entity {
 				xCollisionTime = Double.POSITIVE_INFINITY;
 			else if (velocity.x > 0)
 				xCollisionTime = (world.getWidth() - position.x - this.radius) / velocity.x;
-			else
-				xCollisionTime = (position.x + this.radius) / velocity.x;
+			else{
+				xCollisionTime = (position.x - this.radius) / -velocity.x;
+				System.out.println(xCollisionTime);
+			}
+			
 
 			double yCollisionTime;
 			if (velocity.y == 0)
@@ -787,7 +790,7 @@ public abstract class Entity {
 			else if (velocity.y > 0)
 				yCollisionTime = (world.getWidth() - position.y - this.radius) / velocity.y;
 			else
-				yCollisionTime = (position.y + this.radius) / velocity.y;
+				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
 			double Dt = Math.min(xCollisionTime, yCollisionTime);
 			if (Dt <= 0) //TODO: OPT EINDE (GRONDIG!!) TESTEN OFDA DIT NOG NODIG IS (ik vermoed van niet)
@@ -830,9 +833,10 @@ public abstract class Entity {
 			
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
-			if (overlap(entity1, entity2))
+			if (overlap(entity1, entity2)){
 				throw new EntitiesOverlapException("entities overlap");
-			
+			}
+		
 			double sigma = entity1.radius + entity2.radius;
 			Vector2 Dr = Vector2.subtract(entity1.position, entity2.position);
 			Vector2 Dv = Vector2.subtract(entity1.velocity, entity2.velocity);

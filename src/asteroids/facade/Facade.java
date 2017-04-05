@@ -589,9 +589,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * Return all ships located within <code>world</code>.
 	 */
 	public Set<Ship> getWorldShips(World world) throws ModelException {
-		//TODO dit heb ik ook veranderd om te testen
 		
-		System.out.println(world.getAllShips());
 		return world.getAllShips();
 	}
 

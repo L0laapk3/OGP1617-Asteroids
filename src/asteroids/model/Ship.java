@@ -274,12 +274,7 @@ public class Ship extends Entity {
 	 * @post  The Velocity of the two ships will be updated according to the laws of physics.
 	 */
 	static void collideShips(Ship firstShip, Ship secondShip) {
-		
-		//TODO: WEG
-		System.out.println("-------------");
-		System.out.println(firstShip.getMass());
-		System.out.println(secondShip.getMass());
-		
+				
 		
 		double sigma = firstShip.getRadius() + secondShip.getRadius();
 		Vector2 J = Vector2.multiply(Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()), 2 * firstShip.getMass() * secondShip.getMass() * Vector2.dot(
