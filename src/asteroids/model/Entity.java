@@ -753,7 +753,7 @@ public abstract class Entity {
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
 			if (entity1 == entity2) { //optimisation
-				System.out.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
+				//System.out.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
 				return true;
 			}
 			Vector2 centerDifference = new Vector2(entity1.getPosition().x-entity2.getPosition().x, entity1.getPosition().y-entity2.getPosition().y);
@@ -782,7 +782,6 @@ public abstract class Entity {
 				xCollisionTime = (world.getWidth() - position.x - this.radius) / velocity.x;
 			else{
 				xCollisionTime = (position.x - this.radius) / -velocity.x;
-				System.out.println(xCollisionTime);
 			}
 			
 
@@ -794,8 +793,7 @@ public abstract class Entity {
 			else
 				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
-			double Dt = Math.min(xCollisionTime, yCollisionTime);
-			return Dt;
+			return Math.min(xCollisionTime, yCollisionTime);
 		}
 		
 		
@@ -847,8 +845,7 @@ public abstract class Entity {
 			double d = vr*vr - vv*(rr - sigma*sigma);
 			if (d <= 0)
 				return Double.POSITIVE_INFINITY;
-			double Dt = -(vr + Math.sqrt(d)) / vv;
-			return Dt;
+			return -(vr + Math.sqrt(d)) / vv;
 		}
 
 		
@@ -913,6 +910,7 @@ public abstract class Entity {
 			//TODO: moet hier die 99% 101% shiet nie in?
 			if (Dt == Double.POSITIVE_INFINITY)
 				return null;
+				
 			Vector2 entity1NewPos = Vector2.add(entity1.position, Vector2.multiply(entity1.velocity, Dt));
 			Vector2 entity2NewPos = Vector2.add(entity2.position, Vector2.multiply(entity2.velocity, Dt));
 			Vector2 delta = Vector2.subtract(entity2NewPos, entity1NewPos);

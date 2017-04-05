@@ -19,10 +19,9 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 //TODO: OVERAL RAW????
 //TODO: OVERAL THROWS KUUTT
-//TODO: Ik denk da er iets fout is met de velocities overal; ze horen niet in dezelfde richting te gaan blijkbaar (rondvragen ofda waar is)
-//TODO: Botsen met rand scherm werkt niet
-//TODO: Alle andere schepen vliegen precies in dezelfde richting bij het spawnen, als ze botsen hebben ze precies een oneindige massa, of anders is de botscode fout ofzo voor nieuwe snelheden
+
 //TODO: bullet-ship Explosion is in the wrong position O.o
+//TODO: Schieten werkt niet
 
 
 public class World {
