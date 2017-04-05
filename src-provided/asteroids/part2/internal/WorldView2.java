@@ -317,15 +317,7 @@ public class WorldView2<F extends IFacade> extends JPanel implements KeyListener
 	protected boolean isPlayerActive(Ship ship) {
 		try {
 			Set<? extends Ship> ships = facade.getWorldShips(world);
-			
-			boolean firstCheck = ships != null;
-			boolean secondCheck = ships.contains(ship);
-			
-			//TODO zelf geschreven => ships is leeg
-			System.out.println(Boolean.toString(firstCheck));   //TODO: WEG
-			System.out.println(Boolean.toString(secondCheck));  //TODO: WEG
-			System.out.println(ships);  						//TODO: WEG
-			
+									
 			return ships != null && ships.contains(ship);
 			
 		} catch (ModelException e) {
@@ -338,6 +330,7 @@ public class WorldView2<F extends IFacade> extends JPanel implements KeyListener
 		if (thrusterChange) {
 			try {
 				boolean thrusterOn = !facade.isShipThrusterActive(player);
+				System.out.println("thrusterchange, is now: "+thrusterOn);
 				facade.setThrusterActive(player, thrusterOn);
 			} catch (ModelException exc) {
 				handleError(exc);

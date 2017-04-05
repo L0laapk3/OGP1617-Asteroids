@@ -60,6 +60,7 @@ public class Ship extends Entity {
 		bullet.setParent(this);
 		loadedBullets.add(bullet);
 		bullet.setLoadedInParent(true);
+		bullet.setWorld(this.getWorld());
 	}
 	
 	/**
@@ -87,8 +88,8 @@ public class Ship extends Entity {
 	public void unloadBullet(Bullet bullet) throws NullPointerException {
 		if (bullet == null)
 			throw new NullPointerException();
-		bullet.setParent(null);
 		bullet.setLoadedInParent(false);
+		bullet.setParent(null);
 		loadedBullets.remove(bullet);
 	}
 	
@@ -306,7 +307,7 @@ public class Ship extends Entity {
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private static final double thrustforce = 1.1*(Math.pow(10, 21));
+	private static final double thrustforce = 1.1*(Math.pow(10, 24));	//TODO was 21 ipv 24 maar anders is er niks te zien dus wel terugzetten voor in te dienen
 	
 	
 	/**

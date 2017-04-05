@@ -122,8 +122,6 @@ public class Bullet extends Entity {
 	 * 		   The initial speed in the x direction of the new bullet.
 	 * @param  yVelocity
 	 * 		   The initial speed in the y direction of the new bullet.
-	 * @param  orientation
-	 * 		   The direction that the new bullet is initially pointed at.
 	 * @param  radius
 	 * 		   The size of the newly created bullet.
 	 * @param  mass
@@ -134,8 +132,8 @@ public class Bullet extends Entity {
 	 * @post   The parent of this bullet will be set to the given parent.
 	 * @post   The mass density from this bullet is set to 7.8*10^12 kg/km^3
 	 */
-	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, Ship parent) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, orientation);
+	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship parent) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+		super(x, y, xVelocity, yVelocity, radius, 0);
 		this.setMinRadius(MIN_RADIUS_BULLET);		
 
 		setRho(7.8 * Math.pow(10,  12)); //constant for this class

@@ -85,6 +85,8 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 			try {
 				Bullet bullet = facade.createBullet(width / 2.0, height / 2.0, 0, 0, Math.random() * 10 + 5);
 				facade.loadBulletOnShip(player, bullet);
+				System.out.println("creating bullet: " + i);
+				
 			} catch (ModelException e) {
 				handleError(e);
 			}
@@ -96,12 +98,15 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 				Ship enemyShip = facade.createShip(Math.random() * width, Math.random() * height, 25, 50,
 						10.0 + Math.random() * 40, Math.random() * 2 * Math.PI / 3, 1.0E22);
 				facade.addShipToWorld(world, enemyShip);
+				System.out.print("creating enemy ship: " + j);
 				for (int i = 1; i < 10; i++) {
 					Bullet bullet = facade.createBullet(facade.getShipPosition(enemyShip)[0],
 							facade.getShipPosition(enemyShip)[1], 0, 0, Math.PI);
 					facade.loadBulletOnShip(enemyShip, bullet);
+					System.out.print(", bullet: " + i);
 				}
 				enemies.add(enemyShip);
+				System.out.println(" :: adding sip to set enemies");
 			} catch (ModelException exc) {
 				// so be it
 			}
@@ -111,6 +116,7 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 			try {
 				Bullet bullet = facade.createBullet(Math.random() * width, Math.random() * height, 10, 12,
 						Math.random() * 5 + 3);
+				System.out.println("creating random bullet without parent: " + j);
 				facade.addBulletToWorld(world, bullet);
 			} catch (ModelException exc) {
 				// so be it

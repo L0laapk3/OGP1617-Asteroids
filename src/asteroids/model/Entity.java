@@ -491,7 +491,7 @@ public abstract class Entity {
 		
 		
 		/**
-		 * Terminate this world.
+		 * Terminate this entity.
 		 *
 		 * @post   The instance is terminated.
 		 * @post   If the entity is in a world, The entity is removed properly from the world first.
@@ -752,8 +752,10 @@ public abstract class Entity {
 		public static boolean overlap(Entity entity1, Entity entity2) throws NullPointerException {
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
-			if (entity1 == entity2) //optimisation
+			if (entity1 == entity2) { //optimisation
+				System.out.println("De entities in functie overlap zijn hetzelfde => geeft true");
 				return true;
+			}
 			Vector2 centerDifference = new Vector2(entity1.getPosition().x-entity2.getPosition().x, entity1.getPosition().y-entity2.getPosition().y);
 			return  centerDifference.pythagoras() <= 0.99*(entity1.getRadius()+entity2.getRadius());
 		}
@@ -911,10 +913,6 @@ public abstract class Entity {
 		 *       | result == entity1NewPos + delta * (entity1.radius / (entity1.radius + entity2.radius))
 		 * @return The position where the two entities will first touch.
 		 * @return If the entities never collide, this function will return null.
-		 * @throws NullPointerException
-		 * 		   entity1 or entity2 should not be null.
-		 * @throws EntitiesOverlapException
-		 * 		   The entities should not overlap already.
 		 */
 		@Raw
 		static Vector2 getCollisionPosition(Entity entity1, Entity entity2, double Dt) {

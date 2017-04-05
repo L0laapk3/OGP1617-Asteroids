@@ -37,13 +37,6 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	}
 
 	
-	
-	
-
-	
-	
-	
-	
 
 	/**
 	 * Helper function to see if the ship is invalid.
@@ -55,9 +48,6 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	private boolean isInvalidShip(Ship ship) {
 		return ship == null;
 	}
-	
-	
-	
 	
 	
 
@@ -469,7 +459,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 */
 	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException {
 		try {
-			return new Bullet(x, y, xVelocity, yVelocity, radius, 0, null); //sgoed
+			return new Bullet(x, y, xVelocity, yVelocity, radius, null); //sgoed
 		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
 			throw new ModelException(ex);
 		}
@@ -784,10 +774,12 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * notify methods.
 	 */
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
-		try {
-			world.evolve(dt, collisionListener);
-		} catch (EntitiesOverlapException ex) {
-			throw new ModelException(ex);
+		if (collisionListener!=null){
+			try {
+				world.evolve(dt, collisionListener);
+			} catch (EntitiesOverlapException ex) {
+				throw new ModelException(ex);
+			}
 		}
 	}
 

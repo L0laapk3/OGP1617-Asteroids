@@ -489,11 +489,12 @@ public class World {
 		double earliestCollisionTime = Double.POSITIVE_INFINITY;
 		Entity collisionFirstEntity = null;
 		Entity collisionSecondEntity = null;
-		//if firstentity is not null but secondentity is, there is a wall collision
+		//if firstEntity is not null but secondEntity is, there is a wall collision
 		
 		Iterator<Entity> it = entities.iterator();
 		Set<Entity> past = new HashSet<Entity>();
 		while (it.hasNext()) {
+			
 			Entity first = it.next();
 			
 			//detect wall collisions
@@ -512,6 +513,7 @@ public class World {
 					collisionSecondEntity = second;
 				}
 			}
+			
 			past.add(first);
 		}
 		
@@ -606,8 +608,8 @@ public class World {
 	@Raw
 	public Entity findOverlap(Entity entity) {
 		for (Entity other : entities)
-			if (Entity.overlap(entity, other))
-				return other;
+				if (Entity.overlap(entity, other) && (entity != other))
+					return other;
 		return null;
 	}
 	
