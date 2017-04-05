@@ -753,7 +753,7 @@ public abstract class Entity {
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
 			if (entity1 == entity2) { //optimisation
-				System.out.println("De entities in functie overlap zijn hetzelfde => geeft true");
+				System.out.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
 				return true;
 			}
 			Vector2 centerDifference = new Vector2(entity1.getPosition().x-entity2.getPosition().x, entity1.getPosition().y-entity2.getPosition().y);
@@ -1025,14 +1025,14 @@ public abstract class Entity {
 	/**
 	 * Internal function that bounces the entity off a wall.
 	 * @post Changes the velocity when a ship bounces against the wall of the world.
-	 * @post 
+	 * @po11st 
 	 */
 	@Raw
 	void collideWithWall() {
 		if ((this.position.x - 1.01 * this.radius) <= 0 || (this.position.x + 1.01 * this.radius) >= this.getWorld().getWidth())
-			this.setPosition(new Vector2(-this.position.x, this.position.y));
+			this.setVelocity(new Vector2(-this.getVelocity().x, this.getVelocity().y));
 		if ((this.position.y - 1.01 * this.radius) <= 0 || (this.position.y + 1.01 * this.radius) >= this.getWorld().getHeight())
-			this.setPosition(new Vector2(this.position.x, -this.position.y));
+			this.setVelocity(new Vector2(this.getVelocity().x, -this.getVelocity().y));
 	}
 
 	/**
