@@ -564,14 +564,15 @@ public class World {
 				
 				if (collInfo.isWallCollision()) { //wall collision
 					if (collisionListener != null) {
-						Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(collInfo.timeToCollision);
+						Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(0);
+						assert(collPos != null);
 						collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
 					}
 					collInfo.firstEntity.collideWithWall();
 				} else { //entity collision
 					if (collisionListener != null) {
-						Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision);
-						assert(collPos != null); //TODO: WEG
+						Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, 0);
+						assert(collPos != null);
 						collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 					}
 					collideEntities(collInfo.firstEntity, collInfo.secondEntity);

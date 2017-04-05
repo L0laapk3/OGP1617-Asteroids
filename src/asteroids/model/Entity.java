@@ -795,10 +795,7 @@ public abstract class Entity {
 				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
 			double Dt = Math.min(xCollisionTime, yCollisionTime);
-			if (Dt <= 0) //TODO: OPT EINDE (GRONDIG!!) TESTEN OFDA DIT NOG NODIG IS (ik vermoed van niet)
-				return Double.POSITIVE_INFINITY; //already collided
-			else
-				return Dt;
+			return Dt;
 		}
 		
 		
@@ -851,10 +848,7 @@ public abstract class Entity {
 			if (d <= 0)
 				return Double.POSITIVE_INFINITY;
 			double Dt = -(vr + Math.sqrt(d)) / vv;
-			if (Dt <= 0) //TODO: OPT EINDE (GRONDIG!!) TESTEN OFDA DIT NOG NODIG IS (ik vermoed van niet)
-				return Double.POSITIVE_INFINITY; //already collided
-			else
-				return Dt;
+			return Dt;
 		}
 
 		
