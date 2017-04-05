@@ -775,11 +775,11 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 */
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
 		if (collisionListener!=null){
-			try {
+			//try {
 				world.evolve(dt, collisionListener);
-			} catch (EntitiesOverlapException ex) {
-				throw new ModelException(ex);
-			}
+			//} catch (EntitiesOverlapException ex) {
+			//	throw new ModelException(ex);
+			//}
 		}
 	}
 

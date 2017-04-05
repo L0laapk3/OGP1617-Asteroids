@@ -790,7 +790,7 @@ public abstract class Entity {
 			if (velocity.y == 0)
 				yCollisionTime = Double.POSITIVE_INFINITY;
 			else if (velocity.y > 0)
-				yCollisionTime = (world.getWidth() - position.y - this.radius) / velocity.y;
+				yCollisionTime = (world.getHeight() - position.y - this.radius) / velocity.y;
 			else
 				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
@@ -835,7 +835,7 @@ public abstract class Entity {
 			
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
-			if (overlap(entity1, entity2)){
+			if (overlap(entity1, entity2)) {
 				throw new EntitiesOverlapException("entities overlap");
 			}
 		
@@ -1045,7 +1045,6 @@ public abstract class Entity {
 		//TODO: ACCELERATIE WERKT NIET, ERGENS....
 		if (this.getAcceleration() == 0)
 			return; //optimalisation
-		System.out.println(this.getAccelerationVector().x); //TODO: weg
 		this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), Dt)));
 	}
 }

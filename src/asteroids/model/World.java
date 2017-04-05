@@ -546,7 +546,10 @@ public class World {
 	 * 		  The time to simulate the world for.
 	 * @post  Simulates the world for Dt seconds.
 	 */
-	public void evolve(Double Dt, CollisionListener collisionListener) throws EntitiesOverlapException, NoWorldException {
+	public void evolve(Double Dt, CollisionListener collisionListener) throws NoWorldException {
+		
+		try {
+		
 		//do not simulate collision physics for loaded bullets.
 		
 		//TODO: SOMS BLIJFT HIJ VASTZITTEN IN EEN LOOP, IK VERMOED DAT TIMETONEXTCOLLISION 0 IS HEEL DE TIJD OFZO?? DOOR AFRONDING
@@ -582,6 +585,11 @@ public class World {
 		//set loaded bullets' location to their parent.
 		for (Bullet loadedBullet : getAllLoadedBullets()) {
 			loadedBullet.setPosition(loadedBullet.getParent().getPosition());
+		}
+		
+		
+		} catch (EntitiesOverlapException ex) {
+			throw new RuntimeException(ex);
 		}
 	}
 	
