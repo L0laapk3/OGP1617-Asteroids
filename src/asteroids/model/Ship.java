@@ -283,8 +283,8 @@ public class Ship extends Entity {
 				Vector2.subtract(firstShip.getPosition(), secondShip.getPosition())
 			) / (sigma*sigma * (firstShip.getMass() + secondShip.getMass())));
 		
-		firstShip.setVelocity(Vector2.add(firstShip.getVelocity(), Vector2.divide(J, firstShip.getMass())));
-		secondShip.setVelocity(Vector2.subtract(secondShip.getVelocity(), Vector2.divide(J, secondShip.getMass())));
+		firstShip.setVelocity(Vector2.subtract(firstShip.getVelocity(), Vector2.divide(J, firstShip.getMass())));
+		secondShip.setVelocity(Vector2.add(secondShip.getVelocity(), Vector2.divide(J, secondShip.getMass())));
 	}
 	
 	//-------------Thrust functions
