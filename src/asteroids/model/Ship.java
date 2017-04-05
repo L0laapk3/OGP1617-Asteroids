@@ -275,6 +275,12 @@ public class Ship extends Entity {
 	 */
 	static void collideShips(Ship firstShip, Ship secondShip) {
 		
+		//TODO: WEG
+		System.out.println("-------------");
+		System.out.println(firstShip.getMass());
+		System.out.println(secondShip.getMass());
+		
+		
 		double sigma = firstShip.getRadius() + secondShip.getRadius();
 		Vector2 J = Vector2.multiply(Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()), 2 * firstShip.getMass() * secondShip.getMass() * Vector2.dot(
 				Vector2.subtract(firstShip.getVelocity(), secondShip.getVelocity()), 
@@ -282,7 +288,7 @@ public class Ship extends Entity {
 			) / (sigma*sigma * (firstShip.getMass() + secondShip.getMass())));
 		
 		firstShip.setVelocity(Vector2.add(firstShip.getVelocity(), Vector2.divide(J, firstShip.getMass())));
-		secondShip.setVelocity(Vector2.add(secondShip.getVelocity(), Vector2.divide(J, secondShip.getMass())));
+		secondShip.setVelocity(Vector2.subtract(secondShip.getVelocity(), Vector2.divide(J, secondShip.getMass())));
 	}
 	
 	//-------------Thrust functions

@@ -738,7 +738,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 		try {
 			return (Entity.getCollisionPosition((Entity)entity1, (Entity)entity2)).toProfNotation();
 		} catch (NullPointerException | EntitiesOverlapException ex) {
-			throw new ModelException(ex);			
+			throw new ModelException(ex);
 		}
 	}
 

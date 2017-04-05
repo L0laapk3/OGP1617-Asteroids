@@ -591,8 +591,8 @@ public abstract class Entity {
 			
 			//foute berekeningen die geen rekening houden met acceleratie..
 			
-			this.position = Vector2.add(this.position, Vector2.multiply(this.velocity, dt));	
-			this.setVelocity(Vector2.add(this.velocity, Vector2.multiply(this.getAccelerationVector(), dt)));
+			this.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), dt)));	
+			//this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), dt)));
 
 		}
 		
@@ -790,7 +790,7 @@ public abstract class Entity {
 				yCollisionTime = (position.y + this.radius) / velocity.y;
 			
 			double Dt = Math.min(xCollisionTime, yCollisionTime);
-			if (Dt <= 0)
+			if (Dt <= 0) //TODO: OPT EINDE (GRONDIG!!) TESTEN OFDA DIT NOG NODIG IS (ik vermoed van niet)
 				return Double.POSITIVE_INFINITY; //already collided
 			else
 				return Dt;
@@ -845,7 +845,7 @@ public abstract class Entity {
 			if (d <= 0)
 				return Double.POSITIVE_INFINITY;
 			double Dt = -(vr + Math.sqrt(d)) / vv;
-			if (Dt <= 0)
+			if (Dt <= 0) //TODO: OPT EINDE (GRONDIG!!) TESTEN OFDA DIT NOG NODIG IS (ik vermoed van niet)
 				return Double.POSITIVE_INFINITY; //already collided
 			else
 				return Dt;

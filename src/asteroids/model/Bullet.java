@@ -19,9 +19,42 @@ import asteroids.exceptions.*;
 public class Bullet extends Entity {
 
 	/**
-	 * Variable holding the minimum radius from a bullet.
+	 * Constant holding the minimum radius from a bullet.
 	 */
 	private static final double MIN_RADIUS_BULLET = 1;
+	
+	/**
+	 * Constant holding the max amount of bounces before a bullet dissapears.
+	 */
+	private static final double MAX_BOUNCES = 3;
+	
+	/**
+	 * Variable holding the amount of bounces after being shot.
+	 */
+	private int bounces = 0;
+	
+	/**
+	 * Gets the number of bounces after the bullet was shot.
+	 */
+	public int getBounces() {
+		return this.bounces;
+	}
+	
+	/**
+	 * Resets the amount of bounces.
+	 * @post getBounces() == 0
+	 */
+	void resetBounces() {
+		this.bounces = 0;
+	}
+	
+	/**
+	 * Adds one bounce to the bounce counter.
+	 * @post getBounces()++
+	 */
+	void addBounce() {
+		this.bounces++;
+	}
 	
 	/**
 	 * Variable holding the parent from the bullet.
@@ -78,6 +111,7 @@ public class Bullet extends Entity {
 	
 	
 	
+	
 	/**
 	 * Function to make a new bullet.
 	 * @param  x
@@ -112,6 +146,17 @@ public class Bullet extends Entity {
 
 
 
+	@Override
+	void collideWithWall() {
+		this.addBounce();
+		if (this.getBounces() >= MAX_BOUNCES)
+			this.terminate();
+		else
+			super.collideWithWall();
+	}
+	
+	
+	
 
 	/**
 	 * Function that handles when a bullet hits a ship.
