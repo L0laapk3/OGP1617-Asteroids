@@ -552,7 +552,7 @@ public class World {
 		
 		//do not simulate collision physics for loaded bullets.
 		
-		//TODO: SOMS BLIJFT HIJ VASTZITTEN IN EEN LOOP, IK VERMOED DAT TIMETONEXTCOLLISION 0 IS HEEL DE TIJD OFZO?? DOOR AFRONDING
+		//TODO: SOMS BLIJFT HIJ VASTZITTEN IN EEN LOOP, IK VERMOED DAT TIMETONEXTCOLLISION 0 IS HEEL DE TIJD OFZO?? DOOR AFRONDING/ NEE DOOR FOUTE VELOCITY NA BOTSEN
 		do {
 			Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 			CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
@@ -563,17 +563,18 @@ public class World {
 				Dt -= collInfo.timeToCollision;
 				
 				if (collInfo.isWallCollision()) { //wall collision
-					collInfo.firstEntity.collideWithWall();
 					if (collisionListener != null) {
 						Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(collInfo.timeToCollision);
 						collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
 					}
+					collInfo.firstEntity.collideWithWall();
 				} else { //entity collision
-					collideEntities(collInfo.firstEntity, collInfo.secondEntity);
 					if (collisionListener != null) {
 						Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision);
+						assert(collPos != null); //TODO: WEG
 						collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 					}
+					collideEntities(collInfo.firstEntity, collInfo.secondEntity);
 				}
 			} else {
 				doTime(Dt, entitiesWithCollision);
