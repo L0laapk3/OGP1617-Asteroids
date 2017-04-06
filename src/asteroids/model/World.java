@@ -21,7 +21,6 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: OVERAL THROWS KUUTT
 //TODO: zucht terminated checks
 
-//TODO: bullet-ship Explosion is in the wrong position O.o
 //TODO: investage why users bullets are sometimes white/yellow (intended.. ?) and sometimes green (probably not intended)
 
 

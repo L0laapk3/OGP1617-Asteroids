@@ -566,8 +566,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * followed by the height.
 	 */
 	public double[] getWorldSize(World world) {
-		double size[] = {world.getHeight(), world.getWidth()};
-		return size;
+		return new Vector2(world.getWidth(), world.getHeight()).toProfNotation();
 	}
 
 	/**

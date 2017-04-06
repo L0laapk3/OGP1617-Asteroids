@@ -797,7 +797,7 @@ public abstract class Entity {
 			else
 				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
-			return Math.min(xCollisionTime, yCollisionTime);
+			return Math.max(0, Math.min(xCollisionTime, yCollisionTime));
 		}
 		
 		
@@ -860,7 +860,7 @@ public abstract class Entity {
 			double d = vr*vr - vv*(rr - sigma*sigma);
 			if (d <= 0)
 				return Double.POSITIVE_INFINITY;
-			return -(vr + Math.sqrt(d)) / vv;
+			return Math.max(0, -(vr + Math.sqrt(d)) / vv);
 		}
 
 		
