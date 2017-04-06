@@ -338,7 +338,11 @@ public class World {
 			if (Entity.overlap(entity, entityToCheck)												      //mag niet overlappen
 					&& !((entity instanceof Bullet) && (((Bullet)entity).getParent() == entityToCheck))   //behalve als het een bullet geladen in dat ship
 					&& !((entityToCheck instanceof Bullet) && (((Bullet)entityToCheck).getParent() == entity))) {
-				throw new EntitiesOverlapException();
+				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet)entity).getParent() == ((Bullet)entityToCheck).getParent()) && (((Bullet)entity).getParent() != null))) {
+					throw new EntitiesOverlapException();
+					//TODO hiet zit het probleem want de bullet moet toegevoegd worden aan de wereld maar het overlapt al met de rest van de bullets maar ik krijg de logica niet juist :D
+				}
+				
 			}
 		}
 		

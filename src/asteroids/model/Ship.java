@@ -51,8 +51,11 @@ public class Ship extends Entity {
 	 * 		 | new.getLoadedBullets.contains(bullet) = true
 	 * @throws NullPointerException
 	 * 		   bullet must not be null.
+	 * @throws EntitiesOverlapException 
+	 * @throws NotWithinBoundariesException 
+	 * @throws DoubleEntityException 
 	 */
-	public void loadBullet(Bullet bullet) throws NullPointerException {
+	public void loadBullet(Bullet bullet) throws NullPointerException, DoubleEntityException, NotWithinBoundariesException, EntitiesOverlapException {
 		//TODO: defensive, normaal, total (DESTRUCTION) ??????????
 
 		if (bullet == null)
@@ -60,7 +63,7 @@ public class Ship extends Entity {
 		bullet.setParent(this);
 		loadedBullets.add(bullet);
 		bullet.setLoadedInParent(true);
-		bullet.setWorld(this.getWorld());
+		this.getWorld().addEntity(bullet);
 	}
 	
 	/**
