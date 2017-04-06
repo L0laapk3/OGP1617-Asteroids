@@ -19,8 +19,10 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 //TODO: OVERAL RAW????
 //TODO: OVERAL THROWS KUUTT
+//TODO: zucht terminated checks
 
 //TODO: bullet-ship Explosion is in the wrong position O.o
+//TODO: investage why users bullets are sometimes white/yellow (intended.. ?) and sometimes green (probably not intended)
 
 
 public class World {
@@ -246,7 +248,10 @@ public class World {
 	}
 	
 	
-	
+	/**
+	 * Gets the world's upper boundaries.
+	 * @return new Vector2(getWidth(), getHeight());
+	 */
 	public Vector2 getMaxBounds() {
 		return new Vector2(this.getWidth(), this.getHeight());
 	}
@@ -510,8 +515,12 @@ public class World {
 			
 			//detect wall collisions
 			double collisionTime = first.getTimeToWallCollision();
-			if (collisionTime < 0)
+			if (collisionTime < 0) {
+				System.out.println(first);
+				System.out.println(first.getPosition());
+				System.out.println(first.getVelocity());
 				throw new RuntimeException("WTF WTF WTF WDKDSQMLTKH");
+			}
 			if (earliestCollisionTime > collisionTime) {
 				earliestCollisionTime  = collisionTime;
 				collisionFirstEntity = first;
@@ -631,7 +640,7 @@ public class World {
 	 */
 	@Raw
 	public Entity findOverlap(Entity entity) {
-		for (Entity other : entities)
+		for (Entity other : this.getAllEntitiesWithCollision())
 				if (Entity.overlap(entity, other) && (entity != other))
 					return other;
 		return null;

@@ -122,6 +122,7 @@ public class Ship extends Entity {
 	public boolean shootBullet() throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		if (!hasBullet())
 			return false;
+		System.out.println("bullets left: " + loadedBullets.size());
 		shootBullet(loadedBullets.iterator().next()); //gets one (pseudo)random bullet from hashset
 		return true;
 	}
@@ -133,10 +134,16 @@ public class Ship extends Entity {
 	 * @note  defensive
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
+		System.out.println("SHOOT " + bullet); //TODO: weg
 		if (this.getWorld() == null)
 			throw new NoWorldException();
-		if (this.getWorld() != bullet.getWorld())
+		if (this.isTerminated())
+			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
+		if (bullet.isTerminated())
+			throw new AlreadyTerminatedException("Cannot fire bullet because it is terminated.");
+		if (this.getWorld() != bullet.getWorld()) {
 			throw new MisMatchWorldsException("Bullet and ship must be in the same world.");
+		}
 		if (bullet.getParent() != this)
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
@@ -146,9 +153,11 @@ public class Ship extends Entity {
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
+		System.out.println(bullet.getPosition()); //TODO: weg
 		bullet.mirrorPositionWall();
+		System.out.println(bullet.getPosition()); //TODO: weg
+		System.out.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
-		System.out.println("SHOOT " + bullet); //TODO: weg
 		
 		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
 		while (collidesWith != null) {

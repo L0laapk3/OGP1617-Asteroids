@@ -797,7 +797,6 @@ public abstract class Entity {
 			else
 				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
-			System.out.println("time to wall collision: " + Math.min(xCollisionTime, yCollisionTime)); //TODO: weg
 			return Math.min(xCollisionTime, yCollisionTime);
 		}
 		
@@ -1030,11 +1029,21 @@ public abstract class Entity {
 	
 	/**
 	 * Mirrors the position to put it within the bounds of the world.
-	 * Only works for small out of bounds (-bound, 2*maxbound)
+	 * Only works for small out of bounds. (significantly less than 1 world width/height)
 	 */
 	@Raw
 	void mirrorPositionWall() {
-		this.setPosition(Vector2.subtract(this.getWorld().getMaxBounds(), Vector2.subtract(this.getWorld().getMaxBounds(), this.getPosition().abs()).abs()));
+		
+		Vector2 pos = this.getPosition();
+		if (pos.x < this.getRadius())
+			pos = new Vector2(2 * this.getRadius() - pos.x, pos.y);
+		else if (pos.x > this.getWorld().getWidth() - this.getRadius())
+			pos = new Vector2(2 * (this.getWorld().getWidth() - this.getRadius()) - pos.x, pos.y);
+		if (pos.y < this.getRadius())
+			pos = new Vector2(pos.x, 2 * this.getRadius() - pos.y);
+		else if (pos.y > this.getWorld().getHeight() - this.getRadius())
+			pos = new Vector2(pos.x, 2 * (this.getWorld().getHeight() - this.getRadius()) - pos.y);
+		this.setPosition(pos);
 	}
 	
 	

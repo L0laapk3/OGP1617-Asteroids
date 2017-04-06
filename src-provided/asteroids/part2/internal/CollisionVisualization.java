@@ -116,7 +116,7 @@ public class CollisionVisualization<F extends IFacade> extends Visualization<F, 
 			// draw cross
 			for (Object entity : ships) {
 				try {
-					if (!(entity instanceof Ship) || !(facade.overlap(selected, (Ship) entity))) {
+					if (!(entity instanceof Ship) || !(facade.overlap(selected, (Ship) entity)) || ((entity instanceof Bullet) && (((Bullet)entity).getParent() == selected))) {
 						double[] colPos = facade.getPositionCollisionEntity(selected, entity);
 						if (colPos != null) {
 							int x = (int) Math.round(ctx.worldToScreenX(colPos[0]));
