@@ -139,6 +139,10 @@ public class Bullet extends Entity {
 		setRho(7.8 * Math.pow(10,  12)); //constant for this class
 		
 		this.parent = parent;
+		
+		if (parent != null){
+			parent.loadBullet(this);
+		}
 	}
 
 
