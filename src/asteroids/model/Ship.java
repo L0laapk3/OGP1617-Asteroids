@@ -1,7 +1,6 @@
 package asteroids.model;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Collection;
 import java.util.Set;
 
@@ -361,8 +360,8 @@ public class Ship extends Entity {
 	
 	@Override
 	public void terminate() {
-		for (Iterator<Bullet> it = loadedBullets.iterator(); it.hasNext(); )
-			this.unloadBullet(it.next());
+		while (loadedBullets.size() > 0)
+			this.unloadBullet(loadedBullets.iterator().next());
 		super.terminate();
 	}
 }
