@@ -21,7 +21,6 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: OVERAL THROWS KUUTT
 
 //TODO: bullet-ship Explosion is in the wrong position O.o
-//TODO: Schieten werkt niet
 
 
 public class World {
@@ -248,6 +247,12 @@ public class World {
 	
 	
 	
+	public Vector2 getMaxBounds() {
+		return new Vector2(this.getWidth(), this.getHeight());
+	}
+	
+	
+	
 	
 	
 	
@@ -464,6 +469,7 @@ public class World {
 	}
 	
 
+	
 	
 	/**
 	 * Gets all loaded bullets. The opposite of getAllEntitiesWithCollision.

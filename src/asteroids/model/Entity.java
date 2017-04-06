@@ -497,6 +497,7 @@ public abstract class Entity {
 		 * @post   If the entity is in a world, The entity is removed properly from the world first.
 		 */
 		public void terminate() throws IllegalEntityException {
+			System.out.println("TERMINATE " + this); //TODO: weg
 			if (this.getWorld() != null)
 				this.getWorld().removeEntity(this);
 			if (!isTerminated())
@@ -831,7 +832,18 @@ public abstract class Entity {
 			if (entity1 == null || entity2 == null)
 				throw new NullPointerException("entities cannot be null.");
 			if (overlap(entity1, entity2)) {
-				throw new EntitiesOverlapException("entities overlap");
+				System.out.println("---- ILLEGAL OVERLAP!!! ----"); //TODO: weg
+				System.out.println(entity1);
+				System.out.println(entity2);
+				System.out.println(entity1.getPosition());
+				System.out.println(entity2.getPosition());
+				System.out.println(entity1.isTerminated());
+				System.out.println(entity2.isTerminated());
+				if (entity1 instanceof Bullet)
+					System.out.println("bullet1 isloadedinparent: " + ((Bullet)entity1).isLoadedInParent());
+				if (entity2 instanceof Bullet)
+					System.out.println("bullet2 isloadedinparent: " + ((Bullet)entity2).isLoadedInParent());
+				throw new EntitiesOverlapException();
 			}
 		
 			double sigma = entity1.radius + entity2.radius;
@@ -851,8 +863,7 @@ public abstract class Entity {
 		
 		
 		
-		
-		
+
 
 		/**
 		 * Return the first position where <code>entity1</code> and <code>entity2</code>
@@ -1013,6 +1024,18 @@ public abstract class Entity {
 	
 	
 	
+	/**
+	 * Mirrors the position to put it within the bounds of the world.
+	 * Only works for small out of bounds (-bound, 2*maxbound)
+	 */
+	@Raw
+	void mirrorPositionWall() {
+		this.setPosition(Vector2.subtract(this.getWorld().getMaxBounds(), Vector2.subtract(this.getWorld().getMaxBounds(), this.getPosition().abs()).abs()));
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Internal function that bounces the entity off a wall.
@@ -1021,9 +1044,9 @@ public abstract class Entity {
 	 */
 	@Raw
 	void collideWithWall() {
-		if ((this.position.x - 1.01 * this.radius) <= 0 || (this.position.x + 1.01 * this.radius) >= this.getWorld().getWidth())
+		if ((this.getPosition().x - 1.01 * this.radius) <= 0 || (this.getPosition().x + 1.01 * this.radius) >= this.getWorld().getWidth())
 			this.setVelocity(new Vector2(-this.getVelocity().x, this.getVelocity().y));
-		if ((this.position.y - 1.01 * this.radius) <= 0 || (this.position.y + 1.01 * this.radius) >= this.getWorld().getHeight())
+		if ((this.getPosition().y - 1.01 * this.radius) <= 0 || (this.getPosition().y + 1.01 * this.radius) >= this.getWorld().getHeight())
 			this.setVelocity(new Vector2(this.getVelocity().x, -this.getVelocity().y));
 	}
 

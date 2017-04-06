@@ -238,25 +238,6 @@ public interface IFacade extends asteroids.part1.facade.IFacade {
 	 */
 	public Ship getBulletSource(Bullet bullet) throws ModelException;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**************
 	 * WORLD: Basic methods
 	 *************/
@@ -312,18 +293,7 @@ public interface IFacade extends asteroids.part1.facade.IFacade {
 	 * Remove <code>ship</code> from <code>world</code>.
 	 */
 	public void removeBulletFromWorld(World world, Bullet bullet) throws ModelException;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	/**************
 	 * SHIP: Methods related to loaded bullets
 	 *************/
@@ -361,23 +331,6 @@ public interface IFacade extends asteroids.part1.facade.IFacade {
 	 * <code>ship</code> fires a bullet.
 	 */
 	public void fireBullet(Ship ship) throws ModelException;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/******************
 	 * COLLISIONS

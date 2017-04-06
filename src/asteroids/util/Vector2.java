@@ -159,6 +159,28 @@ public class Vector2 {
 		return new double[] {this.x, this.y};
 	}
 	
+	
+	/**
+	 * Prints contents of vector2.
+	 */
+	@Override
+	public String toString() {
+		return "Vector2 [x=" + x + ", y=" + y + "]";
+	}
+	
+	
+	
+	/**
+	 * returns a new vector2 containing the absolute values of the vector2.
+	 */
+	public Vector2 abs() {
+		if (this.x >= 0 && this.y >= 0)
+			return this;
+		return new Vector2(Math.abs(this.x), Math.abs(this.y));
+	}
+
+
+
 	/**
 	 * Converts the given vector to a vector with the same orientation and length 1
 	 * 

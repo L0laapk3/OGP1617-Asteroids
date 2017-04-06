@@ -167,6 +167,9 @@ public class Bullet extends Entity {
 	 * 		   If ship is null.
 	 */
 	void hit(Ship ship) throws NullPointerException {
+		System.out.println("---hit---"); //TODO: weg
+		//System.out.println(this.getParent());
+		//System.out.println(ship);
 		if (ship == this.getParent())
 			try {
 				ship.loadBullet(this);
@@ -177,7 +180,7 @@ public class Bullet extends Entity {
 			if (this.getParent() != null)
 				this.getParent().triggerScoreOn(ship); //does nothing for now (part 3?)
 			ship.triggerHit();
-			terminate();
+			this.terminate();
 		}
 	}
 

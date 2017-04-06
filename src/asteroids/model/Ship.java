@@ -60,6 +60,8 @@ public class Ship extends Entity {
 		if (bullet == null)
 			throw new NullPointerException();
 
+		System.out.println("LOAD " + this + " " + bullet); //TODO: weg
+		
 		bullet.setParent(this);
 		loadedBullets.add(bullet);
 		bullet.setLoadedInParent(true);
@@ -144,11 +146,23 @@ public class Ship extends Entity {
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
-		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
-
-		if (collidesWith != null)
-			Collisions.collide(bullet, collidesWith);
+		bullet.mirrorPositionWall();
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
+		System.out.println("SHOOT " + bullet); //TODO: weg
+		
+		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
+		while (collidesWith != null) {
+			System.out.println(collidesWith); //TODO: weg
+			System.out.println(bullet.getParent());
+			Collisions.collide(bullet, collidesWith);
+			System.out.println("---");
+			System.out.println(bullet);
+			System.out.println(bullet.isLoadedInParent());
+			System.out.println(bullet.getWorld());
+			collidesWith = (bullet.isTerminated() || bullet.isLoadedInParent()) ? null : bullet.getWorld().findOverlap(bullet);
+		}
+
+		
 		updateLoadMass();
 	}
 	
