@@ -797,6 +797,7 @@ public abstract class Entity {
 			else
 				yCollisionTime = (position.y - this.radius) / -velocity.y;
 			
+			System.out.println("time to wall collision: " + Math.min(xCollisionTime, yCollisionTime)); //TODO: weg
 			return Math.min(xCollisionTime, yCollisionTime);
 		}
 		
@@ -1043,7 +1044,6 @@ public abstract class Entity {
 	/**
 	 * Internal function that bounces the entity off a wall.
 	 * @post Changes the velocity when a ship bounces against the wall of the world.
-	 * @po11st 
 	 */
 	@Raw
 	void collideWithWall() {

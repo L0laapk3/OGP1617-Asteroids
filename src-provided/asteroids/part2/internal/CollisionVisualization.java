@@ -53,7 +53,7 @@ public class CollisionVisualization<F extends IFacade> extends Visualization<F, 
 					continue;
 
 				try {
-					if (!(entity instanceof Ship) || !facade.overlap(selected, (Ship) entity)) {
+					if (!(entity instanceof Ship) || !facade.overlap(selected, (Ship) entity) || ((entity instanceof Bullet) && (((Bullet)entity).getParent() == selected))) {
 						dt = facade.getTimeCollisionEntity(selected, entity);
 						if (dt < min_dt) {
 							min_dt = dt;

@@ -510,6 +510,8 @@ public class World {
 			
 			//detect wall collisions
 			double collisionTime = first.getTimeToWallCollision();
+			if (collisionTime < 0)
+				throw new RuntimeException("WTF WTF WTF WDKDSQMLTKH");
 			if (earliestCollisionTime > collisionTime) {
 				earliestCollisionTime  = collisionTime;
 				collisionFirstEntity = first;
