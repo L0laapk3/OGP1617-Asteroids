@@ -50,7 +50,7 @@ public class World {
 		}
 		if (isValidHeight(height)) {
 			this.height = height;
-		} else if (width > UPPER_BOUND_HEIGHT) {
+		} else if (height > UPPER_BOUND_HEIGHT) {
 			this.height = UPPER_BOUND_HEIGHT;		
 		} else {
 			this.height = 0;

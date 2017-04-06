@@ -588,6 +588,9 @@ public abstract class Entity {
 		 */
 		public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
 			
+			OGUtil.throwErrorIfInvalidNumbers(dt);
+			if (!isValidDeltaTime(dt))
+				throw new NegativeTimeException();
 			
 			//foute berekeningen die geen rekening houden met acceleratie..
 			
