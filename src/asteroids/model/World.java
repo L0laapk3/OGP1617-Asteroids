@@ -595,7 +595,7 @@ public class World {
 		}
 		
 		
-		} catch (EntitiesOverlapException ex) {
+		} catch (EntitiesOverlapException ex) { //TODO: remove
 			throw new RuntimeException(ex);
 		}
 	}

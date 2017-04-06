@@ -1,6 +1,7 @@
 package asteroids.model;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Collection;
 import java.util.Set;
 
@@ -115,7 +116,7 @@ public class Ship extends Entity {
 	public boolean shootBullet() throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		if (!hasBullet())
 			return false;
-		shootBullet(loadedBullets.iterator().next()); //gets one (pseudo)random bullet
+		shootBullet(loadedBullets.iterator().next()); //gets one (pseudo)random bullet from hashset
 		return true;
 	}
 	/**
@@ -351,5 +352,17 @@ public class Ship extends Entity {
 	public void triggerScoreOn(Ship ship) {
 		//add score, this does nothing for now since there is no score system
 		
+	}
+	
+	
+	
+	
+	
+	
+	@Override
+	public void terminate() {
+		for (Iterator<Bullet> it = loadedBullets.iterator(); it.hasNext(); )
+			this.unloadBullet(it.next());
+		super.terminate();
 	}
 }
