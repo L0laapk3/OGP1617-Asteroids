@@ -386,13 +386,12 @@ public class Ship extends Entity {
 	
 	
 	
-	/*
+	
 	@Override
 	public void terminate() {
-		//TODO: dees werkt precies nie? als er schepen doodgaan wa moet er dan met de bullets gebeuren
-		//while (loadedBullets.size() > 0)
-		//	this.unloadBullet(loadedBullets.iterator().next());
+		//TODO: naar onze interpretatie moeten de bullets mee sterven met het schip
+		for (Bullet bullet : loadedBullets)
+			bullet.terminate();
 		super.terminate();
 	}
-	*/
 }
