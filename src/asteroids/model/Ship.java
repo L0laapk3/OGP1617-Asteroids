@@ -284,7 +284,7 @@ public class Ship extends Entity {
 	 * 		  The second ships that collides.
 	 * @post  The Velocity of the two ships will be updated according to the laws of physics.
 	 */
-	static void collideShips(Ship firstShip, Ship secondShip) {
+	public static void collideShips(Ship firstShip, Ship secondShip) {
 				
 		
 		double sigma = firstShip.getRadius() + secondShip.getRadius();

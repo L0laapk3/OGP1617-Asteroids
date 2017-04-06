@@ -294,6 +294,16 @@ public class Part2Tests {
         assertEquals(collisionPosition.y, 438, EPSILON);
     }
     
+    @Test
+    public void testCollideShips() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException{
+    	Ship ship1 = new Ship(100, 200, 1, 0, 20, 0, 8);
+    	Ship ship2 = new Ship(140, 200,-1, 0, 20, 0, 8);
+    	
+    	Ship.collideShips(ship1, ship2);
+    	
+    	assertEquals(ship1.getVelocity().x,-1,EPSILON);
+    	assertEquals(ship2.getVelocity().x,1,EPSILON);
+    }
     
     
     
