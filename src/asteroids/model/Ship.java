@@ -357,11 +357,13 @@ public class Ship extends Entity {
 	
 	
 	
-	
+	/*
 	@Override
 	public void terminate() {
-		while (loadedBullets.size() > 0)
-			this.unloadBullet(loadedBullets.iterator().next());
+		//TODO: dees werkt precies nie?
+		//while (loadedBullets.size() > 0)
+		//	this.unloadBullet(loadedBullets.iterator().next());
 		super.terminate();
 	}
+	*/
 }
