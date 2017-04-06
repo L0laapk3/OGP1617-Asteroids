@@ -733,6 +733,28 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 				return null;
 			return pos.toProfNotation();
 		} catch (NullPointerException | EntitiesOverlapException ex) {
+			if (ex instanceof EntitiesOverlapException) {
+				System.out.println("--------- WARNING! ----------");
+				System.out.println("Facade tried to illegally call getPositionCollisionEntity on 2 objects that overlap. Printing the stack trace causes great amounts of lag.");
+				System.out.println("In the assignment is specifically stated that this method does not apply to objects that overlap and that it has to be written defensively.");
+				System.out.print("Result of Entity.overlap(entity1, entity2): ");
+				System.out.println(Entity.overlap((Entity)entity1, (Entity)entity2));
+				System.out.print("Checking if one is bullet loaded in the other ship: ");
+				Bullet bullet = null;
+				Ship ship = null;
+				if (entity1 instanceof Ship && entity2 instanceof Bullet) {
+					bullet = (Bullet)entity2;
+					ship = (Ship)entity1;
+				} else if (entity2 instanceof Ship && entity1 instanceof Bullet) {
+					bullet = (Bullet)entity1;
+					ship = (Ship)entity2;
+				}
+				if (bullet != null) {
+					System.out.println(bullet.getParent() == ship);
+				} else {
+					System.out.println("false");
+				}
+			}
 			throw new ModelException(ex);
 		}
 	}
