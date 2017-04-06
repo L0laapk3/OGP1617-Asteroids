@@ -657,9 +657,14 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 
 	/**
 	 * Load <code>bullet</code> on <code>ship</code>.
+	 * @throws ModelException 
 	 */
-	public void loadBulletOnShip(Ship ship, Bullet bullet) {
-		ship.loadBullet(bullet);
+	public void loadBulletOnShip(Ship ship, Bullet bullet) throws ModelException {
+		try {
+			ship.loadBullet(bullet);
+		} catch (DoubleEntityException | NotWithinBoundariesException | NullPointerException | EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
 	}
 
 	/**
@@ -667,8 +672,12 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	 * 
 	 * For students working alone, this method must not do anything.
 	 */
-	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) {
-		ship.loadBullet(bullets);
+	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) throws ModelException {
+		try {
+			ship.loadBullet(bullets);
+		} catch (DoubleEntityException | NotWithinBoundariesException | NullPointerException | EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
 	}
 
 	/**

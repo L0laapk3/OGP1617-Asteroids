@@ -70,10 +70,11 @@ public class Ship extends Entity {
 	 * function to load a bullet to this ship
 	 * @param A collection of bullets
 	 * 		  The collection of bullets that has to be loaded.
+	 * @effect loadBullet(bullet) //TODO wa moet er hier??
 	 * @post  The given bullets will be added to the Set with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullets) = true
 	 */
-	public void loadBullet(Collection<Bullet> bullets) {
+	public void loadBullet(Collection<Bullet> bullets) throws DoubleEntityException, NotWithinBoundariesException, NullPointerException, EntitiesOverlapException {
 		for (Bullet bullet : bullets) {
 			this.loadBullet(bullet);
 		}
