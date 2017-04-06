@@ -578,6 +578,7 @@ public class World {
 					if (collisionListener != null) {
 						Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, 0);
 						assert(collPos != null);
+						//TODO: explosie gebeurt ook als ge uw eigen kogel opraapt, da lijkt mij fout van de prof om eerlijk te zijn
 						collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 					}
 					collideEntities(collInfo.firstEntity, collInfo.secondEntity);

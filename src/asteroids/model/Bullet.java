@@ -163,14 +163,22 @@ public class Bullet extends Entity {
 	 * @effect ship.triggerHit()
 	 * 		   See @post
 	 * @param  ship
+	 * @throws NullPointerException  
+	 * 		   If ship is null.
 	 */
-	public void hit(Ship ship) {
-		assert(ship != parent); //"Loaded bullets should be excluded from the collision engine.")
-		
-		if (parent != null)
-			parent.triggerScoreOn(ship); //does nothing for now (part 3?)
-		ship.triggerHit();
-		terminate();
+	void hit(Ship ship) throws NullPointerException {
+		if (ship == this.getParent())
+			try {
+				ship.loadBullet(this);
+			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen //TODO: zie da da nog just is
+				throw new RuntimeException(ex);
+			}
+		else {
+			if (this.getParent() != null)
+				this.getParent().triggerScoreOn(ship); //does nothing for now (part 3?)
+			ship.triggerHit();
+			terminate();
+		}
 	}
 
 	

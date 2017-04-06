@@ -1002,16 +1002,16 @@ public abstract class Entity {
 	/**
 	 * Set the world of this entity to the given world
 	 * 
-	 * @param 	world
-	 * 			The new world for this entity
-	 * @post 	The world of this entity is the same as the given world
-	 * 		  | new.getWorld() == world
+	 * @param  world
+	 * 		   The new world for this entity
 	 */
 	@Raw
 	@Basic
-	public void setWorld(World world) {
+	void setWorld(World world) {
 		this.world = world;
 	}
+	
+	
 	
 	
 	/**

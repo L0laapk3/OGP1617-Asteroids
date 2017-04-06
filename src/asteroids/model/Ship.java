@@ -49,21 +49,27 @@ public class Ship extends Entity {
 	 * 		   The bullet that has to be loaded.
 	 * @post   The given bullet will be added to the Set with loaded bullets from this ship.
 	 * 		 | new.getLoadedBullets.contains(bullet) = true
+	 * @effect If the bullet is in a different world than the ship, the world of the bullet will be set to the world of a ship.
 	 * @throws NullPointerException
-	 * 		   bullet must not be null.
-	 * @throws EntitiesOverlapException 
-	 * @throws NotWithinBoundariesException 
-	 * @throws DoubleEntityException 
+	 * 		   bullet must not be null.      
+	 * @throws MisMatchWorldsException
+	 * 		   If the bullet and the ship are not in the same world.
+	 * @note   defensive
 	 */
-	public void loadBullet(Bullet bullet) throws NullPointerException, DoubleEntityException, NotWithinBoundariesException, EntitiesOverlapException {
-		//TODO: defensive, normaal, total (DESTRUCTION) ??????????
-
+	public void loadBullet(Bullet bullet) throws NullPointerException  {
 		if (bullet == null)
 			throw new NullPointerException();
+
 		bullet.setParent(this);
 		loadedBullets.add(bullet);
 		bullet.setLoadedInParent(true);
-		this.getWorld().addEntity(bullet);
+
+		if (this.getWorld() != bullet.getWorld())
+			try {
+				this.getWorld().addEntity(bullet); //These exceptions should never happen as the bullet has been set to be loaded in this ship
+			} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
+				throw new RuntimeException(ex);
+			}
 	}
 	
 	/**
@@ -74,7 +80,7 @@ public class Ship extends Entity {
 	 * @post  The given bullets will be added to the Set with loaded bullets from this ship.
 	 * 		| new.getLoadedBullets.contains(bullets) = true
 	 */
-	public void loadBullet(Collection<Bullet> bullets) throws DoubleEntityException, NotWithinBoundariesException, NullPointerException, EntitiesOverlapException {
+	public void loadBullet(Collection<Bullet> bullets) throws NullPointerException {
 		for (Bullet bullet : bullets) {
 			this.loadBullet(bullet);
 		}
@@ -93,7 +99,6 @@ public class Ship extends Entity {
 		if (bullet == null)
 			throw new NullPointerException();
 		bullet.setLoadedInParent(false);
-		bullet.setParent(null);
 		loadedBullets.remove(bullet);
 	}
 	
@@ -140,6 +145,7 @@ public class Ship extends Entity {
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
 		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
+
 		if (collidesWith != null)
 			Collisions.collide(bullet, collidesWith);
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
@@ -360,7 +366,7 @@ public class Ship extends Entity {
 	/*
 	@Override
 	public void terminate() {
-		//TODO: dees werkt precies nie?
+		//TODO: dees werkt precies nie? als er schepen doodgaan wa moet er dan met de bullets gebeuren
 		//while (loadedBullets.size() > 0)
 		//	this.unloadBullet(loadedBullets.iterator().next());
 		super.terminate();

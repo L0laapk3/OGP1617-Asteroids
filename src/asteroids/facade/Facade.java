@@ -3,12 +3,7 @@ package asteroids.facade;
 import java.util.Collection;
 import java.util.Set;
 
-import asteroids.exceptions.DoubleEntityException;
-import asteroids.exceptions.EntitiesOverlapException;
-import asteroids.exceptions.IllegalEntityException;
-import asteroids.exceptions.InvalidPositionException;
-import asteroids.exceptions.InvalidRadiusException;
-import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.exceptions.*;
 import asteroids.model.Bullet;
 import asteroids.model.CollisionInformation;
 import asteroids.model.Entity;
@@ -662,7 +657,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	public void loadBulletOnShip(Ship ship, Bullet bullet) throws ModelException {
 		try {
 			ship.loadBullet(bullet);
-		} catch (DoubleEntityException | NotWithinBoundariesException | NullPointerException | EntitiesOverlapException ex) {
+		} catch (NullPointerException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -675,7 +670,7 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) throws ModelException {
 		try {
 			ship.loadBullet(bullets);
-		} catch (DoubleEntityException | NotWithinBoundariesException | NullPointerException | EntitiesOverlapException ex) {
+		} catch (NullPointerException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -695,9 +690,9 @@ public class Facade implements asteroids.part2.facade.IFacade  {
 	}
 	
 
-	/******************
-	 * COLLISIONS
-	 **************/
+	/**************\
+	 * COLLISIONS *
+	\**************/
 
 	/**
 	 * Return the shortest time in which the given entity will collide with the
