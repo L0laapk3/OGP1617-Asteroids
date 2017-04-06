@@ -581,9 +581,11 @@ public class World {
 
 			
 			if (collInfo.timeToCollision < Dt) { //collision happens before end Dt
+				if (!collInfo.isWallCollision())
+					System.out.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
+				
 				doTime(collInfo.timeToCollision, entitiesWithCollision);
 				Dt -= collInfo.timeToCollision;
-				
 				if (collInfo.isWallCollision()) { //wall collision
 					if (collisionListener != null) {
 						Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(0);
@@ -594,6 +596,7 @@ public class World {
 				} else { //entity collision
 					if (collisionListener != null) {
 						Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, 0);
+						System.out.println("explosion: " + collPos);
 						assert(collPos != null);
 						//TODO: explosie gebeurt ook als ge uw eigen kogel opraapt, da lijkt mij fout van de prof om eerlijk te zijn
 						collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);

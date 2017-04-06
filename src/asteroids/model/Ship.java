@@ -153,6 +153,7 @@ public class Ship extends Entity {
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
+		System.out.println("radius: " + bullet.getRadius());
 		System.out.println(bullet.getPosition()); //TODO: weg
 		bullet.mirrorPositionWall();
 		System.out.println(bullet.getPosition()); //TODO: weg
