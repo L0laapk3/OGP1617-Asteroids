@@ -36,7 +36,7 @@ public class Collisions {
 		else if (first instanceof Bullet && second instanceof Ship)
 			((Bullet)first).hit((Ship)second);
 		else if (first instanceof Ship && second instanceof Bullet)
-			((Bullet)second).hit((Ship)first);
+			((Bullet) second).hit((Ship) first);
 		else
 			throw new RuntimeException(new UndefinedCollisionBehaviourException(first, second));
 	}
