@@ -3,7 +3,6 @@ package asteroids.model;
 import be.kuleuven.cs.som.annotate.*;
 import asteroids.exceptions.*;
 
-
 /**
  * A class to define bullets.
  * 
@@ -22,24 +21,24 @@ public class Bullet extends Entity {
 	 * Constant holding the minimum radius from a bullet.
 	 */
 	private static final double MIN_RADIUS_BULLET = 1;
-	
+
 	/**
 	 * Constant holding the max amount of bounces before a bullet dissapears.
 	 */
 	private static final double MAX_BOUNCES = 3;
-	
+
 	/**
 	 * Variable holding the amount of bounces after being shot.
 	 */
 	private int bounces = 0;
-	
+
 	/**
 	 * Gets the number of bounces after the bullet was shot.
 	 */
 	public int getBounces() {
 		return this.bounces;
 	}
-	
+
 	/**
 	 * Resets the amount of bounces.
 	 * @post getBounces() == 0
@@ -47,7 +46,7 @@ public class Bullet extends Entity {
 	void resetBounces() {
 		this.bounces = 0;
 	}
-	
+
 	/**
 	 * Adds one bounce to the bounce counter.
 	 * @post getBounces()++
@@ -55,12 +54,12 @@ public class Bullet extends Entity {
 	void addBounce() {
 		this.bounces++;
 	}
-	
+
 	/**
 	 * Variable holding the parent from the bullet.
 	 */
 	private Ship parent;
-	
+
 	/**
 	 * Returns the ship that originally shot this bullet.
 	 * @return The parent of the bullet.
@@ -70,7 +69,7 @@ public class Bullet extends Entity {
 	public Ship getParent() {
 		return this.parent;
 	}
-	
+
 	/**
 	 * Sets the ship that this bullet belongs to.
 	 */
@@ -79,7 +78,7 @@ public class Bullet extends Entity {
 	void setParent(Ship parent) {
 		this.parent = parent;
 	}
-	
+
 	/**
 	 * Variable holding whether the bullet is loaded in his parent.
 	 */
@@ -94,7 +93,7 @@ public class Bullet extends Entity {
 	public boolean isLoadedInParent() {
 		return loadedInParent;
 	}
-	
+
 	/**
 	 * Sets the isLoadedInParent variable to true or false
 	 * 
@@ -106,12 +105,7 @@ public class Bullet extends Entity {
 			throw new NoParentException();
 		this.loadedInParent = loadedInParent;
 	}
-	
-	
-	
-	
-	
-	
+
 	/**
 	 * Function to make a new bullet.
 	 * @param  x
@@ -132,21 +126,19 @@ public class Bullet extends Entity {
 	 * @post   The parent of this bullet will be set to the given parent.
 	 * @post   The mass density from this bullet is set to 7.8*10^12 kg/km^3
 	 */
-	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship parent) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship parent)
+			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, 0);
-		this.setMinRadius(MIN_RADIUS_BULLET);		
+		this.setMinRadius(MIN_RADIUS_BULLET);
 
-		setRho(7.8 * Math.pow(10,  12)); //constant for this class
-		
+		setRho(7.8 * Math.pow(10, 12)); // constant for this class
+
 		this.parent = parent;
-		
-		if (parent != null){
+
+		if (parent != null) {
 			parent.loadBullet(this);
 		}
 	}
-
-
-
 
 	@Override
 	void collideWithWall() {
@@ -156,9 +148,6 @@ public class Bullet extends Entity {
 		else
 			super.collideWithWall();
 	}
-	
-	
-	
 
 	/**
 	 * Function that handles when a bullet hits a ship.
@@ -171,24 +160,23 @@ public class Bullet extends Entity {
 	 * 		   If ship is null.
 	 */
 	void hit(Ship ship) throws NullPointerException {
-		System.out.println("---hit---"); //TODO: weg
-		//System.out.println(this.getParent());
-		//System.out.println(ship);
+		System.out.println("---hit---"); // TODO: weg
+		// System.out.println(this.getParent());
+		// System.out.println(ship);
 		if (ship == this.getParent())
 			try {
 				ship.loadBullet(this);
-			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen //TODO: zie da da nog just is
+			} catch (DoubleEntityException | MisMatchWorldsException ex) { // these should never happen //TODO: zie da da nog just is
 				throw new RuntimeException(ex);
 			}
 		else {
 			if (this.getParent() != null)
-				this.getParent().triggerScoreOn(ship); //does nothing for now (part 3?)
+				this.getParent().triggerScoreOn(ship); // does nothing for now (part 3?)
 			ship.triggerHit();
 			this.terminate();
 		}
 	}
 
-	
 	/**
 	 * Handles the collision between two bullets..
 	 * @param  first

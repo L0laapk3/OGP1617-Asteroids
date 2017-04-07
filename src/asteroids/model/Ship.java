@@ -16,9 +16,8 @@ import be.kuleuven.cs.som.annotate.Raw;
  * A class to define ships.
  * 
  * @effect Entity
- * @invar The radius must be bigger than MIN_RADIUS for Ship. |
- *        isValidRadius(getRadius())
- * 
+ * @invar The radius must be bigger than MIN_RADIUS for Ship.
+ *      | isValidRadius(getRadius())
  * @version 2.0
  * @author Kris Keersmaekers
  * @author Rik Pauwels
@@ -43,16 +42,15 @@ public class Ship extends Entity {
 	/**
 	 * function to load a bullet to this ship
 	 * 
-	 * @param bullet
-	 *            The bullet that has to be loaded.
-	 * @post The given bullet will be added to the Set with loaded bullets from
-	 *       this ship. | new.getLoadedBullets.contains(bullet) = true
-	 * @effect If the bullet is in a different world than the ship, the world of
-	 *         the bullet will be set to the world of a ship.
+	 * @param  bullet
+	 *         The bullet that has to be loaded.
+	 * @post   The given bullet will be added to the Set with loaded bullets from this ship.
+	 *       | new.getLoadedBullets.contains(bullet) = true
+	 * @effect If the bullet is in a different world than the ship, the world of the bullet will be set to the world of a ship.
 	 * @throws NullPointerException
-	 *             bullet must not be null.
+	 *         bullet must not be null.
 	 * @throws MisMatchWorldsException
-	 *             If the bullet and the ship are not in the same world.
+	 *         If the bullet and the ship are not in the same world.
 	 * @note defensive
 	 */
 	public void loadBullet(Bullet bullet) throws NullPointerException {
@@ -79,12 +77,11 @@ public class Ship extends Entity {
 	/**
 	 * function to load a bullet to this ship
 	 * 
-	 * @param A
-	 *            collection of bullets The collection of bullets that has to be
-	 *            loaded.
+	 * @param  A
+	 *         collection of bullets The collection of bullets that has to be loaded.
 	 * @effect loadBullet(bullet) //TODO wa moet er hier??
-	 * @post The given bullets will be added to the Set with loaded bullets from
-	 *       this ship. | new.getLoadedBullets.contains(bullets) = true
+	 * @post   The given bullets will be added to the Set with loaded bullets from this ship.
+	 *       | new.getLoadedBullets.contains(bullets) = true
 	 */
 	public void loadBullet(Collection<Bullet> bullets) throws NullPointerException {
 		for (Bullet bullet : bullets) {
@@ -95,12 +92,12 @@ public class Ship extends Entity {
 	/**
 	 * function to unload a bullet to this ship
 	 * 
-	 * @param bullet
-	 *            The bullet that has to be unloaded.
-	 * @post The given bullet will be removed to the Set with loaded bullets
-	 *       from this ship. | new.getLoadedBullets.contains(bullet) = false
+	 * @param  bullet
+	 *         The bullet that has to be unloaded.
+	 * @post   The given bullet will be removed to the Set with loaded bullets from this ship.
+	 *       | new.getLoadedBullets.contains(bullet) = false
 	 * @throws NullPointerException
-	 *             bullet must not be null.
+	 *         bullet must not be null.
 	 */
 	public void unloadBullet(Bullet bullet) throws NullPointerException {
 		if (bullet == null)
@@ -112,8 +109,7 @@ public class Ship extends Entity {
 	/**
 	 * Checks if there is a bullet available in the ship's magazine.
 	 * 
-	 * @return true if and only if there is at least 1 bullet loaded in the
-	 *         ship.
+	 * @return true if and only if there is at least 1 bullet loaded in the ship.
 	 */
 	public boolean hasBullet() {
 		return loadedBullets.size() > 0;
@@ -139,7 +135,7 @@ public class Ship extends Entity {
 	 * Shoots the given bullet from the ship.
 	 * 
 	 * @param bullet
-	 *            The bullet to shoot
+	 *        The bullet to shoot
 	 * @throws UndefinedCollisionBehaviourException
 	 * @note defensive
 	 */
@@ -240,39 +236,41 @@ public class Ship extends Entity {
 	}
 
 	/**
-	 * Create a new ship with the given position, velocity, radius and
-	 * orientation (in radians).
+	 * Create a new ship with the given position, velocity, radius and orientation (in radians).
 	 * 
-	 * @param x
-	 *            The x coordinate where the new ship has to be created.
-	 * @param y
-	 *            The y coordinate where the new ship has to be created.
-	 * @param xVelocity
-	 *            The initial speed in the x direction of the new ship.
-	 * @param yVelocity
-	 *            The initial speed in the y direction of the new ship.
-	 * @param orientation
-	 *            The direction that the new ship is initially pointed at.
-	 * @param radius
-	 *            The size of the newly created ship.
-	 * @param mass
-	 *            The mass of the newly created ship.
-	 * @param rho
-	 *            The mass density of the newly created ship
-	 * @effect This new ship is initialized as a new Entity with given position,
-	 *         velocity, radius and orientation. |
-	 *         super(x,y,xVelocity,yVelocity,radius,orientation)
-	 * @post The radius of this new ship is equal to the given radius if the
-	 *       radius is valid otherwise this function throws an
-	 *       InvalidRadiusException. | if (radius < MIN_RADIUS) |
-	 *       new.getRadius=radius | else | throw new InvalidRadiusException
-	 * @post The mass of this new ship is equal to the given mass if the mass is
-	 *       invalid it will be set to a default value of 1. | if (isValidMass)
-	 *       | new.getMass = mass | else | new.getMass = 1
-	 * @post The mass density of this new ship is equal to the given mass
-	 *       density if the mass density is invalid it will be set to a default
-	 *       value of 1.42*10^12. | if (isValidMass) | new.getRho=rho | else |
-	 *       new.getRho=1.42*10^12
+	 * @param  x
+	 *         The x coordinate where the new ship has to be created.
+	 * @param  y
+	 *         The y coordinate where the new ship has to be created.
+	 * @param  xVelocity
+	 *         The initial speed in the x direction of the new ship.
+	 * @param  yVelocity
+	 *         The initial speed in the y direction of the new ship.
+	 * @param  orientation
+	 *         The direction that the new ship is initially pointed at.
+	 * @param  radius
+	 *         The size of the newly created ship.
+	 * @param  mass
+	 *         The mass of the newly created ship.
+	 * @param  rho
+	 *         The mass density of the newly created ship
+	 * @effect This new ship is initialized as a new Entity with given position, velocity, radius and orientation.
+	 *       | super(x,y,xVelocity,yVelocity,radius,orientation)
+	 * @post   The radius of this new ship is equal to the given radius if the radius is valid otherwise this function throws an InvalidRadiusException.
+	 * 		 | if (radius < MIN_RADIUS)
+	 *       |     new.getRadius=radius
+	 *       | else 
+	 *       |     throw new InvalidRadiusException
+	 * @post   The mass of this new ship is equal to the given mass if the mass is invalid it will be set to a default value of 1.
+	 *       | if (isValidMass)
+	 *       |	   new.getMass = mass
+	 *       | else 
+	 *       |     new.getMass = 1
+	 * @post The mass density of this new ship is equal to the given mass density if the mass density is invalid it will be set to a default value of 1.42*10^12.
+	 *       | if (isValidMass)
+	 *       |     new.getRho=rho 
+	 *       | else 
+	 *       |     new.getRho=1.42*10^12
 	 */
 
 	// createShip(width / 2., height / 2., 1, 6, 40, 0, 3e17);
@@ -294,11 +292,10 @@ public class Ship extends Entity {
 	 * Recalculates the velocity of the two ships, when they bounce
 	 * 
 	 * @param firstShip
-	 *            The first ship that collides.
+	 *        The first ship that collides.
 	 * @param secondShip
-	 *            The second ships that collides.
-	 * @post The Velocity of the two ships will be updated according to the laws
-	 *       of physics.
+	 *        The second ships that collides.
+	 * @post The Velocity of the two ships will be updated according to the laws of physics.
 	 */
 	public static void collideShips(Ship firstShip, Ship secondShip) {
 
@@ -353,13 +350,12 @@ public class Ship extends Entity {
 	/**
 	 * function that calculates the acceleration of the ship
 	 * 
-	 * @effect this function calculates the acceleration of the ship and sets it
-	 *         using setAccelaration when the thruster must be active |
-	 *         this.setAcceleration(this.getAcceleration()*
-	 *         thrustforce/this.getMass())); | thrusterState = true;
-	 * @effect this function sets the acceleration to (0,0) using
-	 *         setAccelaration when the thruster must be inactive |
-	 *         this.setAcceleration(new Vector2(0,0)); | thrusterState = false;
+	 * @effect this function calculates the acceleration of the ship and sets it using setAccelaration when the thruster must be active 
+	 *       | this.setAcceleration(this.getAcceleration()* thrustforce/this.getMass()));
+	 *       | thrusterState = true;
+	 * @effect this function sets the acceleration to (0,0) using setAccelaration when the thruster must be inactive
+	 *       | this.setAcceleration(new Vector2(0,0));
+	 *       | thrusterState = false;
 	 */
 	public void thrustOnOff(boolean state) {
 		if (state) {
@@ -372,22 +368,21 @@ public class Ship extends Entity {
 	}
 
 	/**
-	 * This function defines what will happen when the ship gets hit by a
-	 * bullet: The ship gets terminated.
+	 * This function defines what will happen when the ship gets hit by a bullet: The ship gets terminated.
 	 * 
-	 * @post Terminate the ship. | this.terminate();
+	 * @post Terminate the ship. 
+	 *     | this.terminate();
 	 */
 	public void triggerHit() {
 		this.terminate();
 	}
 
 	/**
-	 * This function defines the behaviour that happens when the ship gets a
-	 * kill on another ship.
+	 * This function defines the behaviour that happens when the ship gets a kill on another ship.
 	 * 
 	 * @post Nothing will happen. (for now)
 	 * @param ship
-	 *            | The ship that was killed.
+	 *      | The ship that was killed.
 	 */
 	public void triggerScoreOn(Ship ship) {
 		// add score, this does nothing for now since there is no score system

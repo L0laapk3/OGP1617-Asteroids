@@ -26,9 +26,9 @@ public class Vector2 {
 	 * Creates a new Vector2 object.
 	 * 
 	 * @param x
-	 *            the x parameter of this vector2.
+	 *        the x parameter of this vector2.
 	 * @param y
-	 *            the y parameter of this vector2.
+	 *        the y parameter of this vector2.
 	 * @effect Creates a new vector2 with given x and y.
 	 */
 	public Vector2(double x, double y) {
@@ -45,13 +45,12 @@ public class Vector2 {
 	}
 
 	/**
-	 * Creates a new Vector2, that is the addition of firstVector to
-	 * secondVector.
+	 * Creates a new Vector2, that is the addition of firstVector to secondVector.
 	 * 
 	 * @param firstVector
-	 *            The first vector.
+	 *        The first vector.
 	 * @param secondVector
-	 *            The second vector.
+	 *        The second vector.
 	 * @return new vector2 that is the result of the addition.
 	 */
 	@Immutable
@@ -60,13 +59,12 @@ public class Vector2 {
 	}
 
 	/**
-	 * Creates a new Vector2, that is the subtraction of secondVector from
-	 * firstVector.
+	 * Creates a new Vector2, that is the subtraction of secondVector from firstVector.
 	 * 
 	 * @param firstVector
-	 *            The first vector.
+	 *        The first vector.
 	 * @param secondVector
-	 *            The second vector.
+	 *        The second vector.
 	 * @return new vector2 that is the result of the subtraction.
 	 */
 	@Immutable
@@ -78,9 +76,9 @@ public class Vector2 {
 	 * Creates a new Vector2, that is the division of vector with value
 	 * 
 	 * @param vector
-	 *            The vector to divide.
+	 *        The vector to divide.
 	 * @param value
-	 *            The value to divide the vector with.
+	 *        The value to divide the vector with.
 	 * @return new vector2 that is the result of the multiplication.
 	 */
 	@Immutable
@@ -92,9 +90,9 @@ public class Vector2 {
 	 * Creates a new Vector2, that is the multiplication of vector with value
 	 * 
 	 * @param vector
-	 *            The vector to multiply.
+	 *        The vector to multiply.
 	 * @param value
-	 *            The value to multiply the vector with.
+	 *        The value to multiply the vector with.
 	 * @return new vector2 that is the result of the multiplication.
 	 */
 	@Immutable
@@ -115,11 +113,10 @@ public class Vector2 {
 	 * Calculates the distance between 2 vectors
 	 * 
 	 * @param firstVector
-	 *            The first vector
+	 *        The first vector
 	 * @param secondVector
-	 *            The second vector
-	 * @return Calculates the distance between the first vector and the second
-	 *         vector.
+	 *        The second vector
+	 * @return Calculates the distance between the first vector and the second vector.
 	 */
 	public static double distance(Vector2 firstVector, Vector2 secondVector) {
 		return subtract(firstVector, secondVector).pythagoras();
@@ -129,9 +126,9 @@ public class Vector2 {
 	 * Calculates the dot product of 2 vectors
 	 * 
 	 * @param firstVector
-	 *            The first vector
+	 *        The first vector
 	 * @param secondVector
-	 *            The second vector
+	 *        The second vector
 	 * @return Calculates the dot product of firstVector and secondVector.
 	 */
 	public static double dot(Vector2 firstVector, Vector2 secondVector) {
@@ -165,11 +162,9 @@ public class Vector2 {
 	}
 
 	/**
-	 * Converts the given vector to a vector with the same orientation and
-	 * length 1
+	 * Converts the given vector to a vector with the same orientation and length 1
 	 * 
-	 * @return a vector with the same orientation as the given vector and length
-	 *         1
+	 * @return a vector with the same orientation as the given vector and length 1
 	 */
 	public Vector2 toUnitVector() {
 		double factor = Math.sqrt(this.pythagoras());
