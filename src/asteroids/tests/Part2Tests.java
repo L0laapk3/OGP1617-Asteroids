@@ -29,6 +29,7 @@ import asteroids.util.Vector2;
 public class Part2Tests {
 
 	// ---------------------TESTS MAKEN SHIP
+	//TODO: tests gaan waarschijnlijk fout zijn
 
 	private static final double EPSILON = 0.0001;
 
@@ -132,8 +133,14 @@ public class Part2Tests {
 
 	@Test
 	public void testGetBaseMass() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		Ship ship = new Ship(1, 2, 3, 4, 50, 6, 7);
-		assertEquals(ship.getBaseMass(), 5.5763269601218829e17, EPSILON);
+		Ship ship = new Ship(1, 2, 3, 4, 50, 6, 30E30);
+		assertEquals(ship.getBaseMass(), 30E30, EPSILON);
+	}
+
+	@Test
+	public void testInvalidBaseMass() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+		Ship ship = new Ship(1, 2, 3, 4, 50, 6, 1);
+		assertEquals(ship.getBaseMass(), 7.4351026, EPSILON);
 	}
 
 	@Test

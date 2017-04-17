@@ -104,6 +104,8 @@ public abstract class Entity extends Instance {
 		if (radius < MIN_RADIUS)
 			throw new InvalidRadiusException();
 		this.radius = radius;
+		
+		//mass is never checked if it is valid, because it is an abstract class. Child classes are expected to handle this themselves.
 		this.baseMass = mass;
 
 	}

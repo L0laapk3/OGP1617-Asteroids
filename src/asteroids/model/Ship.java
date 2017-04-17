@@ -40,7 +40,7 @@ public class Ship extends Entity {
 
 	
 	
-	private static final double MIN_RHO = 1.42 * Math.pow(10, 12);
+	private static final double MIN_RHO = 1.42E12;
 	
 	
 	
@@ -67,33 +67,14 @@ public class Ship extends Entity {
 	 *         The size of the newly created ship.
 	 * @param  mass
 	 *         The mass of the newly created ship.
-	 * @param  rho
-	 *         The mass density of the newly created ship
-	 * @invar    The mass of the entity will always be equal to or greater than 4/3*PI*radius^3*(mass density)
-	 * 		   | this.isValidMass(mass)
+	 * @invar  The mass of the entity will always be equal to or greater than 4/3*PI*radius^3*(mass density)
+	 * 		 | this.isValidMass(mass)
 	 * @effect This new ship is initialized as a new Entity with given position, velocity, radius and orientation.
-	 *       | super(x,y,xVelocity,yVelocity,radius,orientation)
-	 * @post   The radius of this new ship is equal to the given radius if the radius is valid otherwise this function throws an InvalidRadiusException.
-	 * 		 | if (radius < MIN_RADIUS)
-	 *       |     new.getRadius=radius
-	 *       | else 
-	 *       |     throw new InvalidRadiusException
-	 *   
-	 *       //TODO: herschrijven dit (zie comment bij super())
-	 *
-	 * @post   The mass of this new ship is equal to the given mass if the mass is invalid it will be set to a default value of 1.
-	 *       | if (isValidMass)
-	 *       |	   new.getMass = mass
-	 *       | else 
-	 *       |     new.getMass = 1
-	 * @post The mass density of this new ship is equal to the given mass density if the mass density is invalid it will be set to a default value of 1.42*10^12.
-	 *       | if (isValidMass)
-	 *       |     new.getRho=rho 
-	 *       | else 
-	 *       |     new.getRho=1.42*10^12
+	 *       | super(x, y, xVelocity, yVelocity, radius, orientation, mass)
+	 * @post   If the mass density of the ship is lower than MIN_RHO, the mass will be adjusted so that the mass density of the ship will equal MIN_RHO.
+	 * @throws InvalidRadiusException
+	 *         If the radius is less than MIN_RADIUS.
 	 */
-
-	//TODO: effe comments nazien
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, orientation, Math.max(mass, calculateBassMass(MIN_RHO, radius))); //total: if the mass is too low, it will be set to a higher value
@@ -346,7 +327,7 @@ public class Ship extends Entity {
 	@Raw
 	@Override
 	public double getMass() {
-		OGUtil.println("super mass " + super.getMass() + ", bullet mass " + this.getLoadMass() + " "  + this);
+		//OGUtil.println("super mass " + super.getMass() + ", bullet mass " + this.getLoadMass() + " "  + this);
 		return super.getMass() + this.getLoadMass();
 	}
 

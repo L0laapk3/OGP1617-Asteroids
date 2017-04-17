@@ -37,6 +37,11 @@ public class Bullet extends Entity {
 	 */
 	private static final double MAX_BOUNCES = 3;
 	
+	/**
+	 * Constant defining the mass density of all bullets.
+	 */
+	private static final double RHO = 7.8E12;
+	
 	
 	/**
 	 * Function to make a new bullet.
@@ -63,7 +68,7 @@ public class Bullet extends Entity {
 
 	//TODO: effe comments nazien
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, 0, calculateBassMass(7.8 * Math.pow(10,  12), radius));
+		super(x, y, xVelocity, yVelocity, radius, 0, calculateBassMass(RHO, radius));
 		this.setMinRadius(MIN_RADIUS_BULLET);		
 
 		
