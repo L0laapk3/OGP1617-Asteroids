@@ -81,7 +81,6 @@ public class Ship extends Entity {
 	 *       |     new.getRho=1.42*10^12
 	 */
 
-	// createShip(width / 2., height / 2., 1, 6, 40, 0, 3e17);
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double rho)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, orientation);
@@ -132,6 +131,7 @@ public class Ship extends Entity {
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
+		updateLoadMass();
 		bullet.setLoadedInMotherBoard(true);
 		bullet.resetBounces();
 
@@ -194,6 +194,7 @@ public class Ship extends Entity {
 			throw new NullPointerException();
 		bullet.setLoadedInMotherBoard(false);
 		loadedBullets.remove(bullet);
+		updateLoadMass();
 	}
 
 	/**
@@ -309,9 +310,9 @@ public class Ship extends Entity {
 	 */
 	@Raw
 	void updateLoadMass() {
-		loadMass = 0;
+		this.loadMass = 0;
 		for (Bullet bullet : loadedBullets)
-			loadMass += bullet.getMass();
+			this.loadMass += bullet.getMass();
 	}
 
 	/**

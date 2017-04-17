@@ -980,10 +980,10 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Applies acceleration to entity.
-	 * @param Dt
-	 * 		  For how much time acceleration needs to be applied to the entity.
-	 * @effect  Sets the velocity to the new velocity which takes into account the acceleration of the entity.
-	 * 		| this.setVelocity(new velocity)
+	 * @param  Dt
+	 * 		   For how much time acceleration needs to be applied to the entity.
+	 * @effect Sets the velocity to the new velocity which takes into account the acceleration of the entity.
+	 * 		 | this.setVelocity(new velocity)
 	 */
 	public void accelerate(double Dt) {
 
