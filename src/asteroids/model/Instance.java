@@ -18,6 +18,7 @@ public abstract class Instance {
 	/**
 	 * Check whether this object exists and is not terminated.
 	 */
+	@Raw
 	public static boolean isNullOrTerminated(Instance obj) {
 		return (obj == null) || obj.isTerminated();
 	}
@@ -36,8 +37,10 @@ public abstract class Instance {
 	 *
 	 * @post   The instance is terminated.
 	 */
+	@Raw
+	@Basic
 	public void terminate() {
-		OGUtil.println("TERMINATE " + this); // TODO: weg
+		OGUtil.println("TERMINATE " + this);
 		if (!isTerminated())
 			this.isTerminated = true;
 	}

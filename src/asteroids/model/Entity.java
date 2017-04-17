@@ -623,7 +623,7 @@ public abstract class Entity extends Instance {
 		if (Entity.isNullOrTerminated(entity1) || Entity.isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) { // optimisation
-			// OGUtil.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
+			// OGUtil.println("De entities in functie overlap zijn hetzelfde => geeft true");
 			return true;
 		}
 		Vector2 centerDifference = new Vector2(entity1.getPosition().x - entity2.getPosition().x, entity1.getPosition().y - entity2.getPosition().y);
@@ -687,7 +687,7 @@ public abstract class Entity extends Instance {
 		if (entity1 == null || entity2 == null)
 			throw new NullPointerException("entities cannot be null.");
 		if (overlap(entity1, entity2)) {
-			OGUtil.println("---- ILLEGAL OVERLAP!!! ----"); // TODO: weg
+			OGUtil.println("---- ILLEGAL OVERLAP!!! ----");
 			OGUtil.println(entity1);
 			OGUtil.println(entity2);
 			OGUtil.println(entity1.getPosition());

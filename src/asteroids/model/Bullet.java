@@ -168,7 +168,7 @@ public class Bullet extends Entity {
 	@Override
 	void collideWithWall() {
 		this.addBounce();
-		OGUtil.println("BOUNCE " + this + " " + this.getBounces()); //TODO: WEG
+		OGUtil.println("BOUNCE " + this + " " + this.getBounces());
 		if (this.getBounces() >= MAX_BOUNCES)
 			this.terminate();
 		else
@@ -187,7 +187,7 @@ public class Bullet extends Entity {
 	 * 		   If ship is null.
 	 */
 	void hit(Ship ship) throws NullPointerException {
-		OGUtil.println("---hit---"); //TODO: weg
+		OGUtil.println("---hit---");
 		//OGUtil.println(this.getParent());
 		//OGUtil.println(ship);
 		if (ship == this.getMotherShip())

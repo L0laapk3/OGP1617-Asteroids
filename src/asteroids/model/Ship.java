@@ -128,7 +128,7 @@ public class Ship extends Entity {
 		if (bullet == null)
 			throw new NullPointerException();
 
-		OGUtil.println("LOAD " + this + " " + bullet); // TODO: wegdoen
+		OGUtil.println("LOAD " + this + " " + bullet);
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
@@ -248,7 +248,7 @@ public class Ship extends Entity {
 	 * @note defensive
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
-		OGUtil.println("SHOOT " + bullet); // TODO: wegdoen
+		OGUtil.println("SHOOT " + bullet);
 		if (this.getCollisionWorld() == null)
 			throw new NoWorldException();
 		if (this.isTerminated())
@@ -266,15 +266,15 @@ public class Ship extends Entity {
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
 		OGUtil.println("radius: " + bullet.getRadius());
-		OGUtil.println(bullet.getPosition()); // TODO: wegdoen
+		OGUtil.println(bullet.getPosition());
 		bullet.mirrorPositionWall();
-		OGUtil.println(bullet.getPosition()); // TODO: wegdoen
+		OGUtil.println(bullet.getPosition());
 		OGUtil.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
 		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
 		while (collidesWith != null) {
-			OGUtil.println(collidesWith); // TODO: weg
+			OGUtil.println(collidesWith);
 			OGUtil.println(bullet.getMotherShip());
 			Collisions.collide(bullet, collidesWith);
 			OGUtil.println("---");

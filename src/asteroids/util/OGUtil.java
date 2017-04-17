@@ -70,6 +70,7 @@ public class OGUtil {
 	
 	/**
 	 * Prints line only in debug mode
+	 * @effect println(arg.toString());
 	 */
 	public static void println(Object arg) {
 		println(arg.toString());
