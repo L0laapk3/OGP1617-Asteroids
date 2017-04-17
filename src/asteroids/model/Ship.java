@@ -21,7 +21,6 @@ import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 
 
-//TODO: OVERAL IMMUTABLE
 /**
  * A class to define ships.
  * 

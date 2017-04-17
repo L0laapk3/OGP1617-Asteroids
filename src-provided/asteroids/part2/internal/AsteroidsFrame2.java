@@ -98,7 +98,7 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 				facade.addShipToWorld(world, enemyShip);
 				for (int i = 1; i < 10; i++) {
 					Bullet bullet = facade.createBullet(facade.getShipPosition(enemyShip)[0],
-							facade.getShipPosition(enemyShip)[1], 0, 0, Math.PI * 3);
+							facade.getShipPosition(enemyShip)[1], 0, 0, Math.PI);
 					facade.loadBulletOnShip(enemyShip, bullet);
 				}
 				enemies.add(enemyShip);
@@ -155,7 +155,7 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice screen = env.getDefaultScreenDevice();
 		AsteroidsFrame2<IFacade> asteroids;
-		Sound sound = new NullSound();
+		Sound sound = enableSound ? new FileSoundManager("asteroids/resources/sounds.txt") : new NullSound();
 
 		if (tryFullscreen && screen.isFullScreenSupported()) {
 			Rectangle dimensions = screen.getDefaultConfiguration().getBounds();

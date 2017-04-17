@@ -7,7 +7,7 @@ public class OGUtil {
 
 	
 	
-	private static final boolean VERBOSE = true;
+	private static final boolean VERBOSE = false;
 	
 	
 	
