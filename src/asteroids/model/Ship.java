@@ -63,7 +63,7 @@ public class Ship extends Entity {
 		loadedBullets.add(bullet);
 		bullet.setLoadedInMotherBoard(true);
 
-		if (this.getCollisionWorld() != bullet.getCollisionWorld())
+		if (this.getWorld() != bullet.getWorld())
 			try {
 				this.getCollisionWorld().addEntity(bullet); // These exceptions should
 													// never happen as the
@@ -147,9 +147,7 @@ public class Ship extends Entity {
 			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
 		if (bullet.isTerminated())
 			throw new AlreadyTerminatedException("Cannot fire bullet because it is terminated.");
-		if (this.getCollisionWorld() != bullet.getCollisionWorld()) {
-			throw new MisMatchWorldsException("Bullet and ship must be in the same world.");
-		}
+		bullet.setWorld(this.getWorld());
 		if (bullet.getMotherShip() != this)
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
