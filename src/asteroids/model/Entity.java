@@ -454,12 +454,6 @@ public abstract class Entity extends Instance {
 		if (this.getCollisionWorld() != null)
 			this.getCollisionWorld().removeEntity(this);
 		super.terminate();
-	 * 
-	 * @param entity
-	 * 		  The entity which has to be checked.
-	 * 
-	 * @return true if and only if the entity is not equal to null and is not terminated
-	 * 		 | return (entity == null) || entity.isTerminated()
 	}
 	
 
