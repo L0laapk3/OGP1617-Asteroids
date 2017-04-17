@@ -19,8 +19,6 @@ import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
-//TODO: ALLE FUNCTIES MOETEN ECHT WEL GEORDEND WORDEN
-//TODO: COMMENTS VERDER AFWERKEN
 
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
@@ -374,8 +372,6 @@ public class Ship extends Entity {
 	 * Variable that holds the thrustforce from the ship
 	 */
 	private static final double THRUSTFORCE = 1.1 * Math.pow(10, 21);
-	//TODO mag weg: zet op 24 om iets te zien in het spel
-	//TODO ERGENS FOUT IN DE BEREKENINGEN WAARDOOR ACCELERATION VEEL TE TRAAG GAAT.
 
 	/**
 	 * function that calculates the acceleration of the ship
