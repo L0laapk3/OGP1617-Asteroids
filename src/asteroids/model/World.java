@@ -467,7 +467,7 @@ public class World {
 	public Set<Entity> getAllEntitiesWithCollision() {
 		Set<Entity> entitiesWithCollision = new HashSet<Entity>();
 		for (Entity entity: entities)
-			if (!(entity instanceof Bullet) || !((Bullet)entity).isLoadedInParent())
+			if (entity.hasCollision())
 				entitiesWithCollision.add(entity);
 		return entitiesWithCollision;
 	}
@@ -475,16 +475,32 @@ public class World {
 
 	
 	
+
 	/**
-	 * Gets all loaded bullets. The opposite of getAllEntitiesWithCollision.
+	 * Gets all entities without collision. The opposite of getAllEntitiesWithCollision.
+	 * @return A Set of all the loaded bullets in this world.
+	 */
+	public Set<Entity> getAllEntitiesWithoutCollision() {
+		Set<Entity> entitiesWithoutCollision = new HashSet<Entity>();
+		for (Entity entity: entities)
+			if (!entity.hasCollision())
+				entitiesWithoutCollision.add(entity);
+		return entitiesWithoutCollision;
+	}
+	
+	
+	
+	
+	/**
+	 * Gets all loaded bullets.
 	 * @return A Set of all the loaded bullets in this world.
 	 */
 	public Set<Bullet> getAllLoadedBullets() {
-		Set<Bullet> entitiesWithoutCollision = new HashSet<Bullet>();
+		Set<Bullet> loadedBullets = new HashSet<Bullet>();
 		for (Entity entity: entities)
 			if ((entity instanceof Bullet) && ((Bullet)entity).isLoadedInParent())
-				entitiesWithoutCollision.add((Bullet)entity);
-		return entitiesWithoutCollision;
+				loadedBullets.add((Bullet)entity);
+		return loadedBullets;
 	}
 	
 	

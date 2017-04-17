@@ -424,8 +424,8 @@ public abstract class Entity {
 	 */
 	public void terminate() throws IllegalEntityException {
 		System.out.println("TERMINATE " + this); // TODO: weg
-		if (this.getWorld() != null)
-			this.getWorld().removeEntity(this);
+		if (this.getCollisionWorld() != null)
+			this.getCollisionWorld().removeEntity(this);
 		if (!isTerminated())
 			this.isTerminated = true;
 	}
@@ -797,12 +797,12 @@ public abstract class Entity {
 		Vector2 newpos = Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), Dt));
 		if ((newpos.x - 1.01 * this.radius) <= 0)
 			return new Vector2(0, newpos.y);
-		if ((newpos.x + 1.01 * this.radius) >= this.getWorld().getWidth())
-			return new Vector2(this.getWorld().getWidth(), newpos.y);
+		if ((newpos.x + 1.01 * this.radius) >= this.getCollisionWorld().getWidth())
+			return new Vector2(this.getCollisionWorld().getWidth(), newpos.y);
 		if ((newpos.y - 1.01 * this.radius) <= 0)
 			return new Vector2(newpos.x, 0);
-		if ((newpos.y + 1.01 * this.radius) >= this.getWorld().getHeight())
-			return new Vector2(newpos.x, this.getWorld().getHeight());
+		if ((newpos.y + 1.01 * this.radius) >= this.getCollisionWorld().getHeight())
+			return new Vector2(newpos.x, this.getCollisionWorld().getHeight());
 		return null;
 	}
 
@@ -835,14 +835,58 @@ public abstract class Entity {
 		return !OGUtil.isInvalidNumber(position.x) && !OGUtil.isInvalidNumber(position.y);
 	}
 
+	
+	/**
+	 * Variable registering if the entity should have collision in a world or not.
+	 */
+	boolean collides = true;
+	
+	/**
+	 * Set if the entity can collide or not.
+	 * @param collidable
+	 * 	      True if the entity should be able to collide in a world, otherwise false.
+	 */
+	@Raw
+	@Basic
+	void setCollision(boolean collidable) {
+		this.collides = collidable;
+	}
+
+	
+	/**
+	 * Get if the entity can collide or not.
+	 * @return True if the entity can collide in a world, otherwise false.
+	 */
+	@Raw
+	@Basic
+	public boolean hasCollision() {
+		return this.collides;
+	}
+	
+	
+	
+	
 	/**
 	 * Variable registering the coordinates of the entity.
 	 */
 	private World world;
 
 	/**
-	 *  Returns the world where the entity lives in
-	 *  @return the world if the entity
+	 *  Returns the world where the entity lives in.
+	 *  @return the world if the entity if the entity is collidable
+	 *  @return null otherwise
+	 */
+	@Raw
+	public World getCollisionWorld() {
+		//entity is only actually located in the world if it has collision.
+		return this.collides ? getWorld() : null;
+	}
+	
+
+	/**
+	 *  Returns the world where the entity lives in, if the entity has collision.
+	 *  @return the world if the entity if the entity is collidable.
+	 *  @return null otherwise.
 	 */
 	@Raw
 	@Basic
@@ -851,10 +895,9 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Set the world of this entity to the given world
-	 * 
+	 * Set the world of this entity to the given world.
 	 * @param  world
-	 * 		   The new world for this entity
+	 * 		   The new world for this entity.
 	 */
 	@Raw
 	@Basic
@@ -872,12 +915,12 @@ public abstract class Entity {
 		Vector2 pos = this.getPosition();
 		if (pos.x < this.getRadius())
 			pos = new Vector2(2 * this.getRadius() - pos.x, pos.y);
-		else if (pos.x > this.getWorld().getWidth() - this.getRadius())
-			pos = new Vector2(2 * (this.getWorld().getWidth() - this.getRadius()) - pos.x, pos.y);
+		else if (pos.x > this.getCollisionWorld().getWidth() - this.getRadius())
+			pos = new Vector2(2 * (this.getCollisionWorld().getWidth() - this.getRadius()) - pos.x, pos.y);
 		if (pos.y < this.getRadius())
 			pos = new Vector2(pos.x, 2 * this.getRadius() - pos.y);
-		else if (pos.y > this.getWorld().getHeight() - this.getRadius())
-			pos = new Vector2(pos.x, 2 * (this.getWorld().getHeight() - this.getRadius()) - pos.y);
+		else if (pos.y > this.getCollisionWorld().getHeight() - this.getRadius())
+			pos = new Vector2(pos.x, 2 * (this.getCollisionWorld().getHeight() - this.getRadius()) - pos.y);
 		this.setPosition(pos);
 	}
 
@@ -887,9 +930,9 @@ public abstract class Entity {
 	 */
 	@Raw
 	void collideWithWall() {
-		if ((this.getPosition().x - 1.01 * this.radius) <= 0 || (this.getPosition().x + 1.01 * this.radius) >= this.getWorld().getWidth())
+		if ((this.getPosition().x - 1.01 * this.radius) <= 0 || (this.getPosition().x + 1.01 * this.radius) >= this.getCollisionWorld().getWidth())
 			this.setVelocity(new Vector2(-this.getVelocity().x, this.getVelocity().y));
-		if ((this.getPosition().y - 1.01 * this.radius) <= 0 || (this.getPosition().y + 1.01 * this.radius) >= this.getWorld().getHeight())
+		if ((this.getPosition().y - 1.01 * this.radius) <= 0 || (this.getPosition().y + 1.01 * this.radius) >= this.getCollisionWorld().getHeight())
 			this.setVelocity(new Vector2(this.getVelocity().x, -this.getVelocity().y));
 	}
 
