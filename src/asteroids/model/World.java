@@ -345,11 +345,11 @@ public class World {
 		
 		for (Entity entityToCheck : entities) {
 			if (Entity.overlap(entity, entityToCheck)												      //mag niet overlappen
-					&& !((entity instanceof Bullet) && (((Bullet)entity).getParent() == entityToCheck))   //behalve als het een bullet geladen in dat ship
-					&& !((entityToCheck instanceof Bullet) && (((Bullet)entityToCheck).getParent() == entity))   //behalve als het een bullet geladen in dat ship
-					&& !((entity instanceof Bullet) && (entityToCheck instanceof Bullet) && ((Bullet)entity).isLoadedInParent() //behalve als de 2 bullets in dezelfde parent geladen zijn
-							&& ((Bullet)entityToCheck).isLoadedInParent() && (((Bullet)entity).getParent() == ((Bullet)entityToCheck).getParent()))) {
-				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet)entity).getParent() == ((Bullet)entityToCheck).getParent()) && (((Bullet)entity).getParent() != null))) {
+					&& !((entity instanceof Bullet) && (((Bullet)entity).getMotherShip() == entityToCheck))   //behalve als het een bullet geladen in dat ship
+					&& !((entityToCheck instanceof Bullet) && (((Bullet)entityToCheck).getMotherShip() == entity))   //behalve als het een bullet geladen in dat ship
+					&& !((entity instanceof Bullet) && (entityToCheck instanceof Bullet) && ((Bullet)entity).isLoadedInMotherShip() //behalve als de 2 bullets in dezelfde parent geladen zijn
+							&& ((Bullet)entityToCheck).isLoadedInMotherShip() && (((Bullet)entity).getMotherShip() == ((Bullet)entityToCheck).getMotherShip()))) {
+				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet)entity).getMotherShip() == ((Bullet)entityToCheck).getMotherShip()) && (((Bullet)entity).getMotherShip() != null))) {
 					throw new EntitiesOverlapException();
 					//TODO hiet zit het probleem want de bullet moet toegevoegd worden aan de wereld maar het overlapt al met de rest van de bullets maar ik krijg de logica niet juist :D
 				}
@@ -418,8 +418,8 @@ public class World {
 		
 		for (Entity entity : entities)
 			if (Vector2.equals(entity.getPosition(), position)) {
-				if (entity instanceof Bullet && ((Bullet)entity).isLoadedInParent())
-					return ((Bullet)entity).getParent();
+				if (entity instanceof Bullet && ((Bullet)entity).isLoadedInMotherShip())
+					return ((Bullet)entity).getMotherShip();
 				else
 					return entity;
 			}
@@ -467,7 +467,7 @@ public class World {
 	public Set<Entity> getAllEntitiesWithCollision() {
 		Set<Entity> entitiesWithCollision = new HashSet<Entity>();
 		for (Entity entity: entities)
-			if (!(entity instanceof Bullet) || !((Bullet)entity).isLoadedInParent())
+			if (!(entity instanceof Bullet) || !((Bullet)entity).isLoadedInMotherShip())
 				entitiesWithCollision.add(entity);
 		return entitiesWithCollision;
 	}
@@ -482,7 +482,7 @@ public class World {
 	public Set<Bullet> getAllLoadedBullets() {
 		Set<Bullet> entitiesWithoutCollision = new HashSet<Bullet>();
 		for (Entity entity: entities)
-			if ((entity instanceof Bullet) && ((Bullet)entity).isLoadedInParent())
+			if ((entity instanceof Bullet) && ((Bullet)entity).isLoadedInMotherShip())
 				entitiesWithoutCollision.add((Bullet)entity);
 		return entitiesWithoutCollision;
 	}
@@ -622,7 +622,7 @@ public class World {
 			
 			//set loaded bullets' location to their parent.
 			for (Bullet loadedBullet : getAllLoadedBullets()) {
-				loadedBullet.setPosition(loadedBullet.getParent().getPosition());
+				loadedBullet.setPosition(loadedBullet.getMotherShip().getPosition());
 			}
 		
 		

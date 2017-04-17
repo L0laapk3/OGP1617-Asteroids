@@ -436,7 +436,7 @@ public class Part2Tests {
 		Ship ship = new Ship(5, 5, 1, 1, 15, 1, 1);
 		Bullet bullet = new Bullet(3, 2, 1, 5, 10, ship);
 		ship.loadBullet(bullet);
-		assertTrue(bullet.isLoadedInParent());
+		assertTrue(bullet.isLoadedInMotherShip());
 	}
 
 	@Test
@@ -446,7 +446,7 @@ public class Part2Tests {
 		world.addEntity(ship);
 		Bullet bullet = new Bullet(30, 20, 1, 5, 10, ship);
 		ship.shootBullet(bullet);
-		assertFalse(bullet.isLoadedInParent());
+		assertFalse(bullet.isLoadedInMotherShip());
 	}
 
 	@Test
@@ -455,13 +455,13 @@ public class Part2Tests {
 		Ship ship = new Ship(400, 500, 9, 8, 60, 0, 0);
 		world.addEntity(ship);
 		Bullet bullet = new Bullet(30, 20, 1, 5, 10, ship);
-		assertEquals(bullet.getParent(), ship);
+		assertEquals(bullet.getMotherShip(), ship);
 	}
 
 	@Test
 	public void testAddToParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		Bullet bullet = new Bullet(3, 2, 1, 5, 10, null);
-		assertEquals(bullet.getParent(), null);
+		assertEquals(bullet.getMotherShip(), null);
 	}
 
 	// ----------------------TESTS WORLD

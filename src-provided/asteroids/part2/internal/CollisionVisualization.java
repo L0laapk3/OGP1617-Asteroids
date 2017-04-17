@@ -54,7 +54,7 @@ public class CollisionVisualization<F extends IFacade> extends Visualization<F, 
 
 				try {
 					if (!(entity instanceof Ship) || !facade.overlap(selected, (Ship) entity)) {
-						if ((entity instanceof Bullet) && ((Bullet)entity).getParent() == selected)
+						if ((entity instanceof Bullet) && ((Bullet)entity).getMotherShip() == selected)
 							continue;
 						dt = facade.getTimeCollisionEntity(selected, entity);
 						if (dt < min_dt) {
@@ -119,7 +119,7 @@ public class CollisionVisualization<F extends IFacade> extends Visualization<F, 
 			for (Object entity : ships) {
 				try {
 					if (!(entity instanceof Ship) || !(facade.overlap(selected, (Ship) entity))) {
-						if ((entity instanceof Bullet) && ((Bullet)entity).getParent() == selected)
+						if ((entity instanceof Bullet) && ((Bullet)entity).getMotherShip() == selected)
 							continue;
 						double[] colPos = facade.getPositionCollisionEntity(selected, entity);
 						if (colPos != null) {

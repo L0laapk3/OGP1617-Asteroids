@@ -699,9 +699,9 @@ public abstract class Entity {
 			System.out.println(entity1.isTerminated());
 			System.out.println(entity2.isTerminated());
 			if (entity1 instanceof Bullet)
-				System.out.println("bullet1 isloadedinparent: " + ((Bullet) entity1).isLoadedInParent());
+				System.out.println("bullet1 isloadedinparent: " + ((Bullet) entity1).isLoadedInMotherShip());
 			if (entity2 instanceof Bullet)
-				System.out.println("bullet2 isloadedinparent: " + ((Bullet) entity2).isLoadedInParent());
+				System.out.println("bullet2 isloadedinparent: " + ((Bullet) entity2).isLoadedInMotherShip());
 			throw new EntitiesOverlapException();
 		}
 
@@ -883,7 +883,7 @@ public abstract class Entity {
 
 	/**
 	 * Internal function that bounces the entity off a wall.
-	 * @post Changes the velocity when a ship bounces against the wall of the world.
+	 * @post Changes the velocity when a entity bounces against the wall of the world.
 	 */
 	@Raw
 	void collideWithWall() {

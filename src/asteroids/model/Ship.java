@@ -59,9 +59,9 @@ public class Ship extends Entity {
 
 		System.out.println("LOAD " + this + " " + bullet); // TODO: weg
 
-		bullet.setParent(this);
+		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
-		bullet.setLoadedInParent(true);
+		bullet.setLoadedInMotherBoard(true);
 
 		if (this.getWorld() != bullet.getWorld())
 			try {
@@ -102,7 +102,7 @@ public class Ship extends Entity {
 	public void unloadBullet(Bullet bullet) throws NullPointerException {
 		if (bullet == null)
 			throw new NullPointerException();
-		bullet.setLoadedInParent(false);
+		bullet.setLoadedInMotherBoard(false);
 		loadedBullets.remove(bullet);
 	}
 
@@ -150,12 +150,12 @@ public class Ship extends Entity {
 		if (this.getWorld() != bullet.getWorld()) {
 			throw new MisMatchWorldsException("Bullet and ship must be in the same world.");
 		}
-		if (bullet.getParent() != this)
+		if (bullet.getMotherShip() != this)
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
 			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
 
-		bullet.setLoadedInParent(false);
+		bullet.setLoadedInMotherBoard(false);
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
@@ -169,13 +169,13 @@ public class Ship extends Entity {
 		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
 		while (collidesWith != null) {
 			System.out.println(collidesWith); // TODO: weg
-			System.out.println(bullet.getParent());
+			System.out.println(bullet.getMotherShip());
 			Collisions.collide(bullet, collidesWith);
 			System.out.println("---");
 			System.out.println(bullet);
-			System.out.println(bullet.isLoadedInParent());
+			System.out.println(bullet.isLoadedInMotherShip());
 			System.out.println(bullet.getWorld());
-			collidesWith = (bullet.isTerminated() || bullet.isLoadedInParent()) ? null : bullet.getWorld().findOverlap(bullet);
+			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
 		}
 
 		updateLoadMass();
