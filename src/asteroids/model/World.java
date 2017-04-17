@@ -13,21 +13,18 @@ import asteroids.part2.CollisionListener;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
-
-//TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
-//TODO: OVERAL RAW????
-//TODO: OVERAL IMMUTABLE
-
-
-
 
 /**
  * A class to define worlds.
  * 
  * @effect   Instance
- * @invar    //TODO: HIER MOETEN NOG NE HOOP INVARS DENK IK
+ * 
+ * @invar    Each entity registered in the referenced Set is not terminated 
+ * @invar 	 The position of all entities must lay fully within the world.
+ * @invar 	 Entities cannot overlap, with the exception of bullets loaded in their ships.
+ * @invar 	 Both entities must be in the same world for colliding. (not null)
  * 
  * @version  1.0
  * @author   Kris Keersmaekers
@@ -50,7 +47,7 @@ public class World extends Instance {
 	 * @note	This constructor is written in a total manner.
 	 */
 	public World(double width, double height) {
-		if (isValidWidth(width)) { // moet het this.checkValidWidth zijn omdat die finctie niet static is?
+		if (isValidWidth(width)) {
 			this.width = width;
 		} else if (width > UPPER_BOUND_WIDTH) {
 			this.width = UPPER_BOUND_WIDTH;
@@ -66,7 +63,6 @@ public class World extends Instance {
 		}
 	}
 
-	// --------------MAX HEIGHT
 
 	/**
 	 * Variable referencing the lower bound of height 
@@ -83,6 +79,7 @@ public class World extends Instance {
 	 */
 	@Basic
 	@Raw
+	@Immutable
 	public static double getUpperBoundHeight() {
 		return UPPER_BOUND_HEIGHT;
 	}
@@ -112,6 +109,7 @@ public class World extends Instance {
 	 * 			and less than infinity.
 	 */
 	@Raw
+	@Basic
 	public static boolean isValidUpperBoundHeight(double height) {
 		if ((height >= 0) && (height < Double.POSITIVE_INFINITY)) {
 			return true;
@@ -120,22 +118,22 @@ public class World extends Instance {
 		}
 	}
 
-	// ----------------MAX WIDTH
 	/**
-	 * Variable referencing the lower bound of width
+	 * Variable referencing the lower bound of width.
 	 */
 	private static double LOWER_BOUND_WIDTH = 0;
 
 	/**
-	 * Variable referencing the lower bound of width
+	 * Variable referencing the upper bound of width.
 	 */
 	private static double UPPER_BOUND_WIDTH = Double.MAX_VALUE;
 
 	/**
-	 * Return the upper bound width of a world
+	 * Return the upper bound width of a world.
 	 */
 	@Basic
 	@Raw
+	@Immutable
 	public static double getUpperBoundWidth() {
 		return UPPER_BOUND_WIDTH;
 	}
@@ -165,6 +163,7 @@ public class World extends Instance {
 	 * 			and less than infinity.
 	 */
 	@Raw
+	@Basic
 	public static boolean isValidUpperBoundWidth(double width) {
 		if ((width >= 0) && (width < Double.POSITIVE_INFINITY)) {
 			return true;
@@ -173,7 +172,6 @@ public class World extends Instance {
 		}
 	}
 
-	// ----------------HEIGHT
 
 	/**
 	 * Variable referencing the height of the given world
@@ -205,7 +203,6 @@ public class World extends Instance {
 		return false;
 	}
 
-	// ----------------WIDTH
 
 	/**
 	 * Variable referencing the width of the given world
@@ -229,6 +226,8 @@ public class World extends Instance {
 	 * @return	If the given width is between LOWER_BOUND_WIDTH and UPPER_BOUND_WIDTH
 	 * 			the function returns true.
 	 */
+	@Raw
+	@Basic
 	private static boolean isValidWidth(double width) {
 		if (width >= LOWER_BOUND_WIDTH && width <= UPPER_BOUND_WIDTH) {
 			return true;
@@ -238,8 +237,11 @@ public class World extends Instance {
 
 	/**
 	 * Gets the world's upper boundaries.
+	 * 
 	 * @return new Vector2(getWidth(), getHeight());
 	 */
+	@Raw
+	@Basic
 	public Vector2 getMaxBounds() {
 		return new Vector2(this.getWidth(), this.getHeight());
 	}
@@ -250,7 +252,6 @@ public class World extends Instance {
 	 *
 	 * @effect super.terminate()
 	 * @post   All the Entities in this world are no longer bound to this world.
-	 * @post   Each of the entities of the instance is terminated.
 	 */
 	@Override
 	public void terminate() {
@@ -261,27 +262,23 @@ public class World extends Instance {
 		super.terminate();
 	}
 
-	// --------------basisfuncties entitySet
 
 	/**
 	 * Variable referencing a Set collecting all the ships and bullets
 	 * in this world.
 	 * 
-	 * @invar Each entity registered in the referenced Set is not terminated 	//
+	 * @invar Each entity registered in the referenced Set is not terminated 
 	 * @invar The position of all entities must lay fully within the world.
-	 * @invar Entites cannot overlap, with the exception of bullets loaded in their ships.
+	 * @invar Entities cannot overlap, with the exception of bullets loaded in their ships.
 	 */
 	private final Set<Entity> entities = new HashSet<Entity>();
 
 	/**
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
 	 * Adds an entity to the world.
+	 * 
 	 * @param 	entity
 	 * 		  	Entity to add to the world.
+	 * @post 	If the given entity does not overlap with one of the entities who is already in the given world and it lays fully in the world then its added to the given world.
 	 * @throws	DoubleEntityException
 	 * 			An entity can only be ones in a world.
 	 * @throws  NotWithinBoundariesException
@@ -325,6 +322,7 @@ public class World extends Instance {
 
 	/**
 	 * Removes an entity from the world.
+	 * 
 	 * @param  entity
 	 * 		   Entity to remove from the world.
 	 * @throws IllegalEntityException
@@ -341,10 +339,9 @@ public class World extends Instance {
 		}
 	}
 
-	// ---------------specifieke functies
-
 	/**
 	 * Gets entity from given position in world.
+	 * 
 	 * @param  position
 	 * 		   The position to scan for entities.
 	 * @return If there is a ship on the given position, a ship will always be returned.
@@ -367,15 +364,18 @@ public class World extends Instance {
 
 	/**
 	 * Gets all entities from the world.
+	 * 
 	 * @return A Set with all the entities in the world.
 	 */
 	@Raw
-	public Set<Entity> getAllEntities() {
+	@Basic
+		public Set<Entity> getAllEntities() {
 		return new HashSet<Entity>(entities);
 	}
 
 	/**
 	 * Gets all ships from the world.
+	 * 
 	 * @return A Set with all the entities in the world.
 	 */
 	@Raw
@@ -389,6 +389,7 @@ public class World extends Instance {
 
 	/**
 	 * Gets all bullets from the world.
+	 * 
 	 * @return A Set with all the entities in the world.
 	 */
 	@Raw
@@ -402,6 +403,7 @@ public class World extends Instance {
 
 	/**
 	 * Gets all bullets with collision from the world.
+	 * 
 	 * @return A Set with all the entities in the world.
 	 */
 	@Raw
@@ -415,7 +417,8 @@ public class World extends Instance {
 
 	/**
 	 * Gets all entities on which collision physics has to apply on.
-	 * @return A Set of entites on which collision physics has to apply on.
+	 * 
+	 * @return A Set of entities on which collision physics has to apply on.
 	 */
 	@Raw
 	public Set<Entity> getAllEntitiesWithCollision() {
@@ -428,6 +431,7 @@ public class World extends Instance {
 
 	/**
 	 * Gets all entities without collision. The opposite of getAllEntitiesWithCollision.
+	 * 
 	 * @return A Set of all the loaded bullets in this world.
 	 */
 	@Raw
@@ -441,6 +445,7 @@ public class World extends Instance {
 
 	/**
 	 * Gets all loaded bullets.
+	 * 
 	 * @return A Set of all the loaded bullets in this world.
 	 */
 	@Raw
@@ -452,8 +457,19 @@ public class World extends Instance {
 		return loadedBullets;
 	}
 
-	// ----------------Advancing time
 
+	
+	/**
+	 * This function gets the next collision.
+	 * 
+	 * @param   entities
+	 * 		    The entities who has to be checked.
+	 * @return  new collisionInformation containing all the collisioninformation.
+	 * @throws  EntitiesOverlapException
+	 * 			Entities may not overlap beforehand.
+	 * @throws  NoWorldException
+	 * 			Entities must lay in a world.
+	 */
 	public CollisionInformation getNextCollision(Set<Entity> entities) throws EntitiesOverlapException, NoWorldException {
 		double earliestCollisionTime = Double.POSITIVE_INFINITY;
 		Entity collisionFirstEntity = null;
@@ -501,10 +517,11 @@ public class World extends Instance {
 
 	/**
 	 * Moves and then accelerates all entities.
+	 * 
 	 * @param Dt
 	 * 		  Time to move and accelerate all entities with.
 	 * @param entitiesWithCollision
-	 * 		  All entities that need to be moved and accelerated (usually all entities with collision.)
+	 * 		  All entities that need to be moved and accelerated (usually all entities with collision).
 	 */
 	@Raw
 	void doTime(double Dt, Set<Entity> entitiesWithCollision) {
@@ -516,9 +533,10 @@ public class World extends Instance {
 
 	/**
 	 * Simulates the world for time Dt.
-	 * @effect this.evolve(Dt, null);
+	 * 
 	 * @param  Dt
 	 * 		   The time to simulate the world for.
+	 * @effect this.evolve(Dt, null);
 	 */
 	public void evolve(double Dt) {
 		this.evolve(Dt, null);
@@ -526,6 +544,7 @@ public class World extends Instance {
 
 	/**
 	 * Simulates the world for time Dt.
+	 * 
 	 * @param Dt
 	 * 		  The time to simulate the world for.
 	 * @param CollisionListener.
@@ -586,6 +605,7 @@ public class World extends Instance {
 
 	/**
 	 * Collides the two entities and calls the proper handlers depending on the collision type.
+	 * 
 	 * @invar Both entities must be in the same world. (not null)
 	 * @param first
 	 * 	      This is the first entity to collide.
@@ -599,6 +619,7 @@ public class World extends Instance {
 
 	/**
 	 * Searches if given entity is colliding with another entity.
+	 * 
 	 * @param entity
 	 * @return The entity that it overlaps with if there is one.
 	 * @return Null if there is no entity that overlaps with the given entity.

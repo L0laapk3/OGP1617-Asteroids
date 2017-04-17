@@ -28,19 +28,92 @@ import be.kuleuven.cs.som.annotate.*;
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
 public abstract class Entity extends Instance {
-
+	
 	/**
-	 * Constant for the maximum velocity.
+	 * Create a new entity with the given position, velocity, radius and
+	 * orientation (in radians).
+	 * 
+	 * @param  x
+	 * 	       The x coordinate where the new entity has to be created.
+	 * @param  y
+	 *         The y coordinate where the new entity has to be created.
+	 * @param  xVelocity
+	 * 		   The initial speed in the x direction of the new entity.
+	 * @param  yVelocity
+	 * 		   The initial speed in the y direction of the new entity.
+	 * @param  orientation
+	 * 		   The direction that the new entity is initially pointed at.
+	 * @param  radius
+	 * 		   The size of the newly created entity.
+	 * @pre    The orientation parameter must be between 0 and 2*PI.
+	 * @post   The x coordinate of this new entity is equal to the given x coordinate.
+	 * 	     | getPosition(new)[0] == x
+	 * @post   The y coordinate of this new entity is equal to the given y coordinate.
+	 * 	     | getPosition(new)[1] == y
+	 * @post   The x velocity of this new entity is equal the given x velocity.
+	 * 		 | getVelocity(new)[0] = xVelocity
+	 * @post   The y velocity of this new entity is equal to the given y velocity.
+	 * 		 | getVelocity(new)[1] = yVelocity
+	 * @post   if either the x or y velocity is NaN or infinite, both velocities will be set to zero instead.
+	 *       | if (isInvalidNumber(xVelocity) or isInvalidNumber(yVelocity)
+	 *       |     xVelocity = yVelocity = 0;
+	 * @post   If the total velocity exceeds this.maxSpeed, the velocity will be modified so that the direction of the velocity remains
+	 *         the same, but the total velocity will be this.maxSpeed.
+	 *       | speed = pythagoras(xVelocity, yVelocity)
+	 *       | if (speed > this.maxSpeed)
+	 *       |     scale = this.maxSpeed / speed
+	 *       |     xVelocity = xVelocity * scale
+	 *       |     yVelocity = yVelocity * scale
+	 * @post   The orientation of this new entity equal to the given orientation.
+	 * @post   The radius of this new entity is equal to the given radius.
+	 * @throws InvalidPositionException
+	 * 		   The coordinates of the entity should not be infinite or NaN.
+	 * @throws IllegalArgumentException
+	 * 		   The radius of the entity should not be infinite.
+	 * @throws IllegalArgumentException
+	 * 		   The radius of the entity should not be NaN.
+	 * @throws InvalidRadiusException
+	 * 		   The radius must not be smaller than MIN_RADIUS.	 * 
 	 */
-	private double maxSpeed;
+	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)
+			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+
+		this.maxSpeed = 300000;
+
+		// DEFENSIVE
+		// Variables of type double can never be null, so we do not have to check if they are null.
+		Vector2 pos = new Vector2(x, y);
+		if (!isValidPosition(pos))
+			throw new InvalidPositionException();
+		this.position = pos;
+
+		// TOTAL
+		if (OGUtil.isInvalidNumber(xVelocity) || OGUtil.isInvalidNumber(yVelocity))
+			this.velocity = new Vector2(0, 0);
+		else {
+			this.setVelocity(xVelocity, yVelocity);
+		}
+
+		// NOMINAL
+		assert orientation >= 0 && orientation <= 2 * Math.PI;
+		this.orientation = orientation;
+
+		// DEFENSIVE
+		OGUtil.throwErrorIfInvalidNumbers(radius);
+		if (radius < MIN_RADIUS)
+			throw new InvalidRadiusException();
+		this.radius = radius;
+
+	}
+
 
 	/**
-	 * Variable holding the mass density of the ship
+	 * Variable holding the mass density of the entity
 	 */
 	double rho;
 
 	/**
-	 * Check whether the mass density is valid for a ship.
+	 * Check whether the mass density is valid for a entity.
 	 * 
 	 * @param  rho
 	 * 		   The mass density to check.
@@ -54,7 +127,7 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * Gets the rho value of the ship.
+	 * Gets the rho value of the entity.
 	 */
 	@Raw
 	@Basic
@@ -63,10 +136,10 @@ public abstract class Entity extends Instance {
 	}
 	
 	/**
-	 * Sets the mass density of the ship.
+	 * Sets the mass density of the entity.
 	 * 
 	 * @param rho
-	 * @post  The mass density of the ship will be the given rho value.
+	 * @post  The mass density of the entity will be the given rho value.
 	 * 		| this.getRho() == rho
 	 */
 	@Raw
@@ -111,6 +184,11 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
+	 * Constant for the maximum velocity.
+	 */
+	private double maxSpeed;
+	
+	/**
 	 * Set the maxSpeed of this entity to the given maxSpeed
 	 * 
 	 * @param 	maxSpeed
@@ -153,11 +231,6 @@ public abstract class Entity extends Instance {
 			return false;
 		}
 	}
-
-	/**
-	 * Variable registering the coordinates of the entity.
-	 */
-	private Vector2 position;
 
 	/**
 	 * Variable registering the speed of the entity.
@@ -230,17 +303,57 @@ public abstract class Entity extends Instance {
 			return false;
 		}
 	}
+	
+	/**
+	 * Variable registering the coordinates of the entity.
+	 */
+	private Vector2 position;
+	
+	/**
+	 * Returns the position of the entity.
+	 * 
+	 * @return the position of the entity
+	 */
+	@Raw
+	@Basic
+	public Vector2 getPosition() {
+		return this.position;
+	}
 
 	/**
-	 * Variable that holds the minimum radius from a ship
+	 * Set the position for this entity.
+	 * 
+	 * @param position
+	 * @post  The position of this entity is the same as the given position.
+	 */
+	@Raw
+	@Basic
+	void setPosition(Vector2 position) {
+		this.position = position;
+	}
+
+	/**
+	 * Checks whether the position is valid for a entity.
+	 * 
+	 * @param position A Vector2 object containing the position to check.
+	 * 
+	 * @return True if and only if both the x and y coordinate of the given position are valid numbers: They cannot be NaN or infinity. 
+	 * 		 | result == (!isInvalidNumber(position.x) && !isInvalidNumber(position.y))
+	 */
+	public boolean isValidPosition(Vector2 position) {
+		return !OGUtil.isInvalidNumber(position.x) && !OGUtil.isInvalidNumber(position.y);
+	}
+
+	/**
+	 * Variable that holds the minimum radius from a entity.
 	 */
 	private double MIN_RADIUS = 0;
 
 	/**
-	 * Returns the minimum radius of the entity
+	 * Returns the minimum radius of the entity.
 	 * 
 	 * @return MIN_RADIUS
-	 * 		   Returns the minimum radius of the entity
+	 * 		   Returns the minimum radius of the entity.
 	 */
 	@Basic
 	@Raw
@@ -249,7 +362,7 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * Checks if a radius is a valid MinRadius
+	 * Checks if a radius is a valid MinRadius.
 	 * 
 	 * @param radius
 	 * @return True if and only if the radius is greater than 0.
@@ -262,7 +375,7 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * Set the minimum radius from a ship to the given radius
+	 * Set the minimum radius from a entity to the given radius
 	 * 
 	 * @param  radius
 	 * 		   The new minimum radius.
@@ -272,7 +385,7 @@ public abstract class Entity extends Instance {
 	 * 		   If the minimum radius is not valid the function will throw a InvalidRadiusException
 	 * 		 | !isValidRadius throw InvalidRadiusException 
 	 * @throws InvalidRadiusException
-	 * 		   If the existing radius of the ship is smaller than the new min radius.
+	 * 		   If the existing radius of the entity is smaller than the new min radius.
 	 *       | MIN_RADIUS <= this.getRadius() throw InvalidRadiusException
 	 */
 	@Raw
@@ -365,83 +478,6 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * Create a new entity with the given position, velocity, radius and
-	 * orientation (in radians).
-	 * 
-	 * @param  x
-	 * 	       The x coordinate where the new entity has to be created.
-	 * @param  y
-	 *         The y coordinate where the new entity has to be created.
-	 * @param  xVelocity
-	 * 		   The initial speed in the x direction of the new entity.
-	 * @param  yVelocity
-	 * 		   The initial speed in the y direction of the new entity.
-	 * @param  orientation
-	 * 		   The direction that the new entity is initially pointed at.
-	 * @param  radius
-	 * 		   The size of the newly created entity.
-	 * @pre    The orientation parameter must be between 0 and 2*PI.
-	 * @post   The x coordinate of this new entity is equal to the given x coordinate.
-	 * 	     | getPosition(new)[0] == x
-	 * @post   The y coordinate of this new entity is equal to the given y coordinate.
-	 * 	     | getPosition(new)[1] == y
-	 * @post   The x velocity of this new entity is equal the given x velocity.
-	 * 		 | getVelocity(new)[0] = xVelocity
-	 * @post   The y velocity of this new entity is equal to the given y velocity.
-	 * 		 | getVelocity(new)[1] = yVelocity
-	 * @post   if either the x or y velocity is NaN or infinite, both velocities will be set to zero instead.
-	 *       | if (isInvalidNumber(xVelocity) or isInvalidNumber(yVelocity)
-	 *       |     xVelocity = yVelocity = 0;
-	 * @post   If the total velocity exceeds this.maxSpeed, the velocity will be modified so that the direction of the velocity remains
-	 *         the same, but the total velocity will be this.maxSpeed.
-	 *       | speed = pythagoras(xVelocity, yVelocity)
-	 *       | if (speed > this.maxSpeed)
-	 *       |     scale = this.maxSpeed / speed
-	 *       |     xVelocity = xVelocity * scale
-	 *       |     yVelocity = yVelocity * scale
-	 * @post   The orientation of this new entity equal to the given orientation.
-	 * @post   The radius of this new entity is equal to the given radius.
-	 * @throws InvalidPositionException
-	 * 		   The coordinates of the entity should not be infinite or NaN.
-	 * @throws IllegalArgumentException
-	 * 		   The radius of the entity should not be infinite.
-	 * @throws IllegalArgumentException
-	 * 		   The radius of the entity should not be NaN.
-	 * @throws InvalidRadiusException
-	 * 		   The radius must not be smaller than MIN_RADIUS.	 * 
-	 */
-	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)
-			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-
-		this.maxSpeed = 300000;
-
-		// DEFENSIVE
-		// Variables of type double can never be null, so we do not have to check if they are null.
-		Vector2 pos = new Vector2(x, y);
-		if (!isValidPosition(pos))
-			throw new InvalidPositionException();
-		this.position = pos;
-
-		// TOTAL
-		if (OGUtil.isInvalidNumber(xVelocity) || OGUtil.isInvalidNumber(yVelocity))
-			this.velocity = new Vector2(0, 0);
-		else {
-			this.setVelocity(xVelocity, yVelocity);
-		}
-
-		// NOMINAL
-		assert orientation >= 0 && orientation <= 2 * Math.PI;
-		this.orientation = orientation;
-
-		// DEFENSIVE
-		OGUtil.throwErrorIfInvalidNumbers(radius);
-		if (radius < MIN_RADIUS)
-			throw new InvalidRadiusException();
-		this.radius = radius;
-
-	}
-
-	/**
 	 * Terminate this entity.
 	 *
 	 * @post   The instance is terminated.
@@ -456,12 +492,6 @@ public abstract class Entity extends Instance {
 		super.terminate();
 	}
 	
-
-	/**
-	 * variable to declare the trust force of the given entity
-	 */
-	private double thrustForce = 0;
-
 	/**
 	 * returns the trust force of this entity.
 	 * @return The trust force of this entity.
@@ -482,6 +512,11 @@ public abstract class Entity extends Instance {
 	public Vector2 getAccelerationVector() {
 		return new Vector2(Math.cos(this.getOrientation()) * getAcceleration(), Math.sin(this.getOrientation()) * getAcceleration());
 	}
+	
+	/**
+	 * variable to declare the trust force of the given entity
+	 */
+	private double thrustForce = 0;
 
 	/**
 	 * Sets the trust force of this entity to the given acceleration.
@@ -497,7 +532,7 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * Gets the current trust force of the ship.
+	 * Gets the current trust force of the entity.
 	 * @return The trust force.
 	 */
 	@Raw
@@ -513,7 +548,7 @@ public abstract class Entity extends Instance {
 	 * @param  	dt
 	 * 		   	The amount of time that the entity should move forward.
 	 * @post   	The entity moves forward by the amount of time dt, with the stored velocity and the acceleration.
-	 * 			The new position is calculated in a deterministic way so that the speed will never exceed the max speed of the given ship.
+	 * 			The new position is calculated in a deterministic way so that the speed will never exceed the max speed of the given entity.
 	 *        |	xPosition = xPosition + xVelocity * dt + 1/2 * xAcceleration^2
 	 *        | yPosition = yPosition + yVelocity * dt + 1/2 * yAcceleration^2
 	 * @throws 	IllegalArgumentException
@@ -666,7 +701,7 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Return the number of seconds until the first collision with the wall.
-	 * @return The time until the first collision. Returns positive infinity if the ship never collides with the border of the world.
+	 * @return The time until the first collision. Returns positive infinity if the entity never collides with the border of the world.
 	 */
 	public double getTimeToWallCollision() throws NoWorldException {
 		if (isNullOrTerminated(this.world))
@@ -794,7 +829,6 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	static Vector2 getCollisionPosition(Entity entity1, Entity entity2, double Dt) {
-		// TODO: moet hier die 99% 101% shiet nie in? nah lul
 		if (Dt == Double.POSITIVE_INFINITY)
 			return null;
 
@@ -833,41 +867,6 @@ public abstract class Entity extends Instance {
 		return null;
 	}
 
-	/**
-	 * Returns the position of the entity.
-	 * 
-	 * @return the position of the entity
-	 */
-	@Raw
-	@Basic
-	public Vector2 getPosition() {
-		return this.position;
-	}
-
-	/**
-	 * Set the position for this entity.
-	 * 
-	 * @param position
-	 * @post  The position of this entity is the same as the given position.
-	 */
-	@Raw
-	@Basic
-	void setPosition(Vector2 position) {
-		this.position = position;
-	}
-
-	/**
-	 * Checks whether the position is valid for a entity.
-	 * 
-	 * @param position A Vector2 object containing the position to check.
-	 * 
-	 * @return True if and only if both the x and y coordinate of the given position are valid numbers: They cannot be NaN or infinity. 
-	 * 		 | result == (!isInvalidNumber(position.x) && !isInvalidNumber(position.y))
-	 */
-	public boolean isValidPosition(Vector2 position) {
-		return !OGUtil.isInvalidNumber(position.x) && !OGUtil.isInvalidNumber(position.y);
-	}
-
 	
 	/**
 	 * Variable registering if the entity should have collision in a world or not.
@@ -899,8 +898,6 @@ public abstract class Entity extends Instance {
 	public boolean hasCollision() {
 		return this.collides;
 	}
-	
-	
 	
 	
 	/**
