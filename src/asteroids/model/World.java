@@ -19,7 +19,6 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
-//TODO: zucht terminated checks
 
 
 
@@ -305,7 +304,7 @@ public class World extends Instance {
 					&& !((entity instanceof Bullet) && (entityToCheck instanceof Bullet) && ((Bullet) entity).isLoadedInMotherShip() // behalve als de 2 bullets in dezelfde parent geladen zijn
 							&& ((Bullet) entityToCheck).isLoadedInMotherShip() && (((Bullet) entity).getMotherShip() == ((Bullet) entityToCheck).getMotherShip()))) {
 				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet) entity).getMotherShip() == ((Bullet) entityToCheck).getMotherShip())
-						&& !Entity.isNullOrTerminated(((Bullet) entity).getMotherShip()))) {
+						&& !isNullOrTerminated(((Bullet) entity).getMotherShip()))) {
 					throw new EntitiesOverlapException();
 				}
 

@@ -57,7 +57,7 @@ public class Bullet extends Entity {
 		
 		this.motherShip = motherShip;
 		
-		if (motherShip != null){
+		if (!isNullOrTerminated(motherShip)) {
 			motherShip.loadBullet(this);
 		}
 	}
@@ -152,7 +152,7 @@ public class Bullet extends Entity {
 	 * 		 | The state of the ship (loaded is true and unloaded is false)
 	 */
 	void setLoadedInMotherBoard(boolean loadedInMotherShip) throws NoParentException {
-		if (this.getMotherShip() == null)
+		if (isNullOrTerminated(this.getMotherShip()))
 			throw new NoParentException();
 		this.loadedInMotherShip = loadedInMotherShip;
 		this.setCollision(!loadedInMotherShip);
@@ -197,7 +197,7 @@ public class Bullet extends Entity {
 				throw new RuntimeException(ex);
 			}
 		else {
-			if (this.getMotherShip() != null)
+			if (!isNullOrTerminated(this.getMotherShip()))
 				this.getMotherShip().triggerScoreOn(ship); //does nothing for now (part 3?)
 			ship.triggerHit();
 			this.terminate();

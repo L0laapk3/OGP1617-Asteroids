@@ -249,7 +249,7 @@ public class Ship extends Entity {
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
 		OGUtil.println("SHOOT " + bullet);
-		if (this.getCollisionWorld() == null)
+		if (isNullOrTerminated(this.getCollisionWorld()))
 			throw new NoWorldException();
 		if (this.isTerminated())
 			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
@@ -273,7 +273,7 @@ public class Ship extends Entity {
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
 		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
-		while (collidesWith != null) {
+		while (!isNullOrTerminated(collidesWith)) {
 			OGUtil.println(collidesWith);
 			OGUtil.println(bullet.getMotherShip());
 			Collisions.collide(bullet, collidesWith);

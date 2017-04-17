@@ -599,7 +599,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Immutable
 	public static double getDistanceBetween(Entity entity1, Entity entity2) throws NullPointerException {
-		if (Entity.isNullOrTerminated(entity1) || Entity.isNullOrTerminated(entity2))
+		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) // optimisation
 			return 0;
@@ -620,7 +620,7 @@ public abstract class Entity extends Instance {
 	 * 		   If entity1 or entity2 is null.
 	 */
 	public static boolean overlap(Entity entity1, Entity entity2) throws NullPointerException {
-		if (Entity.isNullOrTerminated(entity1) || Entity.isNullOrTerminated(entity2))
+		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) { // optimisation
 			// OGUtil.println("De entities in functie overlap zijn hetzelfde => geeft true");
@@ -684,7 +684,7 @@ public abstract class Entity extends Instance {
 
 		// foute berekeningen die geen rekening houden met acceleratie..
 
-		if (entity1 == null || entity2 == null)
+		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (overlap(entity1, entity2)) {
 			OGUtil.println("---- ILLEGAL OVERLAP!!! ----");
