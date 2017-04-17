@@ -155,7 +155,7 @@ public class Bullet extends Entity {
 	 */
 	@Raw
 	
-	void setLoadedInMotherShip(boolean loadedInMotherShip) throws NoParentException {
+	void setLoadedInMotherShip(boolean loadedInMotherShip) throws NoMotherShipException {
 		if (isNullOrTerminated(this.getMotherShip()))
 			throw new NoMotherShipException();
 		this.loadedInMotherShip = loadedInMotherShip;
