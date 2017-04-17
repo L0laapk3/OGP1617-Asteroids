@@ -160,6 +160,7 @@ public class Bullet extends Entity {
 	@Override
 	void collideWithWall() {
 		this.addBounce();
+		System.out.println("BOUNCE " + this + " " + this.getBounces()); //TODO: WEG
 		if (this.getBounces() >= MAX_BOUNCES)
 			this.terminate();
 		else

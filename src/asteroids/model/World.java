@@ -459,6 +459,19 @@ public class World {
 		return bullets;
 	}
 	
+	/**
+	 * Gets all bullets with collision from the world.
+	 * @return A Set with all the entities in the world.
+	 */
+	public Set<Bullet> getAllBulletsWithCollision() {
+		Set<Bullet> bullets = new HashSet<Bullet>();
+		for (Entity entity: entities)
+			if ((entity instanceof Bullet) && entity.hasCollision())
+				bullets.add((Bullet)entity);
+		return bullets;
+	}
+	
+	
 	
 	/**
 	 * Gets all entities on which collision physics has to apply on.

@@ -61,13 +61,12 @@ public class Ship extends Entity {
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
 		bullet.setLoadedInMotherBoard(true);
+		bullet.resetBounces();
 
 		if (this.getWorld() != bullet.getWorld())
 			try {
-				this.getCollisionWorld().addEntity(bullet); // These exceptions should
-													// never happen as the
-													// bullet has been set to be
-													// loaded in this ship
+				this.getWorld().addEntity(bullet);
+				// These exceptions should never happen as the bullet has been set to be  loaded in this ship.
 			} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
 				throw new RuntimeException(ex);
 			}

@@ -454,11 +454,13 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * This method must return null if a bullet is not positioned on a ship.
 	 */
 	public Ship getBulletShip(Bullet bullet) {
+		//return bullet.getMotherShip();/*//TODO: tijdelijk
 		if (bullet.isLoadedInMotherShip()) {
 			return bullet.getMotherShip();
 		} else {
 			return null;
 		}
+		//*/
 	}
 
 	/**
@@ -514,7 +516,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * Return all bullets located in <code>world</code>.
 	 */
 	public Set<Bullet> getWorldBullets(World world) throws ModelException {
-		return world.getAllBullets();
+		return world.getAllBulletsWithCollision();
 	}
 
 	/**

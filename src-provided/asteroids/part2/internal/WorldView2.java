@@ -207,6 +207,7 @@ public class WorldView2<F extends IFacade> extends JPanel implements KeyListener
 		} catch (ModelException e) {
 			handleError(e);
 		}
+		System.out.println("CREATE BULLET VISUALISATION: " + bullet + " " + ship);
 		Color bulletColor = visualizations.get(ship) == null ? Color.RED : visualizations.get(ship).getColor();
 		return new BulletVisualization<>(bulletColor, bullet);
 	}
