@@ -131,8 +131,8 @@ public class Ship extends Entity {
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
-		updateLoadMass();
-		bullet.setLoadedInMotherBoard(true);
+		this.updateLoadMass();
+		bullet.setLoadedInMotherShip(true);
 		bullet.resetBounces();
 
 		if (this.getWorld() != bullet.getWorld())
@@ -192,7 +192,7 @@ public class Ship extends Entity {
 	public void unloadBullet(Bullet bullet) throws NullPointerException {
 		if (bullet == null)
 			throw new NullPointerException();
-		bullet.setLoadedInMotherBoard(false);
+		bullet.setLoadedInMotherShip(false);
 		loadedBullets.remove(bullet);
 		updateLoadMass();
 	}
@@ -262,7 +262,7 @@ public class Ship extends Entity {
 		if (!loadedBullets.contains(bullet))
 			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
 
-		bullet.setLoadedInMotherBoard(false);
+		bullet.setLoadedInMotherShip(false);
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));

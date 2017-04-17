@@ -462,18 +462,22 @@ public class World extends Instance {
 
 		Iterator<Entity> it = entities.iterator();
 		Set<Entity> past = new HashSet<Entity>();
-		while (it.hasNext()) {
-
+		while (it.hasNext()) {			
+			
 			Entity first = it.next();
+			if (!first.hasCollision()) {
+				OGUtil.println("bullet with out collision, can ignore");
+				continue;
+				
+			}
+			
+			if ((first instanceof Bullet) && (((Bullet)first).isLoadedInMotherShip())) {
+				OGUtil.println("wtf");
+			}
 
 			// detect wall collisions
 			double collisionTime = first.getTimeToWallCollision();
-			if (collisionTime < 0) {
-				OGUtil.println(first);
-				OGUtil.println(first.getPosition());
-				OGUtil.println(first.getVelocity());
-				throw new RuntimeException("WTF WTF WTF WDKDSQMLTKH");
-			}
+			
 			if (earliestCollisionTime > collisionTime) {
 				earliestCollisionTime = collisionTime;
 				collisionFirstEntity = first;

@@ -151,7 +151,7 @@ public class Bullet extends Entity {
 	 * @param  loadedInMotherShip
 	 * 		 | The state of the ship (loaded is true and unloaded is false)
 	 */
-	void setLoadedInMotherBoard(boolean loadedInMotherShip) throws NoParentException {
+	void setLoadedInMotherShip(boolean loadedInMotherShip) throws NoParentException {
 		if (isNullOrTerminated(this.getMotherShip()))
 			throw new NoParentException();
 		this.loadedInMotherShip = loadedInMotherShip;

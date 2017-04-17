@@ -884,6 +884,7 @@ public abstract class Entity extends Instance {
 	@Raw
 	@Basic
 	void setCollision(boolean collidable) {
+		OGUtil.println("COLLISION " + this + " " + collidable);
 		this.collides = collidable;
 	}
 

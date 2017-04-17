@@ -98,7 +98,7 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 				facade.addShipToWorld(world, enemyShip);
 				for (int i = 1; i < 10; i++) {
 					Bullet bullet = facade.createBullet(facade.getShipPosition(enemyShip)[0],
-							facade.getShipPosition(enemyShip)[1], 0, 0, Math.PI);
+							facade.getShipPosition(enemyShip)[1], 0, 0, Math.PI * 3);
 					facade.loadBulletOnShip(enemyShip, bullet);
 				}
 				enemies.add(enemyShip);
