@@ -44,6 +44,8 @@ public abstract class Entity extends Instance {
 	 * 		   The direction that the new entity is initially pointed at.
 	 * @param  radius
 	 * 		   The size of the newly created entity.
+	 * @param  mass
+	 * 		   The mass of the newly created entity
 	 * @pre    The orientation parameter must be between 0 and 2*PI.
 	 * @post   The x coordinate of this new entity is equal to the given x coordinate.
 	 * 	     | getPosition(new)[0] == x
@@ -63,8 +65,12 @@ public abstract class Entity extends Instance {
 	 *       |     scale = this.maxSpeed / speed
 	 *       |     xVelocity = xVelocity * scale
 	 *       |     yVelocity = yVelocity * scale
+	 * @post   The base mass of this entity is equal to the given mass
+	 * 		 | new.this.getBaseMass == mass
 	 * @post   The orientation of this new entity equal to the given orientation.
+	 * 		 | new.this.getOrientation == orientation
 	 * @post   The radius of this new entity is equal to the given radius.
+	 * 		 | new.this.getRadius() == radius
 	 * @throws InvalidPositionException
 	 * 		   The coordinates of the entity should not be infinite or NaN.
 	 * @throws IllegalArgumentException
@@ -72,10 +78,10 @@ public abstract class Entity extends Instance {
 	 * @throws IllegalArgumentException
 	 * 		   The radius of the entity should not be NaN.
 	 * @throws InvalidRadiusException
-	 * 		   The radius must not be smaller than MIN_RADIUS.	 * 
+	 * 		   The radius must not be smaller than MIN_RADIUS.	
 	 */
 	
-	//TODO: effe comments nazien
+	@Raw
 	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 

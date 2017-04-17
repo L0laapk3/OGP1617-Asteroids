@@ -50,15 +50,12 @@ public class Bullet extends Entity {
 	 * 		   The initial speed in the y direction of the new bullet.
 	 * @param  radius
 	 * 		   The size of the newly created bullet.
-	 * @param  mass
-	 * 		   The mass of the newly created bullet.
 	 * @param  motherShip
 	 * 		   The mothership of the newly created bullet
 	 * @effect This new bullet is initialized as a new Entity with given position, velocity, radius and 0 as his orientation.
-	 * 		 | super(x,y,xVelocity,yVelocity,radius,0)
+	 * 		 | super(x,y,xVelocity,yVelocity,radius,0,calculateBassMass(7.8 * Math.pow(10,  12), radius))
 	 * @post   The minimum radius of the bullet is set to MIN_RADIUS_BULLET.
 	 * @post   The mothership of this bullet will be set to the given mothership.
-	 * @post   The mass density from this bullet is set to 7.8*10^12 kg/km^3
 	 */
 
 	//TODO: effe comments nazien
