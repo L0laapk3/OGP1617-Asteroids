@@ -454,19 +454,18 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * This method must return null if a bullet is not positioned on a ship.
 	 */
 	public Ship getBulletShip(Bullet bullet) {
-		//return bullet.getMotherShip();/*//TODO: tijdelijk
+		
 		if (bullet.isLoadedInMotherShip()) {
 			return bullet.getMotherShip();
 		} else {
 			return null;
 		}
-		//*/
 	}
 
 	/**
 	 * Return the ship that fired <code>bullet</code>.
 	 */
-	public Ship getBulletSource(Bullet bullet) { // TODO moet deze null geven als het op het schip is? ik denk het niet
+	public Ship getBulletSource(Bullet bullet) { //Moet deze null geven als het op het schip is? ik denk het niet
 		return bullet.getMotherShip();
 	}
 

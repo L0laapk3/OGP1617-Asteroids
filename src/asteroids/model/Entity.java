@@ -24,6 +24,8 @@ import be.kuleuven.cs.som.annotate.*;
  */
 
 // TODO: COMMENTS VERDER AFWERKEN
+//TODO: OVERAL RAW????
+//TODO: OVERAL IMMUTABLE
 public abstract class Entity {
 
 	/**
@@ -53,10 +55,14 @@ public abstract class Entity {
 	/**
 	 * Gets the rho value of the ship.
 	 */
+	@Raw
+	@Basic
 	public double getRho() {
 		return this.rho;
 	}
 
+	@Raw
+	@Basic
 	void setRho(double rho) {
 		this.rho = rho;
 		updateBaseMass();
@@ -175,6 +181,7 @@ public abstract class Entity {
 	 * Sets the velocity
 	 * @effect setVelocity(new Vector2(xVelocity, yVelocity))
 	 */
+	@Raw
 	void setVelocity(double xVelocity, double yVelocity) {
 		setVelocity(new Vector2(xVelocity, yVelocity));
 	}
@@ -230,6 +237,8 @@ public abstract class Entity {
 	 * @return True if and only if the radius is greater than 0.
 	 * 		 | radius >= 0
 	 */
+	@Raw
+	@Basic
 	public static boolean isValidMinRadius(double radius) {
 		return radius >= 0 && radius < Double.POSITIVE_INFINITY;
 	}
@@ -438,6 +447,14 @@ public abstract class Entity {
 	public boolean isTerminated() {
 		return isTerminated;
 	}
+	
+	/**
+	 * Check whether this entity exists and is not terminated.
+	 */
+	public static boolean isNullOrTerminated(Entity entity) {
+		return (entity == null) || entity.isTerminated();
+	}
+	
 
 	/**
 	 * variable to declare the acceleration of the given entity

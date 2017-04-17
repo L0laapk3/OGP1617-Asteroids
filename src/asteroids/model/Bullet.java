@@ -16,6 +16,8 @@ import asteroids.exceptions.*;
  * @author   Rik Pauwels
  */
 
+//TODO: OVERAL RAW????
+//TODO: OVERAL IMMUTABLE
 public class Bullet extends Entity {
 	
 	/**

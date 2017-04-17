@@ -14,18 +14,14 @@ import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
-
 //TODO: DOOR ALLE FILES GAAN EN FUNCTIES ORDEREN ZODAT LUIE KUTASSISTEN DE FUNCTIES KAN VINDEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 //TODO: OVERAL RAW????
-//TODO: OVERAL THROWS KUUTT
+//TODO: OVERAL IMMUTABLE
 //TODO: zucht terminated checks
 
-//TODO: investage why users bullets are sometimes white/yellow (intended.. ?) and sometimes green (probably not intended)
-
-
 public class World {
-	
+
 	/**
 	 * Initialize a new world with given width and given height. 
 	 * 
@@ -41,34 +37,34 @@ public class World {
 	 * @note	This constructor is written in a total manner.
 	 */
 	public World(double width, double height) {
-		if (isValidWidth(width)) {		//moet het this.checkValidWidth zijn omdat die finctie niet static is?
+		if (isValidWidth(width)) { // moet het this.checkValidWidth zijn omdat die finctie niet static is?
 			this.width = width;
 		} else if (width > UPPER_BOUND_WIDTH) {
-			this.width = UPPER_BOUND_WIDTH;		
+			this.width = UPPER_BOUND_WIDTH;
 		} else {
 			this.width = 0;
 		}
 		if (isValidHeight(height)) {
 			this.height = height;
 		} else if (height > UPPER_BOUND_HEIGHT) {
-			this.height = UPPER_BOUND_HEIGHT;		
+			this.height = UPPER_BOUND_HEIGHT;
 		} else {
 			this.height = 0;
 		}
 	}
-	
-	//--------------MAX HEIGHT
-	
+
+	// --------------MAX HEIGHT
+
 	/**
 	 * Variable referencing the lower bound of height 
 	 */
 	private static double LOWER_BOUND_HEIGHT = 0;
-	
+
 	/**
 	 * Variable referencing the upper bound of height 
 	 */
 	private static double UPPER_BOUND_HEIGHT = Double.MAX_VALUE;
-	
+
 	/**
 	 * Return the upper bound height of a world.
 	 */
@@ -77,7 +73,7 @@ public class World {
 	public static double getUpperBoundHeight() {
 		return UPPER_BOUND_HEIGHT;
 	}
-	
+
 	/**
 	 * Set the upper bound of height of the given height.
 	 * 
@@ -93,7 +89,7 @@ public class World {
 			UPPER_BOUND_HEIGHT = height;
 		}
 	}
-	
+
 	/**
 	 * Check whether the given height is a valid upper bound of height.
 	 * 
@@ -110,27 +106,27 @@ public class World {
 			return false;
 		}
 	}
-	
-	//----------------MAX WIDTH
+
+	// ----------------MAX WIDTH
 	/**
 	 * Variable referencing the lower bound of width
 	 */
 	private static double LOWER_BOUND_WIDTH = 0;
-	
+
 	/**
 	 * Variable referencing the lower bound of width
 	 */
 	private static double UPPER_BOUND_WIDTH = Double.MAX_VALUE;
-	
+
 	/**
 	 * Return the upper bound width of a world
 	 */
 	@Basic
-	@Raw	
+	@Raw
 	public static double getUpperBoundWidth() {
 		return UPPER_BOUND_WIDTH;
 	}
-	
+
 	/**
 	 * Set the upper bound of height of the given width.
 	 * 
@@ -146,7 +142,7 @@ public class World {
 			UPPER_BOUND_WIDTH = width;
 		}
 	}
-	
+
 	/**
 	 * Check whether the given width is a valid upper bound of width.
 	 * 
@@ -164,22 +160,13 @@ public class World {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//----------------HEIGHT
-	
+	// ----------------HEIGHT
+
 	/**
 	 * Variable referencing the height of the given world
 	 */
 	private final double height;
-	
+
 	/**
 	 * Return the height of this world.
 	 */
@@ -188,7 +175,7 @@ public class World {
 	public double getHeight() {
 		return this.height;
 	}
-	
+
 	/**
 	 * Check whether the given height is a valid height.
 	 * 
@@ -204,24 +191,14 @@ public class World {
 		}
 		return false;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//----------------WIDTH
-	
+
+	// ----------------WIDTH
+
 	/**
 	 * Variable referencing the width of the given world
 	 */
 	private final double width;
-	
+
 	/**
 	 * Return the width of this world.
 	 */
@@ -230,7 +207,7 @@ public class World {
 	public double getWidth() {
 		return this.width;
 	}
-	
+
 	/**
 	 * Check whether the given width is a valid width.
 	 * 
@@ -245,8 +222,7 @@ public class World {
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * Gets the world's upper boundaries.
 	 * @return new Vector2(getWidth(), getHeight());
@@ -254,25 +230,14 @@ public class World {
 	public Vector2 getMaxBounds() {
 		return new Vector2(this.getWidth(), this.getHeight());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//---------------Terminating
-	
+
+	// ---------------Terminating
+
 	/**
 	 * Variable reflecting whether or not the instance is terminated.
 	 */
 	private boolean isTerminated = false;
-	
-	
+
 	/**
 	 * Terminate this world.
 	 *
@@ -283,13 +248,13 @@ public class World {
 	public void terminate() {
 		if (!isTerminated()) {
 			this.isTerminated = true;
-			for(Entity entity : entities) {
-				//do not terminate, just set world to null
+			for (Entity entity : entities) {
+				// do not terminate, just set world to null
 				entity.setWorld(null);
 			}
 		}
 	}
-	
+
 	/**
 	 * Check whether this world is terminated.
 	 */
@@ -298,18 +263,9 @@ public class World {
 	public boolean isTerminated() {
 		return isTerminated;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//--------------basisfuncties entitySet
-	
+
+	// --------------basisfuncties entitySet
+
 	/**
 	 * Variable referencing a Set collecting all the ships and bullets
 	 * in this world.
@@ -319,7 +275,7 @@ public class World {
 	 * @invar Entites cannot overlap, with the exception of bullets loaded in their ships.
 	 */
 	private final Set<Entity> entities = new HashSet<Entity>();
-	
+
 	/**
 	 * 
 	 * 
@@ -337,33 +293,33 @@ public class World {
 	 * 			A new entity can not overlap with an existing entity in that world
 	 * @note    Defensive
 	 */
+	@Raw
 	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException {
-		
+
 		if (entities.contains(entity)) {
 			throw new DoubleEntityException();
 		}
-		
+
 		for (Entity entityToCheck : entities) {
-			if (Entity.overlap(entity, entityToCheck)												      //mag niet overlappen
-					&& !((entity instanceof Bullet) && (((Bullet)entity).getMotherShip() == entityToCheck))   //behalve als het een bullet geladen in dat ship
-					&& !((entityToCheck instanceof Bullet) && (((Bullet)entityToCheck).getMotherShip() == entity))   //behalve als het een bullet geladen in dat ship
-					&& !((entity instanceof Bullet) && (entityToCheck instanceof Bullet) && ((Bullet)entity).isLoadedInMotherShip() //behalve als de 2 bullets in dezelfde parent geladen zijn
-							&& ((Bullet)entityToCheck).isLoadedInMotherShip() && (((Bullet)entity).getMotherShip() == ((Bullet)entityToCheck).getMotherShip()))) {
-				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet)entity).getMotherShip() == ((Bullet)entityToCheck).getMotherShip()) && (((Bullet)entity).getMotherShip() != null))) {
+			if (Entity.overlap(entity, entityToCheck) // mag niet overlappen
+					&& !((entity instanceof Bullet) && (((Bullet) entity).getMotherShip() == entityToCheck)) // behalve als het een bullet geladen in dat ship
+					&& !((entityToCheck instanceof Bullet) && (((Bullet) entityToCheck).getMotherShip() == entity)) // behalve als het een bullet geladen in dat ship
+					&& !((entity instanceof Bullet) && (entityToCheck instanceof Bullet) && ((Bullet) entity).isLoadedInMotherShip() // behalve als de 2 bullets in dezelfde parent geladen zijn
+							&& ((Bullet) entityToCheck).isLoadedInMotherShip() && (((Bullet) entity).getMotherShip() == ((Bullet) entityToCheck).getMotherShip()))) {
+				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet) entity).getMotherShip() == ((Bullet) entityToCheck).getMotherShip())
+						&& !Entity.isNullOrTerminated(((Bullet) entity).getMotherShip()))) {
 					throw new EntitiesOverlapException();
-					//TODO hiet zit het probleem want de bullet moet toegevoegd worden aan de wereld maar het overlapt al met de rest van de bullets maar ik krijg de logica niet juist :D
 				}
-				
+
 			}
 		}
-		
+
 		double centerX = entity.getPosition().x;
 		double centerY = entity.getPosition().y;
-		
-		//TODO: 99% SHIT???????,
-		if (((centerX+entity.getRadius())>this.getWidth()) || ((centerX-entity.getRadius())<0) ||
-				((centerY+entity.getRadius())>this.getHeight()) || ((centerY-entity.getRadius())<0)){
-			throw new NotWithinBoundariesException();			
+
+		if (((centerX + entity.getRadius() * 0.99) > this.getWidth()) || ((centerX - entity.getRadius() * 0.99) < 0) || ((centerY + entity.getRadius() * 0.99) > this.getHeight())
+				|| ((centerY - entity.getRadius() * 0.99) < 0)) {
+			throw new NotWithinBoundariesException();
 		} else {
 			entities.add(entity);
 			entity.setWorld(this);
@@ -378,6 +334,7 @@ public class World {
 	 * 		   The given entity must be in entities.
 	 * @note   Defensive
 	 */
+	@Raw
 	public void removeEntity(Entity entity) throws IllegalEntityException {
 		if (entities.contains(entity)) {
 			entities.remove(entity);
@@ -386,162 +343,133 @@ public class World {
 			throw new IllegalEntityException("An entity that did not exist in this world has been tried to remove from that world.");
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//---------------specifieke functies
-	
-	
+
+	// ---------------specifieke functies
+
 	/**
 	 * Gets entity from given position in world.
 	 * @param  position
 	 * 		   The position to scan for entities.
 	 * @return If there is a ship on the given position, a ship will always be returned.
-	 * @return If there are only non-ship entities on that position, a
+	 * @return If there are only non-ship entities on that position, one of them will be returned.
 	 * @return null if no entity is found.
 	 */
-	public Entity getEntityFromPosition(Vector2 position) {									
+	public Entity getEntityFromPosition(Vector2 position) {
 		if (!isValidHeight(position.y) || !isValidWidth(position.x))
 			return null;
-		
+
 		for (Entity entity : entities)
 			if (Vector2.equals(entity.getPosition(), position)) {
-				if (entity instanceof Bullet && ((Bullet)entity).isLoadedInMotherShip())
-					return ((Bullet)entity).getMotherShip();
+				if (entity instanceof Bullet && ((Bullet) entity).isLoadedInMotherShip())
+					return ((Bullet) entity).getMotherShip();
 				else
 					return entity;
 			}
 		return null;
 	}
-	
-	
+
 	/**
 	 * Gets all entities from the world.
 	 * @return A Set with all the entities in the world.
 	 */
+	@Raw
 	public Set<Entity> getAllEntities() {
-		return new HashSet<Entity>(entities);							
+		return new HashSet<Entity>(entities);
 	}
-	
+
 	/**
 	 * Gets all ships from the world.
 	 * @return A Set with all the entities in the world.
 	 */
+	@Raw
 	public Set<Ship> getAllShips() {
 		Set<Ship> ships = new HashSet<Ship>();
-		for (Entity entity: entities)
+		for (Entity entity : entities)
 			if (entity instanceof Ship)
-				ships.add((Ship)entity);
+				ships.add((Ship) entity);
 		return ships;
 	}
-	
+
 	/**
 	 * Gets all bullets from the world.
 	 * @return A Set with all the entities in the world.
 	 */
+	@Raw
 	public Set<Bullet> getAllBullets() {
 		Set<Bullet> bullets = new HashSet<Bullet>();
-		for (Entity entity: entities)
+		for (Entity entity : entities)
 			if (entity instanceof Bullet)
-				bullets.add((Bullet)entity);
+				bullets.add((Bullet) entity);
 		return bullets;
 	}
-	
+
 	/**
 	 * Gets all bullets with collision from the world.
 	 * @return A Set with all the entities in the world.
 	 */
+	@Raw
 	public Set<Bullet> getAllBulletsWithCollision() {
 		Set<Bullet> bullets = new HashSet<Bullet>();
-		for (Entity entity: entities)
+		for (Entity entity : entities)
 			if ((entity instanceof Bullet) && entity.hasCollision())
-				bullets.add((Bullet)entity);
+				bullets.add((Bullet) entity);
 		return bullets;
 	}
-	
-	
-	
+
 	/**
 	 * Gets all entities on which collision physics has to apply on.
 	 * @return A Set of entites on which collision physics has to apply on.
 	 */
+	@Raw
 	public Set<Entity> getAllEntitiesWithCollision() {
 		Set<Entity> entitiesWithCollision = new HashSet<Entity>();
-		for (Entity entity: entities)
+		for (Entity entity : entities)
 			if (entity.hasCollision())
 				entitiesWithCollision.add(entity);
 		return entitiesWithCollision;
 	}
-	
-
-	
-	
 
 	/**
 	 * Gets all entities without collision. The opposite of getAllEntitiesWithCollision.
 	 * @return A Set of all the loaded bullets in this world.
 	 */
+	@Raw
 	public Set<Entity> getAllEntitiesWithoutCollision() {
 		Set<Entity> entitiesWithoutCollision = new HashSet<Entity>();
-		for (Entity entity: entities)
+		for (Entity entity : entities)
 			if (!entity.hasCollision())
 				entitiesWithoutCollision.add(entity);
 		return entitiesWithoutCollision;
 	}
-	
-	
-	
-	
+
 	/**
 	 * Gets all loaded bullets.
 	 * @return A Set of all the loaded bullets in this world.
 	 */
+	@Raw
 	public Set<Bullet> getAllLoadedBullets() {
 		Set<Bullet> loadedBullets = new HashSet<Bullet>();
-		for (Entity entity: entities)
-			if ((entity instanceof Bullet) && ((Bullet)entity).isLoadedInMotherShip())
-				loadedBullets.add((Bullet)entity);
+		for (Entity entity : entities)
+			if ((entity instanceof Bullet) && ((Bullet) entity).isLoadedInMotherShip())
+				loadedBullets.add((Bullet) entity);
 		return loadedBullets;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	//----------------Advancing time
-	
-	
+
+	// ----------------Advancing time
+
 	public CollisionInformation getNextCollision(Set<Entity> entities) throws EntitiesOverlapException, NoWorldException {
 		double earliestCollisionTime = Double.POSITIVE_INFINITY;
 		Entity collisionFirstEntity = null;
 		Entity collisionSecondEntity = null;
-		//if firstEntity is not null but secondEntity is, there is a wall collision
-		
+		// if firstEntity is not null but secondEntity is, there is a wall collision
+
 		Iterator<Entity> it = entities.iterator();
 		Set<Entity> past = new HashSet<Entity>();
 		while (it.hasNext()) {
-			
+
 			Entity first = it.next();
-			
-			//detect wall collisions
+
+			// detect wall collisions
 			double collisionTime = first.getTimeToWallCollision();
 			if (collisionTime < 0) {
 				System.out.println(first);
@@ -550,12 +478,12 @@ public class World {
 				throw new RuntimeException("WTF WTF WTF WDKDSQMLTKH");
 			}
 			if (earliestCollisionTime > collisionTime) {
-				earliestCollisionTime  = collisionTime;
+				earliestCollisionTime = collisionTime;
 				collisionFirstEntity = first;
 				collisionSecondEntity = null;
 			}
-			for(Entity second : past) {
-				//detect entity collisions
+			for (Entity second : past) {
+				// detect entity collisions
 				double collisionTime1 = Entity.getTimeToCollision(first, second);
 				if (earliestCollisionTime > collisionTime1) {
 					earliestCollisionTime = collisionTime1;
@@ -563,16 +491,13 @@ public class World {
 					collisionSecondEntity = second;
 				}
 			}
-			
+
 			past.add(first);
 		}
-		
-		
+
 		return new CollisionInformation(collisionFirstEntity, collisionSecondEntity, earliestCollisionTime);
 	}
-	
-	
-	
+
 	/**
 	 * Moves and then accelerates all entities.
 	 * @param Dt
@@ -580,24 +505,24 @@ public class World {
 	 * @param entitiesWithCollision
 	 * 		  All entities that need to be moved and accelerated (usually all entities with collision.)
 	 */
+	@Raw
 	void doTime(double Dt, Set<Entity> entitiesWithCollision) {
-		for (Entity entity: entitiesWithCollision) {
+		for (Entity entity : entitiesWithCollision) {
 			entity.move(Dt);
 			entity.accelerate(Dt);
 		}
 	}
-	
-	
+
 	/**
 	 * Simulates the world for time Dt.
-	 * @param Dt
-	 * 		  The time to simulate the world for.
+	 * @effect this.evolve(Dt, null);
+	 * @param  Dt
+	 * 		   The time to simulate the world for.
 	 */
 	public void evolve(double Dt) {
 		this.evolve(Dt, null);
 	}
-	
-	
+
 	/**
 	 * Simulates the world for time Dt.
 	 * @param Dt
@@ -609,35 +534,34 @@ public class World {
 	 * @post  if CollisionListener is not null, collisionListener.objectCollision will be called on entity collisions.
 	 */
 	public void evolve(double Dt, CollisionListener collisionListener) {
-		
+
 		try {
-		
-			//do not simulate collision physics for loaded bullets.
-			
+
+			// do not simulate collision physics for loaded bullets.
+
 			do {
 				Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 				CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
-	
-				
-				if (collInfo.timeToCollision < Dt) { //collision happens before end Dt
+
+				if (collInfo.timeToCollision < Dt) { // collision happens before end Dt
 					if (!collInfo.isWallCollision())
 						System.out.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
-					
+
 					doTime(collInfo.timeToCollision, entitiesWithCollision);
 					Dt -= collInfo.timeToCollision;
-					if (collInfo.isWallCollision()) { //wall collision
+					if (collInfo.isWallCollision()) { // wall collision
 						if (collisionListener != null) {
 							Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(0);
-							assert(collPos != null);
+							assert (collPos != null);
 							collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
 						}
 						collInfo.firstEntity.collideWithWall();
-					} else { //entity collision
+					} else { // entity collision
 						if (collisionListener != null) {
 							Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, 0);
 							System.out.println("explosion: " + collPos);
-							assert(collPos != null);
-							//TODO: explosie gebeurt ook als ge uw eigen kogel opraapt, da lijkt mij fout van de prof om eerlijk te zijn
+							assert (collPos != null);
+							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 						}
 						collideEntities(collInfo.firstEntity, collInfo.secondEntity);
@@ -647,20 +571,17 @@ public class World {
 					Dt = 0;
 				}
 			} while (Dt > 0);
-			
-			
-			//set loaded bullets' location to their parent.
+
+			// set loaded bullets' location to their parent.
 			for (Bullet loadedBullet : getAllLoadedBullets()) {
 				loadedBullet.setPosition(loadedBullet.getMotherShip().getPosition());
 			}
-		
-		
-		} catch (EntitiesOverlapException | NoWorldException ex) { //this should never happen, not user input fault if it happens but code fault.
+
+		} catch (EntitiesOverlapException | NoWorldException ex) { // this should never happen, not user input fault if it happens but code fault.
 			throw new RuntimeException(ex);
 		}
 	}
-	
-	
+
 	/**
 	 * Collides the two entities and calls the proper handlers depending on the collision type.
 	 * @invar Both entities must be in the same world. (not null)
@@ -669,11 +590,11 @@ public class World {
 	 * @param collisionSecondEntity
 	 *        This is the second entity to collide.
 	 */
+	@Raw
 	private void collideEntities(Entity first, Entity second) {
 		Collisions.collide(first, second);
 	}
 
-	
 	/**
 	 * Searches if given entity is colliding with another entity.
 	 * @param entity
@@ -683,9 +604,9 @@ public class World {
 	@Raw
 	public Entity findOverlap(Entity entity) {
 		for (Entity other : this.getAllEntitiesWithCollision())
-				if (Entity.overlap(entity, other) && (entity != other))
-					return other;
+			if (Entity.overlap(entity, other) && (entity != other))
+				return other;
 		return null;
 	}
-	
+
 }

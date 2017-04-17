@@ -13,6 +13,8 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: ALLE FUNCTIES MOETEN ECHT WEL GEORDEND WORDEN
 //TODO: COMMENTS VERDER AFWERKEN
 
+//TODO: OVERAL RAW????
+//TODO: OVERAL IMMUTABLE
 /**
  * A class to define ships.
  * 
@@ -121,11 +123,12 @@ public class Ship extends Entity {
 	 * @return true if it successfully shot a bullet from the ship.
 	 */
 	public boolean shootBullet() throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
+		//Bullets are always red because facade.getBulletShip(bullet) is only called in createBulletVisualization,
+		//and the method is required to return null when the bullets are not loaded in mothership.
 		if (!hasBullet())
 			return false;
 		System.out.println("bullets left: " + loadedBullets.size());
-		shootBullet(loadedBullets.iterator().next()); // gets one (pseudo)random
-														// bullet from hashset
+		shootBullet(loadedBullets.iterator().next()); // gets one (pseudo)random bullet from hashset
 		return true;
 	}
 
