@@ -469,6 +469,7 @@ public class World extends Instance {
 	 * 			Entities may not overlap beforehand.
 	 * @throws  NoWorldException
 	 * 			Entities must lay in a world.
+	 * @note    For obvious reasons, if you want a correct result, only entities that are elligable for collision should be in the entities set parameter.
 	 */
 	public CollisionInformation getNextCollision(Set<Entity> entities) throws EntitiesOverlapException, NoWorldException {
 		double earliestCollisionTime = Double.POSITIVE_INFINITY;
@@ -481,11 +482,6 @@ public class World extends Instance {
 		while (it.hasNext()) {			
 			
 			Entity first = it.next();
-			if (!first.hasCollision()) {
-				OGUtil.println("bullet with out collision, can ignore");
-				continue;
-				
-			}
 			
 			if ((first instanceof Bullet) && (((Bullet)first).isLoadedInMotherShip())) {
 				OGUtil.println("wtf");

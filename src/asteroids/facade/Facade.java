@@ -762,7 +762,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * Return a set of all the entities in the given world.
 	 */
 	public Set<Entity> getEntities(World world) throws ModelException {
-		return world.getAllEntities();
+		return world.getAllEntitiesWithCollision();
 	}
 
 }
