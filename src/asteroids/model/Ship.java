@@ -329,23 +329,8 @@ public class Ship extends Entity {
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private static final double thrustforce = 1.1 * (Math.pow(10, 24)); // TODO
-																		// was
-																		// 21
-																		// ipv
-																		// 24
-																		// maar
-																		// anders
-																		// is er
-																		// niks
-																		// te
-																		// zien
-																		// dus
-																		// wel
-																		// terugzetten
-																		// voor
-																		// in te
-																		// dienen
+	private static final double thrustforce = 1.1 * (Math.pow(10, 24));
+	// TODO was 21 ipv 24 maar anders is er niks te zien dus wel terugzetten voor in te dienen
 
 	/**
 	 * function that calculates the acceleration of the ship

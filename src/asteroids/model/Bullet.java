@@ -70,6 +70,19 @@ public class Bullet extends Entity {
 		return this.parent;
 	}
 
+	
+
+	/**
+	 *  Returns the world where the entity lives in
+	 *  @return the world if the entity
+	 */
+	@Raw
+	@Override
+	public World getWorld() { //fix: opdracht zegt: bullet mag niet in een world zijn als het geladen is in eeen schip
+		return isLoadedInParent() ? null : super.getWorld();
+	}
+
+	
 	/**
 	 * Sets the ship that this bullet belongs to.
 	 */
