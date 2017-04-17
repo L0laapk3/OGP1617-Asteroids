@@ -10,7 +10,8 @@ import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
-//TODO: ALLE FUNCTIES MOETEN ECHT WEL GEORDEND WORDEN ZODAT DIE LUIE ASSISTENTEN HET KUNNEN VINDEN
+//TODO: ALLE FUNCTIES MOETEN ECHT WEL GEORDEND WORDEN
+//TODO: COMMENTS VERDER AFWERKEN
 
 /**
  * A class to define ships.
@@ -22,8 +23,6 @@ import be.kuleuven.cs.som.annotate.Raw;
  * @author Kris Keersmaekers
  * @author Rik Pauwels
  */
-
-// TODO: COMMENTS VERDER AFWERKEN, SHIT OVER BULLETS OOK NOG
 
 public class Ship extends Entity {
 
