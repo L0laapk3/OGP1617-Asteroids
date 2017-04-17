@@ -764,7 +764,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	static Vector2 getCollisionPosition(Entity entity1, Entity entity2, double Dt) {
-		// TODO: moet hier die 99% 101% shiet nie in?
+		// TODO: moet hier die 99% 101% shiet nie in? nah lul
 		if (Dt == Double.POSITIVE_INFINITY)
 			return null;
 

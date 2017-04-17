@@ -193,7 +193,7 @@ public class Bullet extends Entity {
 		if (ship == this.getMotherShip())
 			try {
 				ship.loadBullet(this);
-			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen //TODO: zie da da nog just is
+			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen
 				throw new RuntimeException(ex);
 			}
 		else {

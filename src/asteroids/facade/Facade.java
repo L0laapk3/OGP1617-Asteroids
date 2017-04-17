@@ -3,7 +3,12 @@ package asteroids.facade;
 import java.util.Collection;
 import java.util.Set;
 
-import asteroids.exceptions.*;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.model.Bullet;
 import asteroids.model.CollisionInformation;
 import asteroids.model.Entity;
@@ -11,6 +16,7 @@ import asteroids.model.Ship;
 import asteroids.model.World;
 import asteroids.part2.CollisionListener;
 import asteroids.util.ModelException;
+import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 
 public class Facade implements asteroids.part2.facade.IFacade {
@@ -37,7 +43,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * @return True if the ship is invalid, otherwise false.
 	 */
 	private boolean isInvalidShip(Ship ship) {
-		return ship == null;
+		return Ship.isNullOrTerminated(ship);
 	}
 
 	/**
@@ -158,7 +164,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 */
 	@Override
 	public double getShipOrientation(Ship ship) {
-		assert ship != null;
+		assert !Ship.isNullOrTerminated(ship);
 		return ship.getOrientation();
 	}
 
@@ -198,7 +204,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 */
 	@Override
 	public void turn(Ship ship, double angle) {
-		assert ship != null;
+		assert !Ship.isNullOrTerminated(ship);
 		ship.turn(angle);
 	}
 
@@ -217,7 +223,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 */
 	@Override
 	public void thrust(Ship ship, double amount) {
-		if (ship == null)
+		if (Ship.isNullOrTerminated(ship))
 			return;
 		ship.thrust(amount);
 	}
@@ -388,7 +394,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 */
 	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException {
 		try {
-			return new Bullet(x, y, xVelocity, yVelocity, radius, null); // sgoed
+			return new Bullet(x, y, xVelocity, yVelocity, radius, null);
 		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
 			throw new ModelException(ex);
 		}
@@ -665,11 +671,11 @@ public class Facade implements asteroids.part2.facade.IFacade {
 			return pos.toProfNotation();
 		} catch (NullPointerException | EntitiesOverlapException ex) {
 			if (ex instanceof EntitiesOverlapException) {
-				System.out.println("--------- WARNING! ----------");
-				System.out.println("Facade tried to illegally call getPositionCollisionEntity on 2 objects that overlap. Printing the stack trace causes great amounts of lag.");
-				System.out.println("In the assignment is specifically stated that this method does not apply to objects that overlap and that it has to be written defensively.");
+				OGUtil.println("--------- WARNING! ----------");
+				OGUtil.println("Facade tried to illegally call getPositionCollisionEntity on 2 objects that overlap. Printing the stack trace causes great amounts of lag.");
+				OGUtil.println("In the assignment is specifically stated that this method does not apply to objects that overlap and that it has to be written defensively.");
 				System.out.print("Result of Entity.overlap(entity1, entity2): ");
-				System.out.println(Entity.overlap((Entity) entity1, (Entity) entity2));
+				OGUtil.println(Entity.overlap((Entity) entity1, (Entity) entity2));
 				System.out.print("Checking if one is bullet loaded in the other ship: ");
 				Bullet bullet = null;
 				Ship ship = null;
@@ -680,10 +686,10 @@ public class Facade implements asteroids.part2.facade.IFacade {
 					bullet = (Bullet) entity1;
 					ship = (Ship) entity2;
 				}
-				if (bullet != null) {
-					System.out.println(bullet.getMotherShip() == ship);
+				if (!Bullet.isNullOrTerminated(bullet)) {
+					OGUtil.println(bullet.getMotherShip() == ship);
 				} else {
-					System.out.println("false");
+					OGUtil.println("false");
 				}
 			}
 			throw new ModelException(ex);

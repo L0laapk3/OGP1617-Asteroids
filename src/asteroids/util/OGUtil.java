@@ -58,7 +58,23 @@ public class OGUtil {
 				throw new IllegalArgumentException("Number cannot be NaN.");
 		}
 	}
+
+
+	/**
+	 * Prints only in debug mode
+	 */
+	public static void print(String str) {
+        if (VERBOSE)
+			System.out.print(str);
+	}
 	
+	/**
+	 * Prints only in debug mode
+	 * @effect print(arg.toString());
+	 */
+	public static void print(Object arg) {
+		print(arg.toString());
+	}
 
 	/**
 	 * Prints line only in debug mode
