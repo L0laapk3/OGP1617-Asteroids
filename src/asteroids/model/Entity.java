@@ -451,8 +451,8 @@ public abstract class Entity extends Instance {
 	 */
 	@Override
 	public void terminate() throws IllegalEntityException {
-		if (this.getCollisionWorld() != null)
-			this.getCollisionWorld().removeEntity(this);
+		if (this.getWorld() != null)
+			this.getWorld().removeEntity(this);
 		super.terminate();
 	}
 	

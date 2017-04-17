@@ -155,7 +155,7 @@ public class AsteroidsFrame2<F extends IFacade> extends JFrame {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice screen = env.getDefaultScreenDevice();
 		AsteroidsFrame2<IFacade> asteroids;
-		Sound sound = enableSound ? new FileSoundManager("asteroids/resources/sounds.txt") : new NullSound();
+		Sound sound = new NullSound();
 
 		if (tryFullscreen && screen.isFullScreenSupported()) {
 			Rectangle dimensions = screen.getDefaultConfiguration().getBounds();

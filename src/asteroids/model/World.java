@@ -551,7 +551,8 @@ public class World extends Instance {
 							Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(0);
 							assert (collPos != null);
 							collisionListener.boundaryCollision(collInfo.firstEntity, collPos.x, collPos.y);
-						}
+						};
+						OGUtil.println(collInfo.firstEntity + " " + collInfo.firstEntity.getMass());
 						collInfo.firstEntity.collideWithWall();
 					} else { // entity collision
 						if (collisionListener != null) {

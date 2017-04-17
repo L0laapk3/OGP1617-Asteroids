@@ -84,7 +84,7 @@ public class Ship extends Entity {
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double rho)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, orientation);
-		this.setMinRadius(MIN_RADIUS_SHIP);
+		this.setMinRadius(MIN_RADIUS);
 
 		// TOTAL
 		if (isValidRho(rho)) {
@@ -103,7 +103,7 @@ public class Ship extends Entity {
 	/**
 	 * Constant that defines the minimum radius of a ship.
 	 */
-	private static final double MIN_RADIUS_SHIP = 10;
+	private static final double MIN_RADIUS = 10;
 
 	/**
 	 * HashSet holding the loaded bullets from the ship
