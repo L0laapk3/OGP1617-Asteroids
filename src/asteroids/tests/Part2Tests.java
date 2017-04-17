@@ -29,7 +29,6 @@ import asteroids.util.Vector2;
 public class Part2Tests {
 
 	// ---------------------TESTS MAKEN SHIP
-	//TODO: tests gaan waarschijnlijk fout zijn
 
 	private static final double EPSILON = 0.0001;
 

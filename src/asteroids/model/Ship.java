@@ -21,7 +21,6 @@ import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 
 
-//TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
 /**
  * A class to define ships.
@@ -110,6 +109,7 @@ public class Ship extends Entity {
 	 *         bullet must not be null.
 	 * @note defensive
 	 */
+	@Raw
 	public void loadBullet(Bullet bullet) throws NullPointerException, RuntimeException {
 		if (bullet == null)
 			throw new NullPointerException();
@@ -160,6 +160,7 @@ public class Ship extends Entity {
 	 * @post   The given bullets will be added to the Set with loaded bullets from this ship.
 	 *       | new.getLoadedBullets.contains(bullets) = true
 	 */
+	@Raw
 	public void loadBullet(Collection<Bullet> bullets) throws NullPointerException {
 		for (Bullet bullet : bullets) {
 			this.loadBullet(bullet);
@@ -176,6 +177,7 @@ public class Ship extends Entity {
 	 * @throws NullPointerException
 	 *         bullet must not be null.
 	 */
+	@Raw
 	public void unloadBullet(Bullet bullet) throws NullPointerException {
 		if (bullet == null)
 			throw new NullPointerException();
@@ -202,6 +204,7 @@ public class Ship extends Entity {
 	 * @return false if there is no bullet loaded in the ship.
 	 * @return true if it successfully shot a bullet from the ship.
 	 */
+	@Raw
 	public boolean shootBullet() throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		//Bullets are always red because facade.getBulletShip(bullet) is only called in createBulletVisualization,
 		//and the method is required to return null when the bullets are not loaded in mothership.
@@ -235,6 +238,7 @@ public class Ship extends Entity {
 	 * 
 	 * @note defensive
 	 */
+	@Raw
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
 		OGUtil.println("SHOOT " + bullet);
 		if (isNullOrTerminated(this.getCollisionWorld()))
@@ -304,8 +308,8 @@ public class Ship extends Entity {
 	/**
 	 * Gets the total mass of the loaded bullets.
 	 */
-	@Basic
 	@Raw
+	@Basic
 	public double getLoadMass() {
 		return this.loadMass;
 	}
@@ -366,8 +370,8 @@ public class Ship extends Entity {
 	 * 
 	 * @return thrusterstate Returns the thrusterstate
 	 */
-	@Basic
 	@Raw
+	@Basic
 	public boolean getThrusterstate() {
 		return this.thrusterState;
 	}
@@ -428,6 +432,7 @@ public class Ship extends Entity {
 	 * @effect Terminates all the bullets in this ship.
 	 * 		| bullet.terminate() for bullet in loadedBullets
 	 */
+	@Raw
 	@Override
 	public void terminate() {
 		//naar onze interpretatie moeten de bullets mee sterven met het schip

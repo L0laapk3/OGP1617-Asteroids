@@ -22,7 +22,6 @@ import be.kuleuven.cs.som.annotate.*;
  * @author   Rik Pauwels
  */
 
-//TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
 public abstract class Entity extends Instance {
 	
@@ -252,8 +251,8 @@ public abstract class Entity extends Instance {
 	 * 
 	 * @note   This is written in a total fashion.
 	 */
-	@Basic
 	@Raw
+	@Basic
 	public Vector2 getVelocity() {
 		return this.velocity;
 	}
@@ -328,8 +327,8 @@ public abstract class Entity extends Instance {
 	 * @return MIN_RADIUS
 	 * 		   Returns the minimum radius of the entity.
 	 */
-	@Basic
 	@Raw
+	@Basic
 	public double getMinRadius() {
 		return MIN_RADIUS;
 	}
@@ -384,9 +383,9 @@ public abstract class Entity extends Instance {
 	 * 
 	 * @return The radius.
 	 */
+	@Raw
 	@Basic
 	@Immutable
-	@Raw
 	public double getRadius() {
 		return this.radius;
 	}
@@ -415,8 +414,8 @@ public abstract class Entity extends Instance {
 	 * 
 	 * @return The orientation. This double will always be between 0 and 2*PI.
 	 */
-	@Basic
 	@Raw
+	@Basic
 	public double getOrientation() {
 		return this.orientation;
 	}
@@ -460,6 +459,7 @@ public abstract class Entity extends Instance {
 	 * @post   If the entity is in a world, The entity is removed properly from the world first.
 	 * 		 | new.this.getWorld() == None
 	 */
+	@Raw
 	@Override
 	public void terminate() throws IllegalEntityException {
 		if (this.getWorld() != null)
@@ -472,8 +472,8 @@ public abstract class Entity extends Instance {
 	 * @return The trust force of this entity.
 	 * 		 | this.acceleration
 	 */
-	@Basic
 	@Raw
+	@Basic
 	public double getAcceleration() {
 		return thrustForce / this.getMass();
 	}
@@ -534,6 +534,7 @@ public abstract class Entity extends Instance {
 	 * 		   	The time of the action should be positive. 
 	 * @note   	This is written in a defensive manner.
 	 */
+	@Raw
 	public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
 
 		OGUtil.throwErrorIfInvalidNumbers(dt);
@@ -569,6 +570,7 @@ public abstract class Entity extends Instance {
 	 * @return True if and only if dt equals to or is bigger than 0.
 	 *       | result == (dt >= 0)
 	 */
+	@Raw
 	public boolean isValidDeltaTime(double dt) {
 		return dt >= 0;
 	}
@@ -589,6 +591,7 @@ public abstract class Entity extends Instance {
 	 * @note   This is written in a nominally manner.
 	 * 
 	 */
+	@Raw
 	public void turn(double angle) {
 		this.orientation = (this.orientation + angle) % (2 * Math.PI);
 		if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
@@ -616,6 +619,7 @@ public abstract class Entity extends Instance {
 	 *       |     yVelocity = yVelocity * scale
 	 * @note   This is written in a total manner.
 	 */
+	@Raw
 	public void thrust(double amount) {
 		if (OGUtil.isInvalidNumber(amount) || amount < 0)
 			return;
@@ -957,6 +961,7 @@ public abstract class Entity extends Instance {
 	 * @effect Sets the velocity to the new velocity which takes into account the acceleration of the entity.
 	 * 		 | this.setVelocity(new velocity)
 	 */
+	@Raw
 	public void accelerate(double Dt) {
 
 		if (this.getAcceleration() == 0)

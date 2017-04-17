@@ -22,7 +22,6 @@ import be.kuleuven.cs.som.annotate.Raw;
  * @author   Rik Pauwels
  */
 
-//TODO: OVERAL RAW????
 public class Bullet extends Entity {
 
 
@@ -153,6 +152,8 @@ public class Bullet extends Entity {
 	 * @param  loadedInMotherShip
 	 * 		 | The state of the ship (loaded is true and unloaded is false)
 	 */
+	@Raw
+	
 	void setLoadedInMotherShip(boolean loadedInMotherShip) throws NoMotherShipException {
 		if (isNullOrTerminated(this.getMotherShip()))
 			throw new NoMotherShipException();
@@ -167,6 +168,7 @@ public class Bullet extends Entity {
 	 * 
 	 * @post Changes the velocity when a bullet bounces against the wall of the world.
 	 */
+	@Raw
 	@Override
 	void collideWithWall() {
 		this.addBounce();
@@ -188,6 +190,7 @@ public class Bullet extends Entity {
 	 * @throws NullPointerException  
 	 * 		   If ship is null.
 	 */
+	@Raw
 	void hit(Ship ship) throws NullPointerException {
 		OGUtil.println("---hit---");
 		//OGUtil.println(this.getParent());
@@ -215,6 +218,7 @@ public class Bullet extends Entity {
 	 *         The second bullet to collide.
 	 * @post   Both bullets are terminated.
 	 */
+	@Raw
 	static void collideBullets(Bullet first, Bullet second) {
 		first.terminate();
 		second.terminate();
