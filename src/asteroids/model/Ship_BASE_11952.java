@@ -59,13 +59,13 @@ public class Ship extends Entity {
 
 		System.out.println("LOAD " + this + " " + bullet); // TODO: weg
 
-		bullet.setMotherShip(this);
+		bullet.setParent(this);
 		loadedBullets.add(bullet);
-		bullet.setLoadedInMotherBoard(true);
+		bullet.setLoadedInParent(true);
 
-		if (this.getCollisionWorld() != bullet.getCollisionWorld())
+		if (this.getWorld() != bullet.getWorld())
 			try {
-				this.getCollisionWorld().addEntity(bullet); // These exceptions should
+				this.getWorld().addEntity(bullet); // These exceptions should
 													// never happen as the
 													// bullet has been set to be
 													// loaded in this ship
@@ -102,7 +102,7 @@ public class Ship extends Entity {
 	public void unloadBullet(Bullet bullet) throws NullPointerException {
 		if (bullet == null)
 			throw new NullPointerException();
-		bullet.setLoadedInMotherBoard(false);
+		bullet.setLoadedInParent(false);
 		loadedBullets.remove(bullet);
 	}
 
@@ -141,21 +141,21 @@ public class Ship extends Entity {
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		System.out.println("SHOOT " + bullet); // TODO: weg
-		if (this.getCollisionWorld() == null)
+		if (this.getWorld() == null)
 			throw new NoWorldException();
 		if (this.isTerminated())
 			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
 		if (bullet.isTerminated())
 			throw new AlreadyTerminatedException("Cannot fire bullet because it is terminated.");
-		if (this.getCollisionWorld() != bullet.getCollisionWorld()) {
+		if (this.getWorld() != bullet.getWorld()) {
 			throw new MisMatchWorldsException("Bullet and ship must be in the same world.");
 		}
-		if (bullet.getMotherShip() != this)
+		if (bullet.getParent() != this)
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
 			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
 
-		bullet.setLoadedInMotherBoard(false);
+		bullet.setLoadedInParent(false);
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
@@ -166,15 +166,15 @@ public class Ship extends Entity {
 		System.out.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
-		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
+		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
 		while (collidesWith != null) {
 			System.out.println(collidesWith); // TODO: weg
-			System.out.println(bullet.getMotherShip());
+			System.out.println(bullet.getParent());
 			Collisions.collide(bullet, collidesWith);
 			System.out.println("---");
 			System.out.println(bullet);
-			System.out.println(bullet.isLoadedInMotherShip());
-			System.out.println(bullet.getCollisionWorld());
+			System.out.println(bullet.isLoadedInParent());
+			System.out.println(bullet.getWorld());
 			collidesWith = (bullet.isTerminated() || bullet.isLoadedInParent()) ? null : bullet.getWorld().findOverlap(bullet);
 		}
 

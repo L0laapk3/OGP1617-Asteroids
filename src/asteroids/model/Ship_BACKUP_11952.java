@@ -173,9 +173,15 @@ public class Ship extends Entity {
 			Collisions.collide(bullet, collidesWith);
 			System.out.println("---");
 			System.out.println(bullet);
+<<<<<<< HEAD
 			System.out.println(bullet.isLoadedInMotherShip());
+			System.out.println(bullet.getWorld());
+			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
+=======
+			System.out.println(bullet.isLoadedInParent());
 			System.out.println(bullet.getCollisionWorld());
-			collidesWith = (bullet.isTerminated() || bullet.isLoadedInParent()) ? null : bullet.getWorld().findOverlap(bullet);
+			collidesWith = (bullet.isTerminated() || bullet.isLoadedInParent()) ? null : bullet.getCollisionWorld().findOverlap(bullet);
+>>>>>>> 74e5b38e55ee7ffbc05e10df5cd6217af20effdd
 		}
 
 		updateLoadMass();

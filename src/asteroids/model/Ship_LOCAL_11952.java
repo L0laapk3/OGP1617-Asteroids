@@ -63,9 +63,9 @@ public class Ship extends Entity {
 		loadedBullets.add(bullet);
 		bullet.setLoadedInMotherBoard(true);
 
-		if (this.getCollisionWorld() != bullet.getCollisionWorld())
+		if (this.getWorld() != bullet.getWorld())
 			try {
-				this.getCollisionWorld().addEntity(bullet); // These exceptions should
+				this.getWorld().addEntity(bullet); // These exceptions should
 													// never happen as the
 													// bullet has been set to be
 													// loaded in this ship
@@ -141,13 +141,13 @@ public class Ship extends Entity {
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		System.out.println("SHOOT " + bullet); // TODO: weg
-		if (this.getCollisionWorld() == null)
+		if (this.getWorld() == null)
 			throw new NoWorldException();
 		if (this.isTerminated())
 			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
 		if (bullet.isTerminated())
 			throw new AlreadyTerminatedException("Cannot fire bullet because it is terminated.");
-		if (this.getCollisionWorld() != bullet.getCollisionWorld()) {
+		if (this.getWorld() != bullet.getWorld()) {
 			throw new MisMatchWorldsException("Bullet and ship must be in the same world.");
 		}
 		if (bullet.getMotherShip() != this)
@@ -166,7 +166,7 @@ public class Ship extends Entity {
 		System.out.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
-		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
+		Entity collidesWith = bullet.getWorld().findOverlap(bullet);
 		while (collidesWith != null) {
 			System.out.println(collidesWith); // TODO: weg
 			System.out.println(bullet.getMotherShip());
@@ -174,8 +174,8 @@ public class Ship extends Entity {
 			System.out.println("---");
 			System.out.println(bullet);
 			System.out.println(bullet.isLoadedInMotherShip());
-			System.out.println(bullet.getCollisionWorld());
-			collidesWith = (bullet.isTerminated() || bullet.isLoadedInParent()) ? null : bullet.getWorld().findOverlap(bullet);
+			System.out.println(bullet.getWorld());
+			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
 		}
 
 		updateLoadMass();

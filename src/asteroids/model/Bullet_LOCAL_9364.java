@@ -112,12 +112,6 @@ public class Bullet extends Entity {
 	public Ship getMotherShip() {
 		return this.motherShip;
 	}
-<<<<<<< HEAD
-=======
-
-	
-
->>>>>>> 74e5b38e55ee7ffbc05e10df5cd6217af20effdd
 	
 	/**
 	 * Sets the ship that this bullet belongs to.
@@ -152,13 +146,8 @@ public class Bullet extends Entity {
 	void setLoadedInMotherBoard(boolean loadedInMotherShip) throws NoParentException {
 		if (this.getMotherShip() == null)
 			throw new NoParentException();
-<<<<<<< HEAD
 		this.loadedInMotherShip = loadedInMotherShip;
 		this.setCollision(!loadedInMotherShip);
-=======
-		this.loadedInParent = loadedInParent;
-		this.setCollision(!loadedInParent);
->>>>>>> 74e5b38e55ee7ffbc05e10df5cd6217af20effdd
 	}
 	
 	

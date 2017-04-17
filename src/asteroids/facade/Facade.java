@@ -351,7 +351,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * Return the world of <code>ship</code>.
 	 */
 	public World getShipWorld(Ship ship) {
-		return ship.getWorld();
+		return ship.getCollisionWorld();
 	}
 
 	/**
@@ -445,7 +445,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * if it is positioned on a ship.
 	 */
 	public World getBulletWorld(Bullet bullet) {
-		return bullet.getWorld();
+		return bullet.getCollisionWorld();
 	}
 
 	/**
