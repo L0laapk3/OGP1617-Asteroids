@@ -456,7 +456,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	public Vector2 getAccelerationVector() {
-		return new Vector2(Math.cos(this.getOrientation()) * thrustForce / this.getMass(), Math.sin(this.getOrientation()) * thrustForce / this.getMass());
+		return new Vector2(Math.cos(this.getOrientation()) * getAcceleration(), Math.sin(this.getOrientation()) * getAcceleration());
 	}
 
 	/**
