@@ -25,6 +25,18 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
 public class Bullet extends Entity {
+
+
+	/**
+	 * Constant holding the minimum radius from a bullet.
+	 */
+	private static final double MIN_RADIUS_BULLET = 1;
+	
+	/**
+	 * Constant holding the max amount of bounces before a bullet dissapears.
+	 */
+	private static final double MAX_BOUNCES = 3;
+	
 	
 	/**
 	 * Function to make a new bullet.
@@ -48,12 +60,12 @@ public class Bullet extends Entity {
 	 * @post   The mothership of this bullet will be set to the given mothership.
 	 * @post   The mass density from this bullet is set to 7.8*10^12 kg/km^3
 	 */
-	
+
+	//TODO: effe comments nazien
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, 0);
+		super(x, y, xVelocity, yVelocity, radius, 0, calculateBassMass(7.8 * Math.pow(10,  12), radius));
 		this.setMinRadius(MIN_RADIUS_BULLET);		
 
-		setRho(7.8 * Math.pow(10,  12)); //constant for this class
 		
 		this.motherShip = motherShip;
 		
@@ -61,16 +73,6 @@ public class Bullet extends Entity {
 			motherShip.loadBullet(this);
 		}
 	}
-
-	/**
-	 * Constant holding the minimum radius from a bullet.
-	 */
-	private static final double MIN_RADIUS_BULLET = 1;
-	
-	/**
-	 * Constant holding the max amount of bounces before a bullet dissapears.
-	 */
-	private static final double MAX_BOUNCES = 3;
 	
 	/**
 	 * Variable holding the amount of bounces after being shot.

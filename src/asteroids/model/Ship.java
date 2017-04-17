@@ -37,6 +37,13 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 public class Ship extends Entity {
 	
+
+	
+	
+	private static final double MIN_RHO = 1.42 * Math.pow(10, 12);
+	
+	
+	
 	@Deprecated
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
@@ -62,6 +69,8 @@ public class Ship extends Entity {
 	 *         The mass of the newly created ship.
 	 * @param  rho
 	 *         The mass density of the newly created ship
+	 * @invar    The mass of the entity will always be equal to or greater than 4/3*PI*radius^3*(mass density)
+	 * 		   | this.isValidMass(mass)
 	 * @effect This new ship is initialized as a new Entity with given position, velocity, radius and orientation.
 	 *       | super(x,y,xVelocity,yVelocity,radius,orientation)
 	 * @post   The radius of this new ship is equal to the given radius if the radius is valid otherwise this function throws an InvalidRadiusException.
@@ -69,6 +78,9 @@ public class Ship extends Entity {
 	 *       |     new.getRadius=radius
 	 *       | else 
 	 *       |     throw new InvalidRadiusException
+	 *   
+	 *       //TODO: herschrijven dit (zie comment bij super())
+	 *
 	 * @post   The mass of this new ship is equal to the given mass if the mass is invalid it will be set to a default value of 1.
 	 *       | if (isValidMass)
 	 *       |	   new.getMass = mass
@@ -81,18 +93,11 @@ public class Ship extends Entity {
 	 *       |     new.getRho=1.42*10^12
 	 */
 
-	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double rho)
+	//TODO: effe comments nazien
+	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, orientation);
+		super(x, y, xVelocity, yVelocity, radius, orientation, Math.max(mass, calculateBassMass(MIN_RHO, radius))); //total: if the mass is too low, it will be set to a higher value
 		this.setMinRadius(MIN_RADIUS);
-
-		// TOTAL
-		if (isValidRho(rho)) {
-			setRho(rho);
-		} else {
-			setRho(1.42 * Math.pow(10, 12));
-		}
-
 	}
 
 	/**
@@ -288,6 +293,26 @@ public class Ship extends Entity {
 		updateLoadMass();
 	}
 
+	
+
+
+	/**
+	 * Check whether the mass density is valid for a ship.
+	 * 
+	 * @param  rho
+	 * 		   The mass density to check.
+	 * @param  radius
+	 *         The radius to use to calculate the amss.
+	 * @return True if and only if mass is finite, and the mass density is bigger than MIN_RHO.
+	 *       | see implementation
+	 */
+	@Raw
+	@Basic
+	public static boolean isValidBaseMass(double mass, double radius) {
+		return mass >= calculateBassMass(MIN_RHO, radius) && OGUtil.isInvalidNumber(mass);
+	}
+	
+	
 	/**
 	 * The total mass of the load.
 	 */
@@ -321,6 +346,7 @@ public class Ship extends Entity {
 	@Raw
 	@Override
 	public double getMass() {
+		OGUtil.println("super mass " + super.getMass() + ", bullet mass " + this.getLoadMass() + " "  + this);
 		return super.getMass() + this.getLoadMass();
 	}
 
@@ -366,7 +392,7 @@ public class Ship extends Entity {
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private static final double THRUSTFORCE = 1.1 * (Math.pow(10, 21));
+	private static final double THRUSTFORCE = 1.1 * Math.pow(10, 21);
 	//TODO mag weg: zet op 24 om iets te zien in het spel
 	//TODO ERGENS FOUT IN DE BEREKENINGEN WAARDOOR ACCELERATION VEEL TE TRAAG GAAT.
 
@@ -423,8 +449,7 @@ public class Ship extends Entity {
 	 */
 	@Override
 	public void terminate() {
-		// TODO: naar onze interpretatie moeten de bullets mee sterven met het
-		// schip
+		//naar onze interpretatie moeten de bullets mee sterven met het schip
 		for (Bullet bullet : loadedBullets)
 			bullet.terminate();
 		super.terminate();

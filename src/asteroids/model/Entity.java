@@ -14,8 +14,6 @@ import be.kuleuven.cs.som.annotate.*;
  *         | isValidOrientation(getOrientation())
  * @invar    The radius must be bigger than MIN_RADIUS.
  * 		   | isValidRadius(getRadius())
- * @invar    The mass of the entity will always be equal to or greater than 4/3*PI*radius^3*(mass density)
- * 		   | this.isValidMass(mass)
  * @invar    Velocity must be valid.
  * 		   | this.isValidVelocity(getVelocity)
  * 
@@ -28,6 +26,7 @@ import be.kuleuven.cs.som.annotate.*;
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
 public abstract class Entity extends Instance {
+	
 	
 	/**
 	 * Create a new entity with the given position, velocity, radius and
@@ -75,7 +74,9 @@ public abstract class Entity extends Instance {
 	 * @throws InvalidRadiusException
 	 * 		   The radius must not be smaller than MIN_RADIUS.	 * 
 	 */
-	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)
+	
+	//TODO: effe comments nazien
+	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 
 		this.maxSpeed = 300000;
@@ -103,50 +104,8 @@ public abstract class Entity extends Instance {
 		if (radius < MIN_RADIUS)
 			throw new InvalidRadiusException();
 		this.radius = radius;
+		this.baseMass = mass;
 
-	}
-
-
-	/**
-	 * Variable holding the mass density of the entity
-	 */
-	double rho;
-
-	/**
-	 * Check whether the mass density is valid for a entity.
-	 * 
-	 * @param  rho
-	 * 		   The mass density to check.
-	 * @return True if and only if the given rho is between 1.42*10^12 kg/km^3 and positive infinity.
-	 *       | result == (mass >= 0) && (mass < Double.POSITIVE_INFINITY)
-	 */
-	@Raw
-	@Basic
-	public static boolean isValidRho(double rho) {
-		return (rho >= 1.42 * Math.pow(10, 12)) && (rho < Double.POSITIVE_INFINITY);
-	}
-
-	/**
-	 * Gets the rho value of the entity.
-	 */
-	@Raw
-	@Basic
-	public double getRho() {
-		return this.rho;
-	}
-	
-	/**
-	 * Sets the mass density of the entity.
-	 * 
-	 * @param rho
-	 * @post  The mass density of the entity will be the given rho value.
-	 * 		| this.getRho() == rho
-	 */
-	@Raw
-	@Basic
-	void setRho(double rho) {
-		this.rho = rho;
-		updateBaseMass();
 	}
 
 	/**
@@ -161,7 +120,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * Variable storing the mass of the entity.
 	 */
-	private double baseMass;
+	private final double baseMass;
 
 	/**
 	 * Gets the unloaded mass of the entity.
@@ -171,17 +130,21 @@ public abstract class Entity extends Instance {
 	public double getBaseMass() {
 		return this.baseMass;
 	}
-
+	
 	/**
-	 * recalculates the mass of the entity.
-	 * 
-	 * @post  the baseMass of the entity will be recalculated.
-	 * 		| this.baseMass = 4 / 3 * Math.PI * this.radius * this.radius * this.radius * this.rho
+	 * Calculates mass from rho and radius.
+	 * @param  rho
+	 *         The rho value for the hypothetical entity.
+	 * @param  radius
+	 *         The radius value for the hypothetical entity.
+	 * @return The mass of a hypothetical entity with given rho and radius.
 	 */
 	@Raw
-	void updateBaseMass() {
-		this.baseMass = 4 / 3 * Math.PI * this.radius * this.radius * this.radius * this.rho;
+	@Basic
+	public static double calculateBassMass(double rho, double radius) {
+		return rho * Math.PI * radius * radius * radius * 4 / 3;
 	}
+	
 
 	/**
 	 * Constant for the maximum velocity.
@@ -883,7 +846,6 @@ public abstract class Entity extends Instance {
 	@Raw
 	@Basic
 	void setCollision(boolean collidable) {
-		OGUtil.println("COLLISION " + this + " " + collidable);
 		this.collides = collidable;
 	}
 
