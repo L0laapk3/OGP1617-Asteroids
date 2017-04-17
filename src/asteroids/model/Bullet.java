@@ -23,7 +23,6 @@ import be.kuleuven.cs.som.annotate.Raw;
  */
 
 //TODO: OVERAL RAW????
-//TODO: OVERAL IMMUTABLE
 public class Bullet extends Entity {
 
 

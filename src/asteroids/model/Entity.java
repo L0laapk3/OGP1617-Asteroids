@@ -148,6 +148,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	@Basic
+	@Immutable
 	public static double calculateBassMass(double rho, double radius) {
 		return rho * Math.PI * radius * radius * radius * 4 / 3;
 	}
@@ -194,6 +195,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	@Basic
+	@Immutable
 	public static boolean isValidMaxSpeed(double maxSpeed) {
 		if ((maxSpeed >= 0) && (maxSpeed < 300000)) {
 			return true;
@@ -266,6 +268,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	@Basic
+	@Immutable
 	public static boolean isValidVelocity(Vector2 velocity) {
 		if ((velocity.x >= 0) && (velocity.y >= 0) && (velocity.x < Double.POSITIVE_INFINITY) && (velocity.y < Double.POSITIVE_INFINITY)) {
 			return true;
@@ -340,6 +343,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	@Basic
+	@Immutable
 	public static boolean isValidMinRadius(double radius) {
 		return radius >= 0 && radius < Double.POSITIVE_INFINITY;
 	}
@@ -443,6 +447,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	@Basic
+	@Immutable
 	public static boolean isValidOrientation(double orientation) {
 		return orientation >= 0 && orientation <= 2 * Math.PI;
 	}

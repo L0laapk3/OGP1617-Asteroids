@@ -17,6 +17,7 @@ import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
 
 
@@ -37,7 +38,9 @@ public class Ship extends Entity {
 	
 
 	
-	
+	/**
+	 * Variable defining the minimum mass density for ships.
+	 */
 	private static final double MIN_RHO = 1.42E12;
 	
 	
@@ -287,6 +290,7 @@ public class Ship extends Entity {
 	 */
 	@Raw
 	@Basic
+	@Immutable
 	public static boolean isValidBaseMass(double mass, double radius) {
 		return mass >= calculateBassMass(MIN_RHO, radius) && OGUtil.isInvalidNumber(mass);
 	}
