@@ -372,7 +372,7 @@ public class Facade implements asteroids.part2.facade.IFacade {
 	 * of the parameter <code>active</code>.
 	 */
 	public void setThrusterActive(Ship ship, boolean active) {
-		ship.thrustOnOff(active);
+		ship.setThruster(active);
 	}
 
 	/**

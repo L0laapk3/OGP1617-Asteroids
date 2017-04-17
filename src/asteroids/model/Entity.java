@@ -436,38 +436,50 @@ public abstract class Entity extends Instance {
 	
 
 	/**
-	 * variable to declare the acceleration of the given entity
+	 * variable to declare the trust force of the given entity
 	 */
-	private double acceleration = 0;
+	private double thrustForce = 0;
 
 	/**
-	 * returns the acceleration of this entity.
-	 * @return The acceleration of this entity.
+	 * returns the trust force of this entity.
+	 * @return The trust force of this entity.
 	 */
 	@Basic
 	@Raw
 	public double getAcceleration() {
-		return acceleration;
+		return thrustForce / this.getMass();
 	}
 
 	/**
-	 * returns the acceleration vector of this entity.
-	 * @return The acceleration vector of this entity.
+	 * returns the trust force vector of this entity.
+	 * @return The trust force vector of this entity.
 	 */
 	@Raw
 	public Vector2 getAccelerationVector() {
-		return new Vector2(Math.cos(this.getOrientation()) * acceleration, Math.sin(this.getOrientation()) * acceleration);
+		return new Vector2(Math.cos(this.getOrientation()) * thrustForce / this.getMass(), Math.sin(this.getOrientation()) * thrustForce / this.getMass());
 	}
 
 	/**
-	 * sets the acceleration of this entity to the given acceleration
-	 * @param acceleration
-	 * 		  The new acceleration 
-	 * @post  The given acceleration becomes the new acceleration from this entity.
-	 * 		| new.getAcceleration = acceleration 
+	 * Sets the trust force of this entity to the given acceleration.
+	 * @param thrustForce
+	 * 		  The new trust force .
+	 * @post  The given trust force becomes the new acceleration from this entity.
+	 * 		| new.getThrust() = thrustForce
 	 */
-	public void setAcceleration(double acceleration) {
-		this.acceleration = acceleration;
+	@Raw
+	@Basic
+	void setThrust(double thrustForce) {
+		this.thrustForce = thrustForce;
+	}
+
+	/**
+	 * Gets the current trust force of the ship.
+	 * @return The trust force.
+	 */
+	@Raw
+	@Basic
+	public double getThrust() {
+		return this.thrustForce;
 	}
 
 	/**

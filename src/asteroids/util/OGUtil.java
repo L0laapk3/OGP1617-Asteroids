@@ -63,32 +63,16 @@ public class OGUtil {
 	/**
 	 * Prints only in debug mode
 	 */
-	public static void print(String str) {
-        if (VERBOSE)
-			System.out.print(str);
-	}
-	
-	/**
-	 * Prints only in debug mode
-	 * @effect print(arg.toString());
-	 */
 	public static void print(Object arg) {
-		print(arg.toString());
-	}
-
-	/**
-	 * Prints line only in debug mode
-	 */
-	public static void println(String str) {
         if (VERBOSE)
-			System.out.println(str);
+			System.out.print(arg);
 	}
 	
 	/**
 	 * Prints line only in debug mode
-	 * @effect println(arg.toString());
 	 */
 	public static void println(Object arg) {
-		println(arg.toString());
+        if (VERBOSE)
+			System.out.println(arg);
 	}
 }

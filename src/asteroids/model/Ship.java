@@ -365,7 +365,7 @@ public class Ship extends Entity {
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private static final double thrustforce = 1.1 * (Math.pow(10, 21));
+	private static final double THRUSTFORCE = 1.1 * (Math.pow(10, 21));
 	// TODO mag weg: zet op 24 om iets te zien in het spel
 
 	/**
@@ -374,21 +374,15 @@ public class Ship extends Entity {
 	 * @param state
 	 * 		  The state in which the thrusters must be set.
 	 * 
-	 * @effect this function calculates the acceleration of the ship and sets it using setAccelaration when the thruster must be active 
-	 *       | this.setAcceleration(this.getAcceleration()* thrustforce/this.getMass()));
+	 * @effect Sets the thruster state of the ship.
 	 *       | thrusterState = true;
-	 * @effect this function sets the acceleration to (0,0) using setAccelaration when the thruster must be inactive
-	 *       | this.setAcceleration(new Vector2(0,0));
-	 *       | thrusterState = false;
+	 * @effect Sets the thrusting force of the ship.
+	 *       | this.setThrust(state ? thrustforce : 0);
 	 */
-	public void thrustOnOff(boolean state) {
-		if (state) {
-			this.setAcceleration(thrustforce / this.getMass());
-			thrusterState = true;
-		} else {
-			this.setAcceleration(0);
-			thrusterState = false;
-		}
+	@Raw
+	public void setThruster(boolean state) {
+		this.thrusterState = state;
+		this.setThrust(state ? THRUSTFORCE : 0);
 	}
 
 	/**
@@ -410,6 +404,7 @@ public class Ship extends Entity {
 	 * @param ship
 	 *      | The ship that was killed.
 	 */
+	@Raw
 	public void triggerScoreOn(Ship ship) {
 		// add score, this does nothing for now since there is no score system
 
