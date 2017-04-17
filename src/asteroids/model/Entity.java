@@ -34,7 +34,6 @@ public abstract class Entity extends Instance {
 	 */
 	private double maxSpeed;
 
-	// ------------------RHO
 	/**
 	 * Variable holding the mass density of the ship
 	 */
@@ -49,6 +48,7 @@ public abstract class Entity extends Instance {
 	 *       | result == (mass >= 0) && (mass < Double.POSITIVE_INFINITY)
 	 */
 	@Raw
+	@Basic
 	public static boolean isValidRho(double rho) {
 		return (rho >= 1.42 * Math.pow(10, 12)) && (rho < Double.POSITIVE_INFINITY);
 	}
@@ -61,7 +61,14 @@ public abstract class Entity extends Instance {
 	public double getRho() {
 		return this.rho;
 	}
-
+	
+	/**
+	 * Sets the mass density of the ship.
+	 * 
+	 * @param rho
+	 * @post  The mass density of the ship will be the given rho value.
+	 * 		| this.getRho() == rho
+	 */
 	@Raw
 	@Basic
 	void setRho(double rho) {
@@ -73,6 +80,7 @@ public abstract class Entity extends Instance {
 	 * Gets the total mass of the entity.
 	 */
 	@Raw
+	@Basic
 	public double getMass() {
 		return this.getBaseMass();
 	}
@@ -92,7 +100,10 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * recalculates the mass of the ship.
+	 * recalculates the mass of the entity.
+	 * 
+	 * @post  the baseMass of the entity will be recalculated.
+	 * 		| this.baseMass = 4 / 3 * Math.PI * this.radius * this.radius * this.radius * this.rho
 	 */
 	@Raw
 	void updateBaseMass() {
@@ -108,6 +119,7 @@ public abstract class Entity extends Instance {
 	 * 		  | new.getMaxSpeed() == maxSpeed
 	 */
 	@Raw
+	@Basic
 	private void setMaxSpeed(double maxSpeed) {
 		if (Entity.isValidMaxSpeed(maxSpeed)) {
 			this.maxSpeed = maxSpeed;
@@ -133,6 +145,7 @@ public abstract class Entity extends Instance {
 	 * 		  | result == (maxSpeed>=0) && (maxSpeed<300000) 
 	 */
 	@Raw
+	@Basic
 	public static boolean isValidMaxSpeed(double maxSpeed) {
 		if ((maxSpeed >= 0) && (maxSpeed < 300000)) {
 			return true;
@@ -180,7 +193,9 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Sets the velocity
-	 * @effect setVelocity(new Vector2(xVelocity, yVelocity))
+	 * 
+	 * @effect sets the velocityvector to the given values
+	 * 		 | setVelocity(new Vector2(xVelocity, yVelocity))
 	 */
 	@Raw
 	void setVelocity(double xVelocity, double yVelocity) {
@@ -189,6 +204,7 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Return the velocity of entity.
+	 * 
 	 * @note   This is written in a total fashion.
 	 */
 	@Basic
@@ -206,6 +222,7 @@ public abstract class Entity extends Instance {
 	 * 		  | result ==  ((velocity.x >= 0) && (velocity.y >= 0) && (velocity.x < infinity) && (velocity.y < infinity))
 	 */
 	@Raw
+	@Basic
 	public static boolean isValidVelocity(Vector2 velocity) {
 		if ((velocity.x >= 0) && (velocity.y >= 0) && (velocity.x < Double.POSITIVE_INFINITY) && (velocity.y < Double.POSITIVE_INFINITY)) {
 			return true;
@@ -217,7 +234,6 @@ public abstract class Entity extends Instance {
 	/**
 	 * Variable that holds the minimum radius from a ship
 	 */
-
 	private double MIN_RADIUS = 0;
 
 	/**
@@ -234,6 +250,7 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Checks if a radius is a valid MinRadius
+	 * 
 	 * @param radius
 	 * @return True if and only if the radius is greater than 0.
 	 * 		 | radius >= 0
@@ -295,6 +312,8 @@ public abstract class Entity extends Instance {
 	 * @return True if and only if given radius is not smaller than MIN_RADIUS.
 	 *       | result == (radius >= MIN_RADIUS)
 	 */
+	@Raw
+	@Basic
 	public boolean isValidRadius(double radius) {
 		return radius >= this.getMinRadius();
 	}
@@ -339,6 +358,8 @@ public abstract class Entity extends Instance {
 	 * @return True if and only if the given orientation is between 0 and 2*PI
 	 *       | result == (orientation >= 0 && orientation <= 2*Math.PI)
 	 */
+	@Raw
+	@Basic
 	public static boolean isValidOrientation(double orientation) {
 		return orientation >= 0 && orientation <= 2 * Math.PI;
 	}
@@ -387,12 +408,11 @@ public abstract class Entity extends Instance {
 	 * @throws IllegalArgumentException
 	 * 		   The radius of the entity should not be NaN.
 	 * @throws InvalidRadiusException
-	 * 		   The radius must not be smaller than MIN_RADIUS.
+	 * 		   The radius must not be smaller than MIN_RADIUS.	 * 
 	 */
 	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 
-		// setMaxSpeed(300000); //gaat niet want final
 		this.maxSpeed = 300000;
 
 		// DEFENSIVE
@@ -425,13 +445,21 @@ public abstract class Entity extends Instance {
 	 * Terminate this entity.
 	 *
 	 * @post   The instance is terminated.
+	 * 		 | new.this.isTerminated() == true
 	 * @post   If the entity is in a world, The entity is removed properly from the world first.
+	 * 		 | new.this.getWorld() == None
 	 */
 	@Override
 	public void terminate() throws IllegalEntityException {
 		if (this.getCollisionWorld() != null)
 			this.getCollisionWorld().removeEntity(this);
 		super.terminate();
+	 * 
+	 * @param entity
+	 * 		  The entity which has to be checked.
+	 * 
+	 * @return true if and only if the entity is not equal to null and is not terminated
+	 * 		 | return (entity == null) || entity.isTerminated()
 	}
 	
 
@@ -443,6 +471,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * returns the trust force of this entity.
 	 * @return The trust force of this entity.
+	 * 		 | this.acceleration
 	 */
 	@Basic
 	@Raw
@@ -453,6 +482,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * returns the trust force vector of this entity.
 	 * @return The trust force vector of this entity.
+	 * 		 | see implementation
 	 */
 	@Raw
 	public Vector2 getAccelerationVector() {
@@ -506,25 +536,24 @@ public abstract class Entity extends Instance {
 		if (!isValidDeltaTime(dt))
 			throw new NegativeTimeException();
 
-		// foute berekeningen die geen rekening houden met acceleratie..
+		// Berekeningen die geen rekening houden met acceleratie.
 
 		this.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), dt)));
-		// this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), dt)));
-
+		
 	}
 
 	/*
 	 * public void move(double dt) throws IllegalArgumentException, NegativeTimeException {
 	 * 
 	 * 
-	 * //juiste berekingen die rekening houden met acceleratie
+	 * // Berekingen die rekening houden met acceleratie.
 	 * 
 	 * OGUtil.throwErrorIfInvalidNumbers(dt); if (!isValidDeltaTime(dt)) throw new NegativeTimeException();
 	 * 
 	 * double dtPossible; if ((this.getAcceleration().x==0) && (this.getAcceleration().y==0)) { dtPossible = dt; } else { double a = Math.pow(this.getAcceleration().x, 2) + Math.pow(this.getAcceleration().y, 2); double b = -2*this.velocity.x*this.getAcceleration().x-2*this.velocity.y*this.getAcceleration().y; double c = Math.pow(this.velocity.x,2)+Math.pow(this.velocity.y,2)-Math.pow(this.maxSpeed, 2); dtPossible = Math.min(dt, Math.max(((-b+Math.sqrt(b*b-4*a*c))/2), (-b-Math.sqrt(b*b-4*a*c))/2)); assert dtPossible >= 0; }
 	 * 
 	 * this.position = Vector2.add(Vector2.add(this.position, Vector2.multiply(this.velocity, dt)), Vector2.multiply(getAcceleration(), 1/2*Math.pow(dtPossible, 2))); this.velocity = Vector2.add(this.velocity, Vector2.multiply(this.getAcceleration(), dtPossible));
-	 * 
+	 * this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), dt)));
 	 * }
 	 */
 
@@ -556,7 +585,6 @@ public abstract class Entity extends Instance {
 	 * @note   This is written in a nominally manner.
 	 * 
 	 */
-
 	public void turn(double angle) {
 		this.orientation = (this.orientation + angle) % (2 * Math.PI);
 		if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
@@ -645,13 +673,12 @@ public abstract class Entity extends Instance {
 	/**
 	 * Return the number of seconds until the first collision with the wall.
 	 * @return The time until the first collision. Returns positive infinity if the ship never collides with the border of the world.
-	 * 	     | 
 	 */
 	public double getTimeToWallCollision() throws NoWorldException {
 		if (isNullOrTerminated(this.world))
 			throw new NoWorldException();
 
-		// foute berekeningen die geen rekening hoduen met acceleratie
+		// Berekeningen die geen rekening hoduen met acceleratie.
 
 		double xCollisionTime;
 		if (velocity.x == 0)
@@ -692,9 +719,7 @@ public abstract class Entity extends Instance {
 	 */
 	public static double getTimeToCollision(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
 
-		// ACCELERATIE??
-
-		// foute berekeningen die geen rekening houden met acceleratie..
+		// Berekeningen die geen rekening houden met acceleratie.
 
 		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
@@ -748,7 +773,6 @@ public abstract class Entity extends Instance {
 	 * @throws EntitiesOverlapException
 	 * 		   The entities should not overlap already.
 	 */
-
 	public static Vector2 getCollisionPosition(Entity entity1, Entity entity2) throws NullPointerException, EntitiesOverlapException {
 		return getCollisionPosition(entity1, entity2, getTimeToCollision(entity1, entity2));
 	}
@@ -788,6 +812,7 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Gets the coordinates of the collision of the entity with a wall, if there is any.
+	 * 
 	 * @return The position of the collision with the wall if there is a collision with a wall.
 	 * @return Null if there is no collision with a wall.
 	 */
@@ -816,28 +841,34 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Returns the position of the entity.
+	 * 
+	 * @return the position of the entity
 	 */
 	@Raw
+	@Basic
 	public Vector2 getPosition() {
 		return this.position;
 	}
 
 	/**
 	 * Set the position for this entity.
+	 * 
 	 * @param position
 	 * @post  The position of this entity is the same as the given position.
 	 */
 	@Raw
+	@Basic
 	void setPosition(Vector2 position) {
 		this.position = position;
 	}
 
-	/*
+	/**
 	 * Checks whether the position is valid for a entity.
 	 * 
 	 * @param position A Vector2 object containing the position to check.
 	 * 
-	 * @return True if and only if both the x and y coordinate of the given position are valid numbers: They cannot be NaN or infinity. | result == (!isInvalidNumber(position.x) && !isInvalidNumber(position.y))
+	 * @return True if and only if both the x and y coordinate of the given position are valid numbers: They cannot be NaN or infinity. 
+	 * 		 | result == (!isInvalidNumber(position.x) && !isInvalidNumber(position.y))
 	 */
 	public boolean isValidPosition(Vector2 position) {
 		return !OGUtil.isInvalidNumber(position.x) && !OGUtil.isInvalidNumber(position.y);
@@ -853,6 +884,8 @@ public abstract class Entity extends Instance {
 	 * Set if the entity can collide or not.
 	 * @param collidable
 	 * 	      True if the entity should be able to collide in a world, otherwise false.
+	 * @post  Sets collides to true if and only if the entity is collidable.
+	 * 		| new.this.collides = collidable
 	 */
 	@Raw
 	@Basic
@@ -864,6 +897,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * Get if the entity can collide or not.
 	 * @return True if the entity can collide in a world, otherwise false.
+	 * 		 | Return this.collides
 	 */
 	@Raw
 	@Basic
@@ -881,7 +915,8 @@ public abstract class Entity extends Instance {
 
 	/**
 	 *  Returns the world where the entity lives in.
-	 *  @return the world if the entity if the entity is collidable
+	 *  
+	 *  @return The world if the entity if the entity is collidable.
 	 *  @return null otherwise
 	 */
 	@Raw
@@ -893,6 +928,7 @@ public abstract class Entity extends Instance {
 
 	/**
 	 *  Returns the world where the entity lives in, if the entity has collision.
+	 *  
 	 *  @return the world if the entity if the entity is collidable.
 	 *  @return null otherwise.
 	 */
@@ -916,6 +952,9 @@ public abstract class Entity extends Instance {
 	/**
 	 * Mirrors the position to put it within the bounds of the world.
 	 * Only works for small out of bounds. (significantly less than 1 world width/height)
+	 * 
+	 * @effect set the position of the entity to the mirror position in the world
+	 *		| this.setPosition(mirror position)
 	 */
 	@Raw
 	void mirrorPositionWall() {
@@ -934,7 +973,8 @@ public abstract class Entity extends Instance {
 
 	/**
 	 * Internal function that bounces the entity off a wall.
-	 * @post Changes the velocity when a entity bounces against the wall of the world.
+	 * @effect Changes the velocity when a entity bounces against the wall of the world.
+	 * 		 | this.setVelocity(velocity after wall bounce)
 	 */
 	@Raw
 	void collideWithWall() {
@@ -948,10 +988,11 @@ public abstract class Entity extends Instance {
 	 * Applies acceleration to entity.
 	 * @param Dt
 	 * 		  For how much time acceleration needs to be applied to the entity.
+	 * @effect  Sets the velocity to the new velocity which takes into account the acceleration of the entity.
+	 * 		| this.setVelocity(new velocity)
 	 */
 	public void accelerate(double Dt) {
 
-		// TODO: ACCELERATIE WERKT NIET, ERGENS....
 		if (this.getAcceleration() == 0)
 			return; // optimalisation
 		this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), Dt)));
