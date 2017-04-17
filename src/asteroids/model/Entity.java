@@ -173,7 +173,7 @@ public abstract class Entity extends Instance {
 		if (speed > this.maxSpeed) {
 			double scale = this.maxSpeed / speed;
 			this.velocity = Vector2.multiply(velocity, scale);
-			// System.out.println("[WARN] speed exceeded this.maxSpeed while creating entity."); //for debugging possible problems in future code
+			// OGUtil.println("[WARN] speed exceeded this.maxSpeed while creating entity."); //for debugging possible problems in future code
 		} else
 			this.velocity = velocity;
 	}
@@ -623,7 +623,7 @@ public abstract class Entity extends Instance {
 		if (Entity.isNullOrTerminated(entity1) || Entity.isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) { // optimisation
-			// System.out.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
+			// OGUtil.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
 			return true;
 		}
 		Vector2 centerDifference = new Vector2(entity1.getPosition().x - entity2.getPosition().x, entity1.getPosition().y - entity2.getPosition().y);
@@ -687,17 +687,17 @@ public abstract class Entity extends Instance {
 		if (entity1 == null || entity2 == null)
 			throw new NullPointerException("entities cannot be null.");
 		if (overlap(entity1, entity2)) {
-			System.out.println("---- ILLEGAL OVERLAP!!! ----"); // TODO: weg
-			System.out.println(entity1);
-			System.out.println(entity2);
-			System.out.println(entity1.getPosition());
-			System.out.println(entity2.getPosition());
-			System.out.println(entity1.isTerminated());
-			System.out.println(entity2.isTerminated());
+			OGUtil.println("---- ILLEGAL OVERLAP!!! ----"); // TODO: weg
+			OGUtil.println(entity1);
+			OGUtil.println(entity2);
+			OGUtil.println(entity1.getPosition());
+			OGUtil.println(entity2.getPosition());
+			OGUtil.println(entity1.isTerminated());
+			OGUtil.println(entity2.isTerminated());
 			if (entity1 instanceof Bullet)
-				System.out.println("bullet1 isloadedinparent: " + ((Bullet) entity1).isLoadedInMotherShip());
+				OGUtil.println("bullet1 isloadedinparent: " + ((Bullet) entity1).isLoadedInMotherShip());
 			if (entity2 instanceof Bullet)
-				System.out.println("bullet2 isloadedinparent: " + ((Bullet) entity2).isLoadedInMotherShip());
+				OGUtil.println("bullet2 isloadedinparent: " + ((Bullet) entity2).isLoadedInMotherShip());
 			throw new EntitiesOverlapException();
 		}
 

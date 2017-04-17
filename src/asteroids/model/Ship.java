@@ -1,12 +1,21 @@
 package asteroids.model;
 
-import java.util.HashSet;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-import asteroids.exceptions.*;
+import asteroids.exceptions.AlreadyTerminatedException;
+import asteroids.exceptions.BulletNotLoadedException;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.InvalidParentShipException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoWorldException;
+import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
-
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
@@ -119,7 +128,7 @@ public class Ship extends Entity {
 		if (bullet == null)
 			throw new NullPointerException();
 
-		System.out.println("LOAD " + this + " " + bullet); // TODO: wegdoen
+		OGUtil.println("LOAD " + this + " " + bullet); // TODO: wegdoen
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
@@ -210,7 +219,7 @@ public class Ship extends Entity {
 		//and the method is required to return null when the bullets are not loaded in mothership.
 		if (!hasBullet())
 			return false;
-		System.out.println("bullets left: " + loadedBullets.size());
+		OGUtil.println("bullets left: " + loadedBullets.size());
 		shootBullet(loadedBullets.iterator().next()); // gets one (pseudo)random bullet from hashset
 		return true;
 	}
@@ -239,7 +248,7 @@ public class Ship extends Entity {
 	 * @note defensive
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
-		System.out.println("SHOOT " + bullet); // TODO: wegdoen
+		OGUtil.println("SHOOT " + bullet); // TODO: wegdoen
 		if (this.getCollisionWorld() == null)
 			throw new NoWorldException();
 		if (this.isTerminated())
@@ -256,22 +265,22 @@ public class Ship extends Entity {
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
-		System.out.println("radius: " + bullet.getRadius());
-		System.out.println(bullet.getPosition()); // TODO: wegdoen
+		OGUtil.println("radius: " + bullet.getRadius());
+		OGUtil.println(bullet.getPosition()); // TODO: wegdoen
 		bullet.mirrorPositionWall();
-		System.out.println(bullet.getPosition()); // TODO: wegdoen
-		System.out.println("/SHOOT");
+		OGUtil.println(bullet.getPosition()); // TODO: wegdoen
+		OGUtil.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
 		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
 		while (collidesWith != null) {
-			System.out.println(collidesWith); // TODO: weg
-			System.out.println(bullet.getMotherShip());
+			OGUtil.println(collidesWith); // TODO: weg
+			OGUtil.println(bullet.getMotherShip());
 			Collisions.collide(bullet, collidesWith);
-			System.out.println("---");
-			System.out.println(bullet);
-			System.out.println(bullet.isLoadedInMotherShip());
-			System.out.println(bullet.getCollisionWorld());
+			OGUtil.println("---");
+			OGUtil.println(bullet);
+			OGUtil.println(bullet.isLoadedInMotherShip());
+			OGUtil.println(bullet.getCollisionWorld());
 			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
 		}
 

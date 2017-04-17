@@ -1,7 +1,13 @@
 package asteroids.model;
 
-import be.kuleuven.cs.som.annotate.*;
-import asteroids.exceptions.*;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoParentException;
+import asteroids.util.OGUtil;
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
 
 
 /**
@@ -162,7 +168,7 @@ public class Bullet extends Entity {
 	@Override
 	void collideWithWall() {
 		this.addBounce();
-		System.out.println("BOUNCE " + this + " " + this.getBounces()); //TODO: WEG
+		OGUtil.println("BOUNCE " + this + " " + this.getBounces()); //TODO: WEG
 		if (this.getBounces() >= MAX_BOUNCES)
 			this.terminate();
 		else
@@ -181,9 +187,9 @@ public class Bullet extends Entity {
 	 * 		   If ship is null.
 	 */
 	void hit(Ship ship) throws NullPointerException {
-		System.out.println("---hit---"); //TODO: weg
-		//System.out.println(this.getParent());
-		//System.out.println(ship);
+		OGUtil.println("---hit---"); //TODO: weg
+		//OGUtil.println(this.getParent());
+		//OGUtil.println(ship);
 		if (ship == this.getMotherShip())
 			try {
 				ship.loadBullet(this);

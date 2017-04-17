@@ -10,6 +10,7 @@ import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.part2.CollisionListener;
+import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -469,9 +470,9 @@ public class World extends Instance {
 			// detect wall collisions
 			double collisionTime = first.getTimeToWallCollision();
 			if (collisionTime < 0) {
-				System.out.println(first);
-				System.out.println(first.getPosition());
-				System.out.println(first.getVelocity());
+				OGUtil.println(first);
+				OGUtil.println(first.getPosition());
+				OGUtil.println(first.getVelocity());
 				throw new RuntimeException("WTF WTF WTF WDKDSQMLTKH");
 			}
 			if (earliestCollisionTime > collisionTime) {
@@ -542,7 +543,7 @@ public class World extends Instance {
 
 				if (collInfo.timeToCollision < Dt) { // collision happens before end Dt
 					if (!collInfo.isWallCollision())
-						System.out.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
+						OGUtil.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
 
 					doTime(collInfo.timeToCollision, entitiesWithCollision);
 					Dt -= collInfo.timeToCollision;
@@ -556,7 +557,7 @@ public class World extends Instance {
 					} else { // entity collision
 						if (collisionListener != null) {
 							Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, 0);
-							System.out.println("explosion: " + collPos);
+							OGUtil.println("explosion: " + collPos);
 							assert (collPos != null);
 							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);

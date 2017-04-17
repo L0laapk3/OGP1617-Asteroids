@@ -7,6 +7,10 @@ public class OGUtil {
 
 	
 	
+	private static final boolean VERBOSE = true;
+	
+	
+	
 	/*
 	 * Check whether the position is valid for a ship.
 	 * 
@@ -23,7 +27,7 @@ public class OGUtil {
 
 
 	/**
-	 * 
+	 * Checks if the number is valid or not.
 	 * @param  number
 	 * 		   The number that has to be validated.
 	 * @return True if the number is infinite or Nan, otherwise false.
@@ -38,7 +42,7 @@ public class OGUtil {
 	
 	
 	/**
-	 * 		   Checks if all given numbers are valid numbers.
+	 * Checks if all given numbers are valid numbers.
 	 * @param  numbers
 	 * 		   The numbers that have to be validated.
 	 * @throws IllegalArgumentException
@@ -53,5 +57,21 @@ public class OGUtil {
 			if (Double.isNaN(number))
 				throw new IllegalArgumentException("Number cannot be NaN.");
 		}
+	}
+	
+
+	/**
+	 * Prints line only in debug mode
+	 */
+	public static void println(String str) {
+        if (VERBOSE)
+			System.out.println(str);
+	}
+	
+	/**
+	 * Prints line only in debug mode
+	 */
+	public static void println(Object arg) {
+		println(arg.toString());
 	}
 }

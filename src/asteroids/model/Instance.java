@@ -1,5 +1,6 @@
 package asteroids.model;
 
+import asteroids.util.OGUtil;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
@@ -12,7 +13,7 @@ import be.kuleuven.cs.som.annotate.Raw;
  * @author  Kris Keersmaekers
  * @author  Rik Pauwels
  */
-public class Instance {
+public abstract class Instance {
 
 	/**
 	 * Check whether this object exists and is not terminated.
@@ -36,7 +37,7 @@ public class Instance {
 	 * @post   The instance is terminated.
 	 */
 	public void terminate() {
-		System.out.println("TERMINATE " + this); // TODO: weg
+		OGUtil.println("TERMINATE " + this); // TODO: weg
 		if (!isTerminated())
 			this.isTerminated = true;
 	}

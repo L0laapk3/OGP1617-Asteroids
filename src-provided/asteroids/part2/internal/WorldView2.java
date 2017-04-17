@@ -27,6 +27,7 @@ import asteroids.model.World;
 import asteroids.part2.CollisionListener;
 import asteroids.part2.facade.IFacade;
 import asteroids.util.ModelException;
+import asteroids.util.OGUtil;
 import asteroids.util.internal.InternalUtils;
 import asteroids.util.internal.ResourceUtils;
 
@@ -207,7 +208,7 @@ public class WorldView2<F extends IFacade> extends JPanel implements KeyListener
 		} catch (ModelException e) {
 			handleError(e);
 		}
-		System.out.println("CREATE BULLET VISUALISATION: " + bullet + " ");
+		OGUtil.println("CREATE BULLET VISUALISATION: " + bullet + " ");
 		Color bulletColor = visualizations.get(ship) == null ? Color.RED : visualizations.get(ship).getColor();
 		return new BulletVisualization<>(bulletColor, bullet);
 	}
