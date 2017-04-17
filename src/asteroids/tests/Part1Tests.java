@@ -36,8 +36,6 @@ public class Part1Tests {
 	private static final double EPSILON = 0.0001;
 
 	
-	//TODO: create tests for mass en eignelijk voor alles
-	
 	@Test
 	public void testNewShip2_GivenParameters() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		

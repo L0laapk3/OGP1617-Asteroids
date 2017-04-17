@@ -4,7 +4,7 @@ import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.MisMatchWorldsException;
-import asteroids.exceptions.NoParentException;
+import asteroids.exceptions.NoMotherShipException;
 import asteroids.util.OGUtil;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -62,7 +62,6 @@ public class Bullet extends Entity {
 	 * @post   The mothership of this bullet will be set to the given mothership.
 	 */
 
-	//TODO: effe comments nazien
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, 0, calculateBassMass(RHO, radius));
 		this.setMinRadius(MIN_RADIUS_BULLET);		
@@ -155,9 +154,10 @@ public class Bullet extends Entity {
 	 * 		 | The state of the ship (loaded is true and unloaded is false)
 	 */
 	@Raw
+	
 	void setLoadedInMotherShip(boolean loadedInMotherShip) throws NoParentException {
 		if (isNullOrTerminated(this.getMotherShip()))
-			throw new NoParentException();
+			throw new NoMotherShipException();
 		this.loadedInMotherShip = loadedInMotherShip;
 		this.setCollision(!loadedInMotherShip);
 	}

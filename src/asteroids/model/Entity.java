@@ -22,7 +22,6 @@ import be.kuleuven.cs.som.annotate.*;
  * @author   Rik Pauwels
  */
 
-// TODO: COMMENTS VERDER AFWERKEN
 //TODO: OVERAL IMMUTABLE
 public abstract class Entity extends Instance {
 	
