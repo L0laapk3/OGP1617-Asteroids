@@ -20,7 +20,20 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: OVERAL IMMUTABLE
 //TODO: zucht terminated checks
 
-public class World {
+
+
+
+/**
+ * A class to define worlds.
+ * 
+ * @effect   Instance
+ * @invar    //TODO: HIER MOETEN NOG NE HOOP INVARS DENK IK
+ * 
+ * @version  1.0
+ * @author   Kris Keersmaekers
+ * @author   Rik Pauwels
+ */
+public class World extends Instance {
 
 	/**
 	 * Initialize a new world with given width and given height. 
@@ -231,37 +244,21 @@ public class World {
 		return new Vector2(this.getWidth(), this.getHeight());
 	}
 
-	// ---------------Terminating
-
-	/**
-	 * Variable reflecting whether or not the instance is terminated.
-	 */
-	private boolean isTerminated = false;
 
 	/**
 	 * Terminate this world.
 	 *
-	 * @post   The instance is terminated.
+	 * @effect super.terminate()
 	 * @post   All the Entities in this world are no longer bound to this world.
 	 * @post   Each of the entities of the instance is terminated.
 	 */
+	@Override
 	public void terminate() {
-		if (!isTerminated()) {
-			this.isTerminated = true;
-			for (Entity entity : entities) {
-				// do not terminate, just set world to null
-				entity.setWorld(null);
-			}
+		for (Entity entity : entities) {
+			// do not terminate, just set world to null
+			entity.setWorld(null);
 		}
-	}
-
-	/**
-	 * Check whether this world is terminated.
-	 */
-	@Basic
-	@Raw
-	public boolean isTerminated() {
-		return isTerminated;
+		super.terminate();
 	}
 
 	// --------------basisfuncties entitySet

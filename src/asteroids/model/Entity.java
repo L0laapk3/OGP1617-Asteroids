@@ -7,6 +7,7 @@ import be.kuleuven.cs.som.annotate.*;
 /**
  * A class to define entities.
  * 
+ * @effect   Instance
  * @invar    Both the x and y coordinate of the position of the entities must not be NaN or infinity.
  *         | isValidPosition(getPosition())
  * @invar    The initial orientation of the entity must be between 0 and 2*PI.
@@ -26,7 +27,7 @@ import be.kuleuven.cs.som.annotate.*;
 // TODO: COMMENTS VERDER AFWERKEN
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
-public abstract class Entity {
+public abstract class Entity extends Instance {
 
 	/**
 	 * Constant for the maximum velocity.
@@ -421,38 +422,16 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Variable reflecting whether or not the instance is terminated.
-	 */
-	private boolean isTerminated = false;
-
-	/**
 	 * Terminate this entity.
 	 *
 	 * @post   The instance is terminated.
 	 * @post   If the entity is in a world, The entity is removed properly from the world first.
 	 */
+	@Override
 	public void terminate() throws IllegalEntityException {
-		System.out.println("TERMINATE " + this); // TODO: weg
 		if (this.getCollisionWorld() != null)
 			this.getCollisionWorld().removeEntity(this);
-		if (!isTerminated())
-			this.isTerminated = true;
-	}
-
-	/**
-	 * Check whether this entity is terminated.
-	 */
-	@Basic
-	@Raw
-	public boolean isTerminated() {
-		return isTerminated;
-	}
-	
-	/**
-	 * Check whether this entity exists and is not terminated.
-	 */
-	public static boolean isNullOrTerminated(Entity entity) {
-		return (entity == null) || entity.isTerminated();
+		super.terminate();
 	}
 	
 
@@ -620,7 +599,7 @@ public abstract class Entity {
 	 */
 	@Immutable
 	public static double getDistanceBetween(Entity entity1, Entity entity2) throws NullPointerException {
-		if (entity1 == null || entity2 == null)
+		if (Entity.isNullOrTerminated(entity1) || Entity.isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) // optimisation
 			return 0;
@@ -641,7 +620,7 @@ public abstract class Entity {
 	 * 		   If entity1 or entity2 is null.
 	 */
 	public static boolean overlap(Entity entity1, Entity entity2) throws NullPointerException {
-		if (entity1 == null || entity2 == null)
+		if (Entity.isNullOrTerminated(entity1) || Entity.isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) { // optimisation
 			// System.out.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
@@ -657,7 +636,7 @@ public abstract class Entity {
 	 * 	     | 
 	 */
 	public double getTimeToWallCollision() throws NoWorldException {
-		if (this.world == null)
+		if (isNullOrTerminated(this.world))
 			throw new NoWorldException();
 
 		// foute berekeningen die geen rekening hoduen met acceleratie
