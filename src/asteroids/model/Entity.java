@@ -7,6 +7,7 @@ import be.kuleuven.cs.som.annotate.*;
 /**
  * A class to define entities.
  * 
+ * @effect   Instance
  * @invar    Both the x and y coordinate of the position of the entities must not be NaN or infinity.
  *         | isValidPosition(getPosition())
  * @invar    The initial orientation of the entity must be between 0 and 2*PI.
@@ -26,7 +27,7 @@ import be.kuleuven.cs.som.annotate.*;
 // TODO: COMMENTS VERDER AFWERKEN
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
-public abstract class Entity {
+public abstract class Entity extends Instance {
 
 	/**
 	 * Constant for the maximum velocity.
@@ -185,7 +186,7 @@ public abstract class Entity {
 		if (speed > this.maxSpeed) {
 			double scale = this.maxSpeed / speed;
 			this.velocity = Vector2.multiply(velocity, scale);
-			// TODO: weg doen System.out.println("[WARN] speed exceeded this.maxSpeed while creating entity."); //for debugging possible problems in future code
+			// OGUtil.println("[WARN] speed exceeded this.maxSpeed while creating entity."); //for debugging possible problems in future code
 		} else
 			this.velocity = velocity;
 	}
@@ -441,11 +442,6 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Variable reflecting whether or not the instance is terminated.
-	 */
-	private boolean isTerminated = false;
-
-	/**
 	 * Terminate this entity.
 	 *
 	 * @post   The instance is terminated.
@@ -453,75 +449,67 @@ public abstract class Entity {
 	 * @post   If the entity is in a world, The entity is removed properly from the world first.
 	 * 		 | new.this.getWorld() == None
 	 */
+	@Override
 	public void terminate() throws IllegalEntityException {
-		System.out.println("TERMINATE " + this); // TODO: weg
 		if (this.getCollisionWorld() != null)
 			this.getCollisionWorld().removeEntity(this);
-		if (!isTerminated())
-			this.isTerminated = true;
-	}
-
-	/**
-	 * Check whether this entity is terminated.
-	 */
-	@Basic
-	@Raw
-	public boolean isTerminated() {
-		return isTerminated;
-	}
-	
-	/**
-	 * Check whether this entity exists and is not terminated.
+		super.terminate();
 	 * 
 	 * @param entity
 	 * 		  The entity which has to be checked.
 	 * 
 	 * @return true if and only if the entity is not equal to null and is not terminated
 	 * 		 | return (entity == null) || entity.isTerminated()
-	 */
-	public static boolean isNullOrTerminated(Entity entity) {
-		return (entity == null) || entity.isTerminated();
 	}
 	
 
 	/**
-	 * variable to declare the acceleration of the given entity
+	 * variable to declare the trust force of the given entity
 	 */
-	private double acceleration = 0;
+	private double thrustForce = 0;
 
 	/**
-	 * returns the acceleration of this entity.
-	 * 
-	 * @return The acceleration of this entity.
+	 * returns the trust force of this entity.
+	 * @return The trust force of this entity.
 	 * 		 | this.acceleration
 	 */
 	@Basic
 	@Raw
 	public double getAcceleration() {
-		return this.acceleration;
+		return thrustForce / this.getMass();
 	}
 
 	/**
-	 * returns the acceleration vector of this entity.
-	 * 
-	 * @return The acceleration vector of this entity.
+	 * returns the trust force vector of this entity.
+	 * @return The trust force vector of this entity.
 	 * 		 | see implementation
 	 */
 	@Raw
 	public Vector2 getAccelerationVector() {
-		return new Vector2(Math.cos(this.getOrientation()) * this.acceleration, Math.sin(this.getOrientation()) * this.acceleration);
+		return new Vector2(Math.cos(this.getOrientation()) * thrustForce / this.getMass(), Math.sin(this.getOrientation()) * thrustForce / this.getMass());
 	}
 
 	/**
-	 * sets the acceleration of this entity to the given acceleration
-	 * 
-	 * @param acceleration
-	 * 		  The new acceleration 
-	 * @post  The given acceleration becomes the new acceleration from this entity.
-	 * 		| new.getAcceleration = acceleration 
+	 * Sets the trust force of this entity to the given acceleration.
+	 * @param thrustForce
+	 * 		  The new trust force .
+	 * @post  The given trust force becomes the new acceleration from this entity.
+	 * 		| new.getThrust() = thrustForce
 	 */
-	public void setAcceleration(double acceleration) {
-		this.acceleration = acceleration;
+	@Raw
+	@Basic
+	void setThrust(double thrustForce) {
+		this.thrustForce = thrustForce;
+	}
+
+	/**
+	 * Gets the current trust force of the ship.
+	 * @return The trust force.
+	 */
+	@Raw
+	@Basic
+	public double getThrust() {
+		return this.thrustForce;
 	}
 
 	/**
@@ -651,7 +639,7 @@ public abstract class Entity {
 	 */
 	@Immutable
 	public static double getDistanceBetween(Entity entity1, Entity entity2) throws NullPointerException {
-		if (entity1 == null || entity2 == null)
+		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) // optimisation
 			return 0;
@@ -672,10 +660,10 @@ public abstract class Entity {
 	 * 		   If entity1 or entity2 is null.
 	 */
 	public static boolean overlap(Entity entity1, Entity entity2) throws NullPointerException {
-		if (entity1 == null || entity2 == null)
+		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (entity1 == entity2) { // optimisation
-			// System.out.println("De entities in functie overlap zijn hetzelfde => geeft true"); //TODO: weg
+			// OGUtil.println("De entities in functie overlap zijn hetzelfde => geeft true");
 			return true;
 		}
 		Vector2 centerDifference = new Vector2(entity1.getPosition().x - entity2.getPosition().x, entity1.getPosition().y - entity2.getPosition().y);
@@ -687,7 +675,7 @@ public abstract class Entity {
 	 * @return The time until the first collision. Returns positive infinity if the ship never collides with the border of the world.
 	 */
 	public double getTimeToWallCollision() throws NoWorldException {
-		if (this.world == null)
+		if (isNullOrTerminated(this.world))
 			throw new NoWorldException();
 
 		// Berekeningen die geen rekening hoduen met acceleratie.
@@ -733,20 +721,20 @@ public abstract class Entity {
 
 		// Berekeningen die geen rekening houden met acceleratie.
 
-		if (entity1 == null || entity2 == null)
+		if (isNullOrTerminated(entity1) || isNullOrTerminated(entity2))
 			throw new NullPointerException("entities cannot be null.");
 		if (overlap(entity1, entity2)) {
-			System.out.println("---- ILLEGAL OVERLAP!!! ----"); // TODO: weg
-			System.out.println(entity1);
-			System.out.println(entity2);
-			System.out.println(entity1.getPosition());
-			System.out.println(entity2.getPosition());
-			System.out.println(entity1.isTerminated());
-			System.out.println(entity2.isTerminated());
+			OGUtil.println("---- ILLEGAL OVERLAP!!! ----");
+			OGUtil.println(entity1);
+			OGUtil.println(entity2);
+			OGUtil.println(entity1.getPosition());
+			OGUtil.println(entity2.getPosition());
+			OGUtil.println(entity1.isTerminated());
+			OGUtil.println(entity2.isTerminated());
 			if (entity1 instanceof Bullet)
-				System.out.println("bullet1 isloadedinparent: " + ((Bullet) entity1).isLoadedInMotherShip());
+				OGUtil.println("bullet1 isloadedinparent: " + ((Bullet) entity1).isLoadedInMotherShip());
 			if (entity2 instanceof Bullet)
-				System.out.println("bullet2 isloadedinparent: " + ((Bullet) entity2).isLoadedInMotherShip());
+				OGUtil.println("bullet2 isloadedinparent: " + ((Bullet) entity2).isLoadedInMotherShip());
 			throw new EntitiesOverlapException();
 		}
 
@@ -812,7 +800,7 @@ public abstract class Entity {
 	 */
 	@Raw
 	static Vector2 getCollisionPosition(Entity entity1, Entity entity2, double Dt) {
-		// TODO: moet hier die 99% 101% shiet nie in?
+		// TODO: moet hier die 99% 101% shiet nie in? nah lul
 		if (Dt == Double.POSITIVE_INFINITY)
 			return null;
 

@@ -1,7 +1,13 @@
 package asteroids.model;
 
-import be.kuleuven.cs.som.annotate.*;
-import asteroids.exceptions.*;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoParentException;
+import asteroids.util.OGUtil;
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
 
 
 /**
@@ -51,7 +57,7 @@ public class Bullet extends Entity {
 		
 		this.motherShip = motherShip;
 		
-		if (motherShip != null){
+		if (!isNullOrTerminated(motherShip)) {
 			motherShip.loadBullet(this);
 		}
 	}
@@ -146,7 +152,7 @@ public class Bullet extends Entity {
 	 * 		 | The state of the ship (loaded is true and unloaded is false)
 	 */
 	void setLoadedInMotherBoard(boolean loadedInMotherShip) throws NoParentException {
-		if (this.getMotherShip() == null)
+		if (isNullOrTerminated(this.getMotherShip()))
 			throw new NoParentException();
 		this.loadedInMotherShip = loadedInMotherShip;
 		this.setCollision(!loadedInMotherShip);
@@ -162,7 +168,7 @@ public class Bullet extends Entity {
 	@Override
 	void collideWithWall() {
 		this.addBounce();
-		System.out.println("BOUNCE " + this + " " + this.getBounces()); //TODO: WEG
+		OGUtil.println("BOUNCE " + this + " " + this.getBounces());
 		if (this.getBounces() >= MAX_BOUNCES)
 			this.terminate();
 		else
@@ -181,17 +187,17 @@ public class Bullet extends Entity {
 	 * 		   If ship is null.
 	 */
 	void hit(Ship ship) throws NullPointerException {
-		System.out.println("---hit---"); //TODO: weg
-		//System.out.println(this.getParent());
-		//System.out.println(ship);
+		OGUtil.println("---hit---");
+		//OGUtil.println(this.getParent());
+		//OGUtil.println(ship);
 		if (ship == this.getMotherShip())
 			try {
 				ship.loadBullet(this);
-			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen //TODO: zie da da nog just is
+			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen
 				throw new RuntimeException(ex);
 			}
 		else {
-			if (this.getMotherShip() != null)
+			if (!isNullOrTerminated(this.getMotherShip()))
 				this.getMotherShip().triggerScoreOn(ship); //does nothing for now (part 3?)
 			ship.triggerHit();
 			this.terminate();

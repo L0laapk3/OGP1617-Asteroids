@@ -1,12 +1,21 @@
 package asteroids.model;
 
-import java.util.HashSet;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-import asteroids.exceptions.*;
+import asteroids.exceptions.AlreadyTerminatedException;
+import asteroids.exceptions.BulletNotLoadedException;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.InvalidParentShipException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoWorldException;
+import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
-
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
@@ -119,7 +128,7 @@ public class Ship extends Entity {
 		if (bullet == null)
 			throw new NullPointerException();
 
-		System.out.println("LOAD " + this + " " + bullet); // TODO: wegdoen
+		OGUtil.println("LOAD " + this + " " + bullet);
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
@@ -210,7 +219,7 @@ public class Ship extends Entity {
 		//and the method is required to return null when the bullets are not loaded in mothership.
 		if (!hasBullet())
 			return false;
-		System.out.println("bullets left: " + loadedBullets.size());
+		OGUtil.println("bullets left: " + loadedBullets.size());
 		shootBullet(loadedBullets.iterator().next()); // gets one (pseudo)random bullet from hashset
 		return true;
 	}
@@ -239,8 +248,8 @@ public class Ship extends Entity {
 	 * @note defensive
 	 */
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
-		System.out.println("SHOOT " + bullet); // TODO: wegdoen
-		if (this.getCollisionWorld() == null)
+		OGUtil.println("SHOOT " + bullet);
+		if (isNullOrTerminated(this.getCollisionWorld()))
 			throw new NoWorldException();
 		if (this.isTerminated())
 			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
@@ -256,22 +265,22 @@ public class Ship extends Entity {
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
-		System.out.println("radius: " + bullet.getRadius());
-		System.out.println(bullet.getPosition()); // TODO: wegdoen
+		OGUtil.println("radius: " + bullet.getRadius());
+		OGUtil.println(bullet.getPosition());
 		bullet.mirrorPositionWall();
-		System.out.println(bullet.getPosition()); // TODO: wegdoen
-		System.out.println("/SHOOT");
+		OGUtil.println(bullet.getPosition());
+		OGUtil.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
 		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
-		while (collidesWith != null) {
-			System.out.println(collidesWith); // TODO: weg
-			System.out.println(bullet.getMotherShip());
+		while (!isNullOrTerminated(collidesWith)) {
+			OGUtil.println(collidesWith);
+			OGUtil.println(bullet.getMotherShip());
 			Collisions.collide(bullet, collidesWith);
-			System.out.println("---");
-			System.out.println(bullet);
-			System.out.println(bullet.isLoadedInMotherShip());
-			System.out.println(bullet.getCollisionWorld());
+			OGUtil.println("---");
+			OGUtil.println(bullet);
+			OGUtil.println(bullet.isLoadedInMotherShip());
+			OGUtil.println(bullet.getCollisionWorld());
 			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
 		}
 
@@ -356,7 +365,7 @@ public class Ship extends Entity {
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private static final double thrustforce = 1.1 * (Math.pow(10, 21));
+	private static final double THRUSTFORCE = 1.1 * (Math.pow(10, 21));
 	// TODO mag weg: zet op 24 om iets te zien in het spel
 
 	/**
@@ -365,21 +374,15 @@ public class Ship extends Entity {
 	 * @param state
 	 * 		  The state in which the thrusters must be set.
 	 * 
-	 * @effect this function calculates the acceleration of the ship and sets it using setAccelaration when the thruster must be active 
-	 *       | this.setAcceleration(this.getAcceleration()* thrustforce/this.getMass()));
+	 * @effect Sets the thruster state of the ship.
 	 *       | thrusterState = true;
-	 * @effect this function sets the acceleration to (0,0) using setAccelaration when the thruster must be inactive
-	 *       | this.setAcceleration(new Vector2(0,0));
-	 *       | thrusterState = false;
+	 * @effect Sets the thrusting force of the ship.
+	 *       | this.setThrust(state ? thrustforce : 0);
 	 */
-	public void thrustOnOff(boolean state) {
-		if (state) {
-			this.setAcceleration(thrustforce / this.getMass());
-			thrusterState = true;
-		} else {
-			this.setAcceleration(0);
-			thrusterState = false;
-		}
+	@Raw
+	public void setThruster(boolean state) {
+		this.thrusterState = state;
+		this.setThrust(state ? THRUSTFORCE : 0);
 	}
 
 	/**
@@ -401,6 +404,7 @@ public class Ship extends Entity {
 	 * @param ship
 	 *      | The ship that was killed.
 	 */
+	@Raw
 	public void triggerScoreOn(Ship ship) {
 		// add score, this does nothing for now since there is no score system
 

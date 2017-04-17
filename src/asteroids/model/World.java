@@ -10,6 +10,7 @@ import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.part2.CollisionListener;
+import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -18,9 +19,21 @@ import be.kuleuven.cs.som.annotate.Raw;
 //TODO: ZIEN DA ALLE VARIABELEN SETTERS EN GETTERS HEBBEN EN DA DIE OVERAL (!!) GEBRUIKT WORDNE
 //TODO: OVERAL RAW????
 //TODO: OVERAL IMMUTABLE
-//TODO: zucht terminated checks
 
-public class World {
+
+
+
+/**
+ * A class to define worlds.
+ * 
+ * @effect   Instance
+ * @invar    //TODO: HIER MOETEN NOG NE HOOP INVARS DENK IK
+ * 
+ * @version  1.0
+ * @author   Kris Keersmaekers
+ * @author   Rik Pauwels
+ */
+public class World extends Instance {
 
 	/**
 	 * Initialize a new world with given width and given height. 
@@ -231,37 +244,21 @@ public class World {
 		return new Vector2(this.getWidth(), this.getHeight());
 	}
 
-	// ---------------Terminating
-
-	/**
-	 * Variable reflecting whether or not the instance is terminated.
-	 */
-	private boolean isTerminated = false;
 
 	/**
 	 * Terminate this world.
 	 *
-	 * @post   The instance is terminated.
+	 * @effect super.terminate()
 	 * @post   All the Entities in this world are no longer bound to this world.
 	 * @post   Each of the entities of the instance is terminated.
 	 */
+	@Override
 	public void terminate() {
-		if (!isTerminated()) {
-			this.isTerminated = true;
-			for (Entity entity : entities) {
-				// do not terminate, just set world to null
-				entity.setWorld(null);
-			}
+		for (Entity entity : entities) {
+			// do not terminate, just set world to null
+			entity.setWorld(null);
 		}
-	}
-
-	/**
-	 * Check whether this world is terminated.
-	 */
-	@Basic
-	@Raw
-	public boolean isTerminated() {
-		return isTerminated;
+		super.terminate();
 	}
 
 	// --------------basisfuncties entitySet
@@ -307,7 +304,7 @@ public class World {
 					&& !((entity instanceof Bullet) && (entityToCheck instanceof Bullet) && ((Bullet) entity).isLoadedInMotherShip() // behalve als de 2 bullets in dezelfde parent geladen zijn
 							&& ((Bullet) entityToCheck).isLoadedInMotherShip() && (((Bullet) entity).getMotherShip() == ((Bullet) entityToCheck).getMotherShip()))) {
 				if (!(((entity instanceof Bullet) && (entityToCheck instanceof Bullet)) && (((Bullet) entity).getMotherShip() == ((Bullet) entityToCheck).getMotherShip())
-						&& !Entity.isNullOrTerminated(((Bullet) entity).getMotherShip()))) {
+						&& !isNullOrTerminated(((Bullet) entity).getMotherShip()))) {
 					throw new EntitiesOverlapException();
 				}
 
@@ -472,9 +469,9 @@ public class World {
 			// detect wall collisions
 			double collisionTime = first.getTimeToWallCollision();
 			if (collisionTime < 0) {
-				System.out.println(first);
-				System.out.println(first.getPosition());
-				System.out.println(first.getVelocity());
+				OGUtil.println(first);
+				OGUtil.println(first.getPosition());
+				OGUtil.println(first.getVelocity());
 				throw new RuntimeException("WTF WTF WTF WDKDSQMLTKH");
 			}
 			if (earliestCollisionTime > collisionTime) {
@@ -545,7 +542,7 @@ public class World {
 
 				if (collInfo.timeToCollision < Dt) { // collision happens before end Dt
 					if (!collInfo.isWallCollision())
-						System.out.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
+						OGUtil.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
 
 					doTime(collInfo.timeToCollision, entitiesWithCollision);
 					Dt -= collInfo.timeToCollision;
@@ -559,7 +556,7 @@ public class World {
 					} else { // entity collision
 						if (collisionListener != null) {
 							Vector2 collPos = Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, 0);
-							System.out.println("explosion: " + collPos);
+							OGUtil.println("explosion: " + collPos);
 							assert (collPos != null);
 							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
