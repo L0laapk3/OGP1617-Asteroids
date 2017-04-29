@@ -169,7 +169,10 @@ public abstract class Entity extends Instance {
 	@Raw
 	@Basic
 	private void setMaxSpeed(double maxSpeed) {
-		if (Entity.isValidMaxSpeed(maxSpeed)) {
+		if (this instanceof Bullet && Bullet.isValidMaxSpeed(maxSpeed)) {
+			Bullet.setMaxSpeedBullet(maxSpeed);
+		}
+		else if (Entity.isValidMaxSpeed(maxSpeed)) {
 			this.maxSpeed = maxSpeed;
 		}
 	}

@@ -234,4 +234,32 @@ public class Bullet extends Entity {
 		entity.terminate();
 		this.terminate();
 	}
+	/**
+	 * Variable holding the maximum speed of all bullets.
+	 */
+	static private double maxSpeed;
+	
+	/**
+	 * returns the maximum speed of the bullet.
+	 * @return maxSpeed
+	 */
+	@Raw
+	@Basic
+	@Override
+	public double getMaxSpeed() {
+		return maxSpeed;
+	}
+	
+	/**
+	 * sets the maximum speed of all bullets to newMaxSpeed.
+	 * @param newMaxSpeed
+	 * 		  The new maximum speed of all bullets.
+	 */
+	@Raw
+	@Basic
+	public static void setMaxSpeedBullet(double newMaxSpeed) {
+		maxSpeed=newMaxSpeed;
+	}
+
+
 }

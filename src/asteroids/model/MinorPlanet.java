@@ -10,5 +10,7 @@ public abstract class MinorPlanet extends Entity {
 		super(x, y, xVelocity, yVelocity, radius, orientation, mass);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 }
