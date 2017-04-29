@@ -19,7 +19,7 @@ import asteroids.util.ModelException;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 
-public class Facade implements asteroids.part2.facade.IFacade {
+public class Facade implements asteroids.part3.facade.IFacade {
 
 	/**
 	 * Helper function to throw an error when the ship variable is null.
