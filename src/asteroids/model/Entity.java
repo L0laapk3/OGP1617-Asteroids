@@ -968,4 +968,33 @@ public abstract class Entity extends Instance {
 			return; // optimalisation
 		this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), Dt)));
 	}
+	
+	
+	
+	
+	
+
+	/**
+	 * Recalculates the velocity of the two entities, when they bounce
+	 * 
+	 * @param first
+	 *        The first entity that collides.
+	 * @param second
+	 *        The second entity that collides.
+	 * @post  The Velocity of the two entities will be updated according to the laws of physics.
+	 * 		| see implementation
+	 */
+	@Raw
+	public static void bounce(Entity first, Entity second) {
+
+		double sigma = first.getRadius() + second.getRadius();
+		Vector2 J = Vector2.multiply(Vector2.subtract(first.getPosition(), second.getPosition()),
+				2 * first.getMass() * second.getMass()
+						* Vector2.dot(Vector2.subtract(first.getVelocity(), second.getVelocity()), Vector2.subtract(first.getPosition(), second.getPosition()))
+						/ (sigma * sigma * (first.getMass() + second.getMass())));
+
+		first.setVelocity(Vector2.subtract(first.getVelocity(), Vector2.divide(J, first.getMass())));
+		second.setVelocity(Vector2.add(second.getVelocity(), Vector2.divide(J, second.getMass())));
+	}
+	
 }

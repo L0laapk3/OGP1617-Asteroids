@@ -209,18 +209,29 @@ public class Bullet extends Entity {
 		}
 	}
 
-	
 	/**
-	 * Handles the collision between two bullets.
-	 * @param  first
-	 * 		   The first bullet to collide.
-	 * @param  second
-	 *         The second bullet to collide.
-	 * @post   Both bullets are terminated.
+	 * Handles the collision between a bullet and another entity
+	 * @param  entity
+	 *         The entity that this bullet collides with.
+	 * @post   Both the bullet and the other entity are terminated.
 	 */
 	@Raw
-	static void collideBullets(Bullet first, Bullet second) {
-		first.terminate();
-		second.terminate();
+	void collideEntity(Entity entity) {
+		entity.terminate();
+		this.terminate();
+	}
+	
+	
+	/**
+	 * Handles the collision between a bullet and another entity
+	 * @param  entity
+	 *         The entity that this bullet collides with.
+	 * @post   Both the bullet and the other entity are terminated.
+	 */
+	@Raw
+	@Deprecated
+	void collideBullets(Entity entity) {
+		entity.terminate();
+		this.terminate();
 	}
 }

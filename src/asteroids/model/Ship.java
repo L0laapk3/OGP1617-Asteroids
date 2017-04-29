@@ -343,20 +343,13 @@ public class Ship extends Entity {
 	 * @param firstShip
 	 *        The first ship that collides.
 	 * @param secondShip
-	 *        The second ships that collides.
+	 *        The second ship that collides.
 	 * @post  The Velocity of the two ships will be updated according to the laws of physics.
 	 * 		| see implementation
 	 */
+	@Deprecated
 	public static void collideShips(Ship firstShip, Ship secondShip) {
-
-		double sigma = firstShip.getRadius() + secondShip.getRadius();
-		Vector2 J = Vector2.multiply(Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()),
-				2 * firstShip.getMass() * secondShip.getMass()
-						* Vector2.dot(Vector2.subtract(firstShip.getVelocity(), secondShip.getVelocity()), Vector2.subtract(firstShip.getPosition(), secondShip.getPosition()))
-						/ (sigma * sigma * (firstShip.getMass() + secondShip.getMass())));
-
-		firstShip.setVelocity(Vector2.subtract(firstShip.getVelocity(), Vector2.divide(J, firstShip.getMass())));
-		secondShip.setVelocity(Vector2.add(secondShip.getVelocity(), Vector2.divide(J, secondShip.getMass())));
+		Ship.bounce(firstShip, secondShip);
 	}
 
 	/**

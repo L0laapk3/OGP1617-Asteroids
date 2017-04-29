@@ -6,7 +6,7 @@ import asteroids.exceptions.UndefinedCollisionBehaviourException;
 +--------+-------------------------------+---------------------------------------+
 |        |             Ship              |                Bullet                 |
 +--------+-------------------------------+---------------------------------------+
-| Ship   | Ship.collideShips(ship, ship) | bullet.hit(ship)                      |
+| Ship   | Ship.bounce(ship, ship) | bullet.hit(ship)                      |
 +--------+-------------------------------+---------------------------------------+
 | Bullet |                               | Bullet.collideBullets(bullet, bullet) |
 +--------+-------------------------------+---------------------------------------+
@@ -30,7 +30,7 @@ public class Collisions {
 	 */
 	public static void collide(Entity first, Entity second) {
 		if (first instanceof Ship && second instanceof Ship)
-			Ship.collideShips((Ship)first, (Ship)second);
+			Ship.bounce(first, second);
 		else if (first instanceof Bullet && second instanceof Bullet)
 			Bullet.collideBullets((Bullet)first, (Bullet)second);
 		else if (first instanceof Bullet && second instanceof Ship)
