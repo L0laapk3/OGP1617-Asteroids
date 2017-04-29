@@ -31,6 +31,7 @@ public class Vector2 {
 	 *        the y parameter of this vector2.
 	 * @effect Creates a new vector2 with given x and y.
 	 */
+	public Vector2(Vector2 vec) { this(vec.x, vec.y); }
 	public Vector2(double x, double y) {
 		this.x = x;
 		this.y = y;
@@ -169,5 +170,28 @@ public class Vector2 {
 	public Vector2 toUnitVector() {
 		double factor = Math.sqrt(this.pythagoras());
 		return new Vector2(this.x / factor, this.y / factor);
+	}
+	
+	/**
+	 * Clones Vector2.
+	 * 
+	 * @return New vector2 identical to this one.
+	 */
+	@Raw
+	@Override
+	public Vector2 clone() {
+		return new Vector2(this);
+	}
+	
+	/**
+	 * generates Vector2 from polar coordinates.
+	 * 
+	 * @param rot
+	 *        The angle.
+	 * @param len
+	 *        The the distance from (0, 0).
+	 */
+	public static Vector2 fromPolar(double rot, double len) {
+		return new Vector2(Math.cos(rot) * len, Math.sin(rot) * len);
 	}
 }

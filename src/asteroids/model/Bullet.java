@@ -174,7 +174,7 @@ public class Bullet extends Entity {
 		this.addBounce();
 		OGUtil.println("BOUNCE " + this + " " + this.getBounces());
 		if (this.getBounces() >= MAX_BOUNCES)
-			this.terminate();
+			this.die();
 		else
 			super.collideWithWall();
 	}
@@ -205,7 +205,7 @@ public class Bullet extends Entity {
 			if (!isNullOrTerminated(this.getMotherShip()))
 				this.getMotherShip().triggerScoreOn(ship); //does nothing for now (part 3?)
 			ship.triggerHit();
-			this.terminate();
+			this.die();
 		}
 	}
 
@@ -217,21 +217,7 @@ public class Bullet extends Entity {
 	 */
 	@Raw
 	void collideEntity(Entity entity) {
-		entity.terminate();
-		this.terminate();
-	}
-	
-	
-	/**
-	 * Handles the collision between a bullet and another entity
-	 * @param  entity
-	 *         The entity that this bullet collides with.
-	 * @post   Both the bullet and the other entity are terminated.
-	 */
-	@Raw
-	@Deprecated
-	void collideBullets(Entity entity) {
-		entity.terminate();
-		this.terminate();
+		entity.die();
+		this.die();
 	}
 }

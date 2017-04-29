@@ -485,7 +485,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	public Vector2 getAccelerationVector() {
-		return new Vector2(Math.cos(this.getOrientation()) * getAcceleration(), Math.sin(this.getOrientation()) * getAcceleration());
+		return Vector2.fromPolar(this.getOrientation(), this.getAcceleration());
 	}
 	
 	/**
@@ -623,9 +623,7 @@ public abstract class Entity extends Instance {
 	public void thrust(double amount) {
 		if (OGUtil.isInvalidNumber(amount) || amount < 0)
 			return;
-		double xVelocity = this.velocity.x + amount * Math.cos(this.orientation);
-		double yVelocity = this.velocity.y + amount * Math.sin(this.orientation);
-		setVelocity(xVelocity, yVelocity);
+		setVelocity(Vector2.add(this.getVelocity(), Vector2.fromPolar(this.getOrientation(), amount)));
 	}
 
 	/**
@@ -985,7 +983,7 @@ public abstract class Entity extends Instance {
 	 * 		| see implementation
 	 */
 	@Raw
-	public static void bounce(Entity first, Entity second) {
+	static void bounce(Entity first, Entity second) {
 
 		double sigma = first.getRadius() + second.getRadius();
 		Vector2 J = Vector2.multiply(Vector2.subtract(first.getPosition(), second.getPosition()),
@@ -995,6 +993,16 @@ public abstract class Entity extends Instance {
 
 		first.setVelocity(Vector2.subtract(first.getVelocity(), Vector2.divide(J, first.getMass())));
 		second.setVelocity(Vector2.add(second.getVelocity(), Vector2.divide(J, second.getMass())));
+	}
+
+	
+	/**
+	 * Kills the entity.
+	 * 
+	 * @effect Entity is terminated.
+	 */
+	void die() {
+		this.terminate();
 	}
 	
 }

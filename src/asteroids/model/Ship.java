@@ -254,7 +254,7 @@ public class Ship extends Entity {
 
 		bullet.setLoadedInMotherShip(false);
 		this.unloadBullet(bullet);
-		Vector2 unitDirection = new Vector2(Math.cos(this.getOrientation()), Math.sin(this.getOrientation()));
+		Vector2 unitDirection = Vector2.fromPolar(this.getOrientation(), 1);
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
 		OGUtil.println("radius: " + bullet.getRadius());
 		OGUtil.println(bullet.getPosition());
@@ -399,7 +399,7 @@ public class Ship extends Entity {
 	@Raw
 	@Basic
 	public void triggerHit() {
-		this.terminate();
+		this.die();
 	}
 
 	/**
@@ -431,5 +431,12 @@ public class Ship extends Entity {
 		for (Bullet bullet : loadedBullets)
 			bullet.terminate();
 		super.terminate();
+	}
+
+	
+	
+	public void teleport() {
+		// TODO SHIP PLANETOID WTF COLLISION SHIT + COMMENTS
+		
 	}
 }

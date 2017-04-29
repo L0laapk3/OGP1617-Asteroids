@@ -2,16 +2,6 @@ package asteroids.model;
 
 import asteroids.exceptions.UndefinedCollisionBehaviourException;
 
-/*
-+--------+-------------------------------+---------------------------------------+
-|        |             Ship              |                Bullet                 |
-+--------+-------------------------------+---------------------------------------+
-| Ship   | Ship.bounce(ship, ship) | bullet.hit(ship)                      |
-+--------+-------------------------------+---------------------------------------+
-| Bullet |                               | Bullet.collideBullets(bullet, bullet) |
-+--------+-------------------------------+---------------------------------------+
-*/
-
 
 /**
  * Helper class to define the behavior between two entities.
@@ -23,21 +13,41 @@ public class Collisions {
 	 * 		  The first entity.
 	 * @param second
 	 *        The second entity.
-	 * @post  Ship.collideShips(first, second) if both entities are ships.
-	 * @post  bullet.hit(ship) if one entity is a bullet and the other one is a ship.
-	 * @post  Bullet.collideBullets(first, second) if both entities are bullets.
-	 * 
+	 * @effect
+	 * +--------------+------------------+------------------------------+---------------+----------+-----------+
+	 * |              |       Ship       |            Bullet            |  MinorPlanet  | Asteroid | Planetoid |
+	 * +--------------+------------------+------------------------------+---------------+----------+-----------+
+	 * | Entity       |                  | bullet.collideEntity(entity) |               |          |           |
+	 * | -Ship        | Entity.bounce    |                              |               |          |           |
+	 * | -Bullet      | bullet.hit(ship) |                              |               |          |           |
+	 * | -MinorPlanet |                  |                              | Entity.bounce |          |           |
+	 * |  -Asteroid   | ship.die()       |                              |               |          |           |
+	 * |  -Planetoid  | ship.teleport()  |                              |               |          |           |
+	 * +--------------+------------------+------------------------------+---------------+----------+-----------+
 	 */
 	public static void collide(Entity first, Entity second) {
-		if (first instanceof Ship && second instanceof Ship)
-			Ship.bounce(first, second);
-		else if (first instanceof Bullet && second instanceof Bullet)
-			Bullet.collideBullets((Bullet)first, (Bullet)second);
-		else if (first instanceof Bullet && second instanceof Ship)
-			((Bullet)first).hit((Ship)second);
-		else if (first instanceof Ship && second instanceof Bullet)
-			((Bullet) second).hit((Ship) first);
-		else
+		if (!collideOne(first, second) && !collideOne(second, first))
 			throw new RuntimeException(new UndefinedCollisionBehaviourException(first, second));
+	}
+	
+	private static boolean collideOne(Entity first, Entity second) {
+		if (first instanceof Bullet)
+			((Bullet)first).collideEntity(second);
+		else if (first instanceof Ship) {
+			if (second instanceof Ship)
+				Entity.bounce(first, second);
+			else if (second instanceof Bullet)
+				((Bullet)second).hit((Ship)first);
+			else if (second instanceof Asteroid)
+				first.die();
+			else if (second instanceof Planetoid)
+				((Ship)first).teleport();
+			else
+				return false;
+		} else if ((first instanceof MinorPlanet) && (second instanceof MinorPlanet))
+			Entity.bounce(first, second);
+		else
+			return false;
+		return true;
 	}
 }
