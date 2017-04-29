@@ -184,6 +184,8 @@ public abstract class Entity extends Instance {
 	@Raw
 	@Basic
 	public double getMaxSpeed() {
+		if (this instanceof Bullet)
+			return maxSpeed;
 		return this.maxSpeed;
 	}
 
