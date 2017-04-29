@@ -503,13 +503,13 @@ public class Part2Tests {
 		Set<Entity> test = new HashSet<Entity>();
 		test.add(ship);
 
-		assertEquals(world.getAllShips(), test);
+		assertEquals(world.getAllEntities(Ship.class), test);
 
 		ship.loadBullet(bullet);
 
 		test.remove(ship);
 		test.add(bullet);
-		assertEquals(world.getAllBullets(), test);
+		assertEquals(world.getAllEntities(Bullet.class), test);
 
 		test.add(ship);
 

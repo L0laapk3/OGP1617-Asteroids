@@ -3,6 +3,7 @@ package asteroids.model;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
@@ -362,30 +363,36 @@ public class World extends Instance {
 		return null;
 	}
 
+	
 	/**
-	 * Gets all entities from the world.
+	 * Gets all objects of type c from the world.
 	 * 
-	 * @return A Set with all the entities in the world.
+	 * @param  c
+	 * 		   The class of which all instances in this world have to be returned of. If not specified, will return all entities in this world.
+	 * @param  filter
+	 * 		   Filter function. If not specified, will return all entities that are of type c.
+	 * @Return with all the entities of type c in the world.
 	 */
 	@Raw
 	@Basic
-		public Set<Entity> getAllEntities() {
-		return new HashSet<Entity>(entities);
+	public Set<Entity> getAllEntities() { return getAllEntities(Entity.class, x -> true); }
+	public Set<Entity> getAllEntities(Predicate<? super Entity> filter) { return getAllEntities(Entity.class, filter); }
+	public <T extends Entity> Set<T> getAllEntities(Class<T> c) { return getAllEntities(c, x -> true); }
+	public <T extends Entity> Set<T> getAllEntities(Class<T> c, Predicate<? super T> filter) {
+		Set<T> filtered = new HashSet<T>();
+		for (Entity entity : entities)
+			if (c.isInstance(entity) && filter.test((T)entity))
+				filtered.add((T)entity);
+		return filtered;
 	}
 
 	/**
 	 * Gets all ships from the world.
 	 * 
-	 * @return A Set with all the entities in the world.
+	 * @return A set with all the ships in the world.
 	 */
 	@Raw
-	public Set<Ship> getAllShips() {
-		Set<Ship> ships = new HashSet<Ship>();
-		for (Entity entity : entities)
-			if (entity instanceof Ship)
-				ships.add((Ship) entity);
-		return ships;
-	}
+	public Set<Ship> getAllShips() { return getAllEntities(Ship.class); }
 
 	/**
 	 * Gets all bullets from the world.
@@ -393,13 +400,7 @@ public class World extends Instance {
 	 * @return A Set with all the entities in the world.
 	 */
 	@Raw
-	public Set<Bullet> getAllBullets() {
-		Set<Bullet> bullets = new HashSet<Bullet>();
-		for (Entity entity : entities)
-			if (entity instanceof Bullet)
-				bullets.add((Bullet) entity);
-		return bullets;
-	}
+	public Set<Bullet> getAllBullets() { return getAllEntities(Bullet.class); }
 
 	/**
 	 * Gets all bullets with collision from the world.
@@ -407,13 +408,7 @@ public class World extends Instance {
 	 * @return A Set with all the entities in the world.
 	 */
 	@Raw
-	public Set<Bullet> getAllBulletsWithCollision() {
-		Set<Bullet> bullets = new HashSet<Bullet>();
-		for (Entity entity : entities)
-			if ((entity instanceof Bullet) && entity.hasCollision())
-				bullets.add((Bullet) entity);
-		return bullets;
-	}
+	public Set<Bullet> getAllBulletsWithCollision() { return getAllEntities(Bullet.class, bullet -> bullet.hasCollision());	}
 
 	/**
 	 * Gets all entities on which collision physics has to apply on.
@@ -421,13 +416,7 @@ public class World extends Instance {
 	 * @return A Set of entities on which collision physics has to apply on.
 	 */
 	@Raw
-	public Set<Entity> getAllEntitiesWithCollision() {
-		Set<Entity> entitiesWithCollision = new HashSet<Entity>();
-		for (Entity entity : entities)
-			if (entity.hasCollision())
-				entitiesWithCollision.add(entity);
-		return entitiesWithCollision;
-	}
+	public Set<Entity> getAllEntitiesWithCollision() { return getAllEntities(entity -> entity.hasCollision()); }
 
 	/**
 	 * Gets all entities without collision. The opposite of getAllEntitiesWithCollision.
@@ -435,13 +424,7 @@ public class World extends Instance {
 	 * @return A Set of all the loaded bullets in this world.
 	 */
 	@Raw
-	public Set<Entity> getAllEntitiesWithoutCollision() {
-		Set<Entity> entitiesWithoutCollision = new HashSet<Entity>();
-		for (Entity entity : entities)
-			if (!entity.hasCollision())
-				entitiesWithoutCollision.add(entity);
-		return entitiesWithoutCollision;
-	}
+	public Set<Entity> getAllEntitiesWithoutCollision() { return getAllEntities(entity -> !entity.hasCollision()); }
 
 	/**
 	 * Gets all loaded bullets.
@@ -449,13 +432,7 @@ public class World extends Instance {
 	 * @return A Set of all the loaded bullets in this world.
 	 */
 	@Raw
-	public Set<Bullet> getAllLoadedBullets() {
-		Set<Bullet> loadedBullets = new HashSet<Bullet>();
-		for (Entity entity : entities)
-			if ((entity instanceof Bullet) && ((Bullet) entity).isLoadedInMotherShip())
-				loadedBullets.add((Bullet) entity);
-		return loadedBullets;
-	}
+	public Set<Bullet> getAllLoadedBullets() { return getAllEntities(Bullet.class, bullet -> bullet.isLoadedInMotherShip()); }
 
 
 	

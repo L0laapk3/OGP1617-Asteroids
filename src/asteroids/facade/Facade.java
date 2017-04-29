@@ -514,7 +514,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 */
 	public Set<Ship> getWorldShips(World world) throws ModelException {
 
-		return world.getAllShips();
+		return world.getAllEntities(Ship.class);
 	}
 
 	/**
