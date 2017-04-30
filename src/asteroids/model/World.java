@@ -500,7 +500,8 @@ public class World extends Instance {
 	void doTime(double Dt, Set<Entity> entitiesWithCollision) {
 		for (Entity entity : entitiesWithCollision) {
 			entity.move(Dt);
-			entity.accelerate(Dt);
+			if (entity instanceof AdvancedEntity)
+				((AdvancedEntity)entity).accelerate(Dt);
 		}
 	}
 

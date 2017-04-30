@@ -62,7 +62,7 @@ public class Bullet extends Entity {
 	 */
 
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, 0, calculateBassMass(RHO, radius));
+		super(x, y, xVelocity, yVelocity, radius, calculateBassMass(RHO, radius));
 		this.setMinRadius(MIN_RADIUS_BULLET);		
 
 		

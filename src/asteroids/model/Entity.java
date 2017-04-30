@@ -432,6 +432,41 @@ public abstract class Entity extends Instance {
 	}
 	
 
+	
+	
+	
+	/**
+	 * Update <code>entity</code>'s position, assuming it moves <code>dt</code>
+	 * seconds at its current velocity.
+	 * 
+	 * @param  	dt
+	 * 		   	The amount of time that the entity should move forward.
+	 * @post   	The entity moves forward by the amount of time dt, with the stored velocity and the acceleration.
+	 * 			The new position is calculated in a deterministic way so that the speed will never exceed the max speed of the given entity.
+	 *        |	xPosition = xPosition + xVelocity * dt + 1/2 * xAcceleration^2
+	 *        | yPosition = yPosition + yVelocity * dt + 1/2 * yAcceleration^2
+	 * @throws 	IllegalArgumentException
+	 * 		   	The time of the action should not be infinite.
+	 * @throws 	IllegalArgumentException
+	 * 		   	The time of the action should not be NaN.
+	 * @throws 	NegativeTimeException
+	 * 		   	The time of the action should be positive. 
+	 * @note   	This is written in a defensive manner.
+	 */
+	@Raw
+	void move(double dt) throws IllegalArgumentException, NegativeTimeException {
+
+		OGUtil.throwErrorIfInvalidNumbers(dt);
+		if (!isValidDeltaTime(dt))
+			throw new NegativeTimeException();
+
+		// Berekeningen die geen rekening houden met acceleratie.
+
+		this.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), dt)));
+		
+	}
+	
+	
 
 	
 	
