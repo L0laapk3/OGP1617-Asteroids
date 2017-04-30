@@ -571,7 +571,7 @@ public class World extends Instance {
 							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 						}
-						collideEntities(collInfo.firstEntity, collInfo.secondEntity);
+						Collisions.collide(collInfo.firstEntity, collInfo.secondEntity);
 					}
 				} else {
 					doTime(Dt, entitiesWithCollision);
@@ -587,20 +587,6 @@ public class World extends Instance {
 		} catch (EntitiesOverlapException | NoWorldException ex) { // this should never happen, not user input fault if it happens but code fault.
 			throw new RuntimeException(ex);
 		}
-	}
-
-	/**
-	 * Collides the two entities and calls the proper handlers depending on the collision type.
-	 * 
-	 * @invar Both entities must be in the same world. (not null)
-	 * @param first
-	 * 	      This is the first entity to collide.
-	 * @param collisionSecondEntity
-	 *        This is the second entity to collide.
-	 */
-	@Raw
-	private void collideEntities(Entity first, Entity second) {
-		Collisions.collide(first, second);
 	}
 
 	/**
