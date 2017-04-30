@@ -32,7 +32,7 @@ import be.kuleuven.cs.som.annotate.Raw;
  * @author Rik Pauwels
  */
 
-public class Ship extends Entity {
+public class Ship extends AdvancedEntity {
 	
 
 	

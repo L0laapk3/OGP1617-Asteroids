@@ -1,14 +1,13 @@
 package asteroids.model;
 
-import asteroids.exceptions.InvalidPositionException;
-import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.*;
 import asteroids.util.Vector2;
 
 public class Planetoid extends MinorPlanet {
 
-	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
+	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, orientation, mass);
+		super(x, y, xVelocity, yVelocity, radius, mass);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -31,11 +30,17 @@ public class Planetoid extends MinorPlanet {
 			
 			//TODO: RADIUS, orientation, die hebbe toch geen orientation, in constructor van minorplanets aanpassen
 			
-			Asteroid first = new Asteroid(firstPosition.x, firstPosition.y, firstVelocity.x, firstVeloticy.y, this.getRadius() / 2, 0, ); //TODO: AFWERKEN
-			Asteroid second = new Asteroid();
-			super.die();
-			world.addEntity(first);
-			world.addEntity(second);
+			try {
+				// mass divided by 4 because radius is divided by 2
+				Asteroid first = new Asteroid(firstPosition.x, firstPosition.y, firstVelocity.x, firstVelocity.y, this.getRadius() / 2, this.getMass() / 4);
+				Asteroid second = new Asteroid(secondPosition.x, secondPosition.y, SecondVelocity.x, SecondVelocity.y, this.getRadius() / 2, this.getMass() / 4);
+				super.die();
+				world.addEntity(first);
+				world.addEntity(second);
+			} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException | EntitiesOverlapException e) {
+				//these should never happen and are not a result of input errors in public functions, but rather a result of internal errors in the code
+				throw new RuntimeException(e);
+			}
 		} else
 			super.die();
 	}
