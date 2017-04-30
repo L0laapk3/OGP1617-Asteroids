@@ -4,6 +4,11 @@ import asteroids.exceptions.*;
 import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;
 
+
+
+//TODO: orientation bekijken in entity en alle subclasses van entity.
+
+
 /**
  * A class to define basic entities.
  * 
@@ -19,8 +24,6 @@ import be.kuleuven.cs.som.annotate.*;
  * @author   Kris Keersmaekers
  * @author   Rik Pauwels
  */
-
-
 public abstract class Entity extends Instance {
 	
 	
