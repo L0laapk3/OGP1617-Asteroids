@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.NegativeTimeException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.part2.CollisionListener;
@@ -373,12 +374,11 @@ public class World extends Instance {
 	 * 		   Filter function. If not specified, will return all entities that are of type c.
 	 * @Return with all the entities of type c in the world.
 	 */
-	@Raw
-	@Basic
-	public Set<Entity> getAllEntities() { return getAllEntities(Entity.class, x -> true); }
-	public Set<Entity> getAllEntities(Predicate<? super Entity> filter) { return getAllEntities(Entity.class, filter); }
-	public <T extends Entity> Set<T> getAllEntities(Class<T> c) { return getAllEntities(c, x -> true); }
-	public <T extends Entity> Set<T> getAllEntities(Class<T> c, Predicate<? super T> filter) {
+	@Raw public Set<Entity> getAllEntities() { return getAllEntities(Entity.class, x -> true); }
+	@Raw public Set<Entity> getAllEntities(Predicate<? super Entity> filter) { return getAllEntities(Entity.class, filter); }
+	@Raw public <T extends Entity> Set<T> getAllEntities(Class<T> c) { return getAllEntities(c, x -> true); }
+	@SuppressWarnings("unchecked")
+	@Raw public <T extends Entity> Set<T> getAllEntities(Class<T> c, Predicate<? super T> filter) {
 		Set<T> filtered = new HashSet<T>();
 		for (Entity entity : entities)
 			if (c.isInstance(entity) && filter.test((T)entity))
@@ -386,6 +386,7 @@ public class World extends Instance {
 		return filtered;
 	}
 
+	
 	/**
 	 * Gets all ships from the world.
 	 * 
@@ -511,8 +512,19 @@ public class World extends Instance {
 	 * @param  Dt
 	 * 		   The time to simulate the world for.
 	 * @effect this.evolve(Dt, null);
+	 * @throws IllegalArgumentException
+	 * 		   The time of the action should not be infinite.
+	 * @throws IllegalArgumentException
+	 * 		   The time of the action should not be NaN.
+	 * @throws NegativeTimeException
+	 * 		   The time of the action should be positive. 
+	 * @note   This is written in a defensive manner.
 	 */
-	public void evolve(double Dt) {
+	public void evolve(double Dt) throws IllegalArgumentException, NegativeTimeException {
+		OGUtil.throwErrorIfInvalidNumbers(Dt);
+		if (!OGUtil.isValidDeltaTime(Dt))
+			throw new NegativeTimeException();
+		
 		this.evolve(Dt, null);
 	}
 

@@ -143,26 +143,32 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testMove1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testMove1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Ship ship = new Ship(7, -3, 2, -87, 100, Math.PI / 3, 1);
-		ship.move(5);
+		World world = new World(1000, 1000);
+    	world.addEntity(ship);
+    	world.evolve(5);
 		assertEquals(ship.getPosition().x, 17, EPSILON);
 		assertEquals(ship.getPosition().y, -438, EPSILON);
-		ship.move(10.5);
+    	world.evolve(10.5);
 		assertEquals(ship.getPosition().x, 38, EPSILON);
 		assertEquals(ship.getPosition().y, -1351.5, EPSILON);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testMove2_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testMove2_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Ship ship = new Ship(7, -3, 2, -87, 100, 0, 1);
-		ship.move(Double.POSITIVE_INFINITY);
+		World world = new World(1000, 1000);
+    	world.addEntity(ship);
+    	world.evolve(Double.POSITIVE_INFINITY);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testMove3_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testMove3_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Ship ship = new Ship(7, -3, 2, -87, 100, 0, 1);
-		ship.move(-4);
+		World world = new World(1000, 1000);
+    	world.addEntity(ship);
+    	world.evolve(-4);
 	}
 
 	@Test
@@ -181,16 +187,18 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testAdvancedMovements() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testAdvancedMovements() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Ship ship = new Ship(4, 2, 4, 3, 19, Math.PI / 2, 1);
-		ship.thrust(15);
-		ship.move(4);
+		World world = new World(1000, 1000);
+    	world.addEntity(ship);
+    	ship.thrust(15);
+    	world.evolve(4);
 		ship.turn(Math.PI / 2);
-		ship.move(10);
+		world.evolve(10);
 		ship.turn(Math.PI);
 		ship.thrust(4);
 		ship.turn(2 * Math.PI); // 360 noscope
-		ship.move(3);
+		world.evolve(3);
 		assertEquals(ship.getPosition().x, 84, EPSILON);
 		assertEquals(ship.getPosition().y, 308, EPSILON);
 		assertEquals(ship.getVelocity().x, 8, EPSILON);
@@ -311,12 +319,14 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testCollideShips() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testCollideShips() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Ship ship1 = new Ship(100, 200, 1, 0, 20, 0, 8);
 		Ship ship2 = new Ship(140, 200, -1, 0, 20, 0, 8);
-
-		Ship.collideShips(ship1, ship2);
-
+		World world = new World(1000, 1000);
+		world.addEntity(ship1);
+		world.addEntity(ship2);
+		world.evolve(1);
+		
 		assertEquals(ship1.getVelocity().x, -1, EPSILON);
 		assertEquals(ship2.getVelocity().x, 1, EPSILON);
 	}
@@ -415,26 +425,32 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testMove1Bullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testMove1Bullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Bullet bullet = new Bullet(7, -3, 2, -87, 100, null);
-		bullet.move(5);
+		World world = new World(1000, 1000);
+		world.addEntity(bullet);
+		world.evolve(5);
 		assertEquals(bullet.getPosition().x, 17, EPSILON);
 		assertEquals(bullet.getPosition().y, -438, EPSILON);
-		bullet.move(10.5);
+		world.evolve(10.5);
 		assertEquals(bullet.getPosition().x, 38, EPSILON);
 		assertEquals(bullet.getPosition().y, -1351.5, EPSILON);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testMove2Bullet_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testMove2Bullet_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Bullet bullet = new Bullet(7, -3, 2, -87, 100, null);
-		bullet.move(Double.POSITIVE_INFINITY);
+		World world = new World(1000, 1000);
+		world.addEntity(bullet);
+		world.evolve(Double.POSITIVE_INFINITY);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testMove3Bullet_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testMove3Bullet_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
 		Bullet bullet = new Bullet(7, -3, 2, -87, 100, null);
-		bullet.move(-4);
+		World world = new World(1000, 1000);
+		world.addEntity(bullet);
+		world.evolve(-4);
 	}
 
 	@Test

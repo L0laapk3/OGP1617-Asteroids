@@ -415,22 +415,6 @@ public abstract class Entity extends Instance {
 		super.terminate();
 	}
 	
-	
-	
-
-	/**
-	 * Check whether the time to move the entity forward with is valid.
-	 * 
-	 * @param dt
-	 * 		  The time to check.
-	 * @return True if and only if dt equals to or is bigger than 0.
-	 *       | result == (dt >= 0)
-	 */
-	@Raw
-	public boolean isValidDeltaTime(double dt) {
-		return dt >= 0;
-	}
-	
 
 	
 	
@@ -445,20 +429,9 @@ public abstract class Entity extends Instance {
 	 * 			The new position is calculated in a deterministic way so that the speed will never exceed the max speed of the given entity.
 	 *        |	xPosition = xPosition + xVelocity * dt + 1/2 * xAcceleration^2
 	 *        | yPosition = yPosition + yVelocity * dt + 1/2 * yAcceleration^2
-	 * @throws 	IllegalArgumentException
-	 * 		   	The time of the action should not be infinite.
-	 * @throws 	IllegalArgumentException
-	 * 		   	The time of the action should not be NaN.
-	 * @throws 	NegativeTimeException
-	 * 		   	The time of the action should be positive. 
-	 * @note   	This is written in a defensive manner.
 	 */
 	@Raw
-	void move(double dt) throws IllegalArgumentException, NegativeTimeException {
-
-		OGUtil.throwErrorIfInvalidNumbers(dt);
-		if (!isValidDeltaTime(dt))
-			throw new NegativeTimeException();
+	void move(double dt) {
 
 		// Berekeningen die geen rekening houden met acceleratie.
 

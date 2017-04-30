@@ -24,6 +24,27 @@ public class OGUtil {
 	}
 	
 	
+	
+	
+
+
+
+	/**
+	 * Check whether the time to move the entity forward with is valid.
+	 * 
+	 * @param dt
+	 * 		  The time to check.
+	 * @return True if and only if dt equals to or is bigger than 0.
+	 *       | result == (dt >= 0)
+	 */
+	@Raw
+	public static boolean isValidDeltaTime(double dt) {
+		return dt >= 0;
+	}
+	
+	
+	
+	
 
 
 	/**

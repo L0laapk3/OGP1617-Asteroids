@@ -335,22 +335,7 @@ public class Ship extends AdvancedEntity {
 		//OGUtil.println("super mass " + super.getMass() + ", bullet mass " + this.getLoadMass() + " "  + this);
 		return super.getMass() + this.getLoadMass();
 	}
-
-
-	/**
-	 * Recalculates the velocity of the two ships, when they bounce
-	 * 
-	 * @param firstShip
-	 *        The first ship that collides.
-	 * @param secondShip
-	 *        The second ship that collides.
-	 * @post  The Velocity of the two ships will be updated according to the laws of physics.
-	 * 		| see implementation
-	 */
-	@Deprecated
-	public static void collideShips(Ship firstShip, Ship secondShip) {
-		Ship.bounce(firstShip, secondShip);
-	}
+	
 
 	/**
 	 * Variable that holds whether the thruster is on or of
