@@ -419,9 +419,35 @@ public class Ship extends AdvancedEntity {
 	}
 
 	
-	
+	/**
+	 * This function teleports the ship to a random position within the world, if the position is not valid because the ship does not lay fully within
+	 * the boundaries of his world or the position is already taken by an other entity then the ship will be terminated.
+	 * 
+	 * @effect  if the newly given position is not valid because the ship does not lay fully within the boundaries of his world or the position 
+	 * 		  is already taken by an other entity then the ship will be terminated.
+	 * 		| if position = occupied or ship not fully within boundaries
+	 * 		| 	ship.terminate();
+	 * @effect  if the newly given position is a valid position then the ship will be teleported to that position.
+	 * 		| if position = valid
+	 * 		|   ship.setPosition(randomHeight, randomWidth)
+	 */
 	public void teleport() {
 		// TODO SHIP PLANETOID WTF COLLISION SHIT + COMMENTS
+	
+		double randomHeight = Math.random() * this.getWorld().getHeight();
+		double randomWidth = Math.random() * this.getWorld().getWidth();
+		Vector2 position = new Vector2(randomWidth,randomHeight);
 		
+		if (((randomHeight + this.getRadius() * 0.99) > this.getWorld().getWidth()) || ((randomHeight - this.getRadius() * 0.99) < 0) || ((randomWidth + this.getRadius() * 0.99) > this.getWorld().getHeight())
+				|| ((randomWidth - this.getRadius() * 0.99) < 0)) {
+			this.terminate();
+			return;
+		}
+		
+		if (this.getWorld().findOverlap(this) == null){
+			this.setPosition(position);
+		} else {
+			this.terminate();
+		}
 	}
 }
