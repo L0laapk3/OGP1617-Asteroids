@@ -2,6 +2,8 @@ package asteroids.model;
 
 import asteroids.exceptions.*;
 import asteroids.util.Vector2;
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Raw;
 
 public class Planetoid extends MinorPlanet {
 	
@@ -30,7 +32,26 @@ public class Planetoid extends MinorPlanet {
 	 * Variable holding the mass density of a planetoid.
 	 */
 	private final static double MASS_DENSITY_PLANETOID = 0.917E12;
+	
+	/**
+	 * Function that will update the mass of a planetoid after its radius is changed.
+	 */
+	public void updateMass() {
+		this.baseMass = calculateBassMass(MASS_DENSITY_PLANETOID, this.getRadius());
+	}
 
+	/**
+	 * Sets the radius of this entity to the given radius.
+	 * 
+	 * @param radius
+	 * 		  The new radius of the entity.
+	 */
+	@Raw
+	@Basic
+	public void setRadius(double radius) {
+		this.radius=radius;
+	}
+	
 	/**
 	 * Function that handles when the entity dies.
 	 * 
@@ -61,4 +82,5 @@ public class Planetoid extends MinorPlanet {
 		} else
 			super.die();
 	}
+	
 }

@@ -1,5 +1,7 @@
 package asteroids.model;
 
+import java.util.Vector;
+
 import asteroids.exceptions.*;
 import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;
@@ -116,7 +118,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * Variable storing the mass of the entity.
 	 */
-	private final double baseMass;
+	protected double baseMass;
 
 	/**
 	 * Gets the unloaded mass of the entity.
@@ -141,7 +143,7 @@ public abstract class Entity extends Instance {
 	public static double calculateBassMass(double rho, double radius) {
 		return rho * Math.PI * radius * radius * radius * 4 / 3;
 	}
-	
+
 
 	/**
 	 * Constant for the maximum velocity.
@@ -371,7 +373,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * Variable registering the size of the entity.
 	 */
-	private final double radius;
+	protected double radius;
 
 	/**
 	 * Return the radius of entity.
@@ -398,8 +400,7 @@ public abstract class Entity extends Instance {
 	public boolean isValidRadius(double radius) {
 		return radius >= this.getMinRadius();
 	}
-	
-	
+		
 	
 	
 	/**
@@ -437,15 +438,15 @@ public abstract class Entity extends Instance {
 	void move(double dt) {
 
 		// Berekeningen die geen rekening houden met acceleratie.
-
-		this.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), dt)));
+		Vector2 positionFirst = this.getPosition();
+		this.setPosition(Vector2.add(positionFirst, Vector2.multiply(this.getVelocity(), dt)));
 		
-	}
-	
-	
-
-	
-	
+		if (this instanceof Planetoid) {
+			((Planetoid)this).setRadius(this.getRadius()-(Vector2.distance(positionFirst, this.getPosition()))*0.000001);
+			((Planetoid)this).updateMass();
+		}
+		
+	}	
 	
 	/**
 	 * Return the distance between <code>entity1</code> and <code>entity2</code>.
