@@ -4,14 +4,32 @@ import asteroids.exceptions.*;
 import asteroids.util.Vector2;
 
 public class Planetoid extends MinorPlanet {
-
+	
+	/**
+	 * Function to make a new Planetoid.
+	 * @param  x
+	 * 	       The x coordinate where the new Planetoid has to be created.
+	 * @param  y
+	 *         The y coordinate where the new Planetoid has to be created.
+	 * @param  xVelocity
+	 * 		   The initial speed in the x direction of the new Planetoid.
+	 * @param  yVelocity
+	 * 		   The initial speed in the y direction of the new Planetoid.
+	 * @param  radius
+	 * 		   The size of the newly created Planetoid.
+	 * @effect This new Planetoid is initialized as a new MinorPlanet with given position, velocity and radius.
+	 * 		 | super(x,y,xVelocity,yVelocity,radius,MASS_DENSITY_PLANETOID)
+	 */
 	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, mass);
+		super(x, y, xVelocity, yVelocity, radius, MASS_DENSITY_PLANETOID);
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	/**
+	 * Variable holding the mass density of a planetoid.
+	 */
+	private final static double MASS_DENSITY_PLANETOID = 0.917E12;
 
 	/**
 	 * Function that handles when the entity dies.
@@ -28,12 +46,11 @@ public class Planetoid extends MinorPlanet {
 			Vector2 firstVelocity = Vector2.fromPolar(direction, this.getVelocity().pythagoras() * 1.5);
 			Vector2 SecondVelocity = Vector2.fromPolar(direction + Math.PI, this.getVelocity().pythagoras() * 1.5);
 			
-			//TODO: RADIUS, orientation, die hebbe toch geen orientation, in constructor van minorplanets aanpassen
+			//TODO: RADIUS, orientation, die hebbe toch geen orientation, in constructor van minorplanets aanpassen (opgelost denk ik)
 			
 			try {
-				// mass divided by 4 because radius is divided by 2
-				Asteroid first = new Asteroid(firstPosition.x, firstPosition.y, firstVelocity.x, firstVelocity.y, this.getRadius() / 2, this.getMass() / 4);
-				Asteroid second = new Asteroid(secondPosition.x, secondPosition.y, SecondVelocity.x, SecondVelocity.y, this.getRadius() / 2, this.getMass() / 4);
+				Asteroid first = new Asteroid(firstPosition.x, firstPosition.y, firstVelocity.x, firstVelocity.y, this.getRadius() / 2);
+				Asteroid second = new Asteroid(secondPosition.x, secondPosition.y, SecondVelocity.x, SecondVelocity.y, this.getRadius() / 2);
 				super.die();
 				world.addEntity(first);
 				world.addEntity(second);
