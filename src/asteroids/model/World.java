@@ -462,7 +462,7 @@ public class World extends Instance {
 			Entity first = it.next();
 			
 			if ((first instanceof Bullet) && (((Bullet)first).isLoadedInMotherShip())) {
-				OGUtil.println("wtf");
+				OGUtil.println("wtf"); //TODO lol
 			}
 
 			// detect wall collisions
