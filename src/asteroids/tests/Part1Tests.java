@@ -7,6 +7,7 @@ import org.junit.Test;
 import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.InvalidTimeException;
 import asteroids.model.Ship;
 import asteroids.model.World;
 import asteroids.util.Vector2;
@@ -140,7 +141,7 @@ public class Part1Tests {
     
     
     @Test
-    public void testMove1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
+    public void testMove1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
     	Ship ship = new Ship(7, -3, 2, -87, 100, Math.PI / 3, 1);
     	World world = new World(1000, 1000);
     	world.addEntity(ship);
@@ -154,14 +155,14 @@ public class Part1Tests {
     	assertEquals(ship.getPosition().y, -1351.5, EPSILON);
     }
     @Test(expected = IllegalArgumentException.class)
-    public void testMove2_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
+    public void testMove2_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
     	Ship ship = new Ship(7, -3, 2, -87, 100, 0, 1);
     	World world = new World(1000, 1000);
     	world.addEntity(ship);
     	world.evolve(Double.POSITIVE_INFINITY);
     }
     @Test(expected = IllegalArgumentException.class)
-    public void testMove3_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
+    public void testMove3_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
     	Ship ship = new Ship(7, -3, 2, -87, 100, 0, 1);
     	World world = new World(1000, 1000);
     	world.addEntity(ship);
@@ -186,7 +187,7 @@ public class Part1Tests {
     }
     
     @Test
-    public void testAdvancedMovements() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
+    public void testAdvancedMovements() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
     	Ship ship = new Ship(4, 2, 4, 3, 19, Math.PI / 2, 1);
     	World world = new World(1000, 1000);
     	world.addEntity(ship);

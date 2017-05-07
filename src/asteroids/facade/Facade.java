@@ -9,6 +9,7 @@ import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.InvalidTimeException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
@@ -18,7 +19,7 @@ import asteroids.model.Planetoid;
 import asteroids.model.Ship;
 import asteroids.model.World;
 import asteroids.part2.CollisionListener;
-import asteroids.part3.facade.Program;
+//import asteroids.part3.facade.Program;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.util.ModelException;
 import asteroids.util.OGUtil;
@@ -743,14 +744,15 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * method. <code>collisionListener</code> may be null. If
 	 * <code>collisionListener</code> is <code>null</code>, do not call its
 	 * notify methods.
+	 * @throws ModelException 
 	 */
-	public void evolve(World world, double dt, CollisionListener collisionListener) {
+	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
 		if (collisionListener != null) {
-			// try {
-			world.evolve(dt, collisionListener);
-			// } catch (EntitiesOverlapException ex) {
-			// throw new ModelException(ex);
-			// }
+			try {
+				world.evolve(dt, collisionListener);
+			} catch (InvalidTimeException ex) {
+				throw new ModelException (ex);
+			}
 		}
 	}
 
@@ -884,7 +886,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * velocity along the X-axis, followed by the velocity along the Y-axis.
 	 */
 	public double[] getAsteroidVelocity(Asteroid asteroid) {
-		return asteroid.getVelocity().toProfNotation();
+		return asteroid.getVelocityVector().toProfNotation();
 	}
 
 	/**
@@ -921,7 +923,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	public Planetoid createPlanetoid(double x, double y, double xVelocity, double yVelocity, double radius,
 			double totalTraveledDistance) throws ModelException {
 		try {
-			return new Planetoid(x, y, xVelocity, yVelocity, radius);
+			return new Planetoid(x, y, xVelocity, yVelocity, radius, totalTraveledDistance);
 		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
 			throw new ModelException(ex);
 		}
@@ -954,7 +956,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * velocity along the X-axis, followed by the velocity along the Y-axis.
 	 */
 	public double[] getPlanetoidVelocity(Planetoid planetoid) {
-		return planetoid.getVelocity().toProfNotation();
+		return planetoid.getVelocityVector().toProfNotation();
 	}
 
 	/**
@@ -974,42 +976,46 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	/**
 	 * Return the total traveled distance of <code>planetoid</code>.
 	 */
-	public double getPlanetoidTotalTraveledDistance(Planetoid planetoid) throws ModelException;
-
+	public double getPlanetoidTotalTraveledDistance(Planetoid planetoid) {
+		return planetoid.getTotalTraveledDistance();
+	}
+		
 	/**
 	 * Return the world in which <code>planetoid</code> is positioned.
 	 */
-	public World getPlanetoidWorld(Planetoid planetoid) throws ModelException;
+	public World getPlanetoidWorld(Planetoid planetoid) {
+		return planetoid.getWorld();
+	}
 
-	/**********
-	 * PROGRAMS
-	 **********/
-
-	/**
-	 * Return the program loaded on the given ship.
-	 */
-	public Program getShipProgram(Ship ship) throws ModelException;
-
-	/**
-	 * Load the given program on the given ship.
-	 */
-	public void loadProgramOnShip(Ship ship, Program program) throws ModelException;
-
-	/**
-	 * Execute the program loaded on the given ship during the given period of
-	 * time. The ship is positioned in some world. Returns null if the program
-	 * is not completely executed. Otherwise, returns the objects that have been
-	 * printed.
-	 * 
-	 * This method is only used in the tests. The GUI never calls this method,
-	 * only the
-	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
-	 */
-	public List<Object> executeProgram(Ship ship, double dt) throws ModelException;
-
-	/**
-	 * Creates a new program factory.
-	 */
-	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException;
+//	/**********
+//	 * PROGRAMS
+//	 **********/
+//
+//	/**
+//	 * Return the program loaded on the given ship.
+//	 */
+//	public Program getShipProgram(Ship ship) throws ModelException;
+//
+//	/**
+//	 * Load the given program on the given ship.
+//	 */
+//	public void loadProgramOnShip(Ship ship, Program program) throws ModelException;
+//
+//	/**
+//	 * Execute the program loaded on the given ship during the given period of
+//	 * time. The ship is positioned in some world. Returns null if the program
+//	 * is not completely executed. Otherwise, returns the objects that have been
+//	 * printed.
+//	 * 
+//	 * This method is only used in the tests. The GUI never calls this method,
+//	 * only the
+//	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
+//	 */
+//	public List<Object> executeProgram(Ship ship, double dt) throws ModelException;
+//
+//	/**
+//	 * Creates a new program factory.
+//	 */
+//	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException;
 }
 
