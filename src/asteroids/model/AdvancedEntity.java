@@ -245,6 +245,8 @@ public abstract class AdvancedEntity extends Entity {
 	 * 		   The size of the newly created entity.
 	 * @param  mass
 	 * 		   The mass of the newly created entity
+	 * @param  MIN_RADIUS
+	 * 		   sets MIN_RADIUS constant.
 	 * @pre    The orientation parameter must be between 0 and 2*PI.
 	 * @effect new Entity()
 	 * @post   The orientation of this new entity equal to the given orientation.
@@ -258,9 +260,9 @@ public abstract class AdvancedEntity extends Entity {
 	 * @throws InvalidRadiusException
 	 * 		   The radius must not be smaller than MIN_RADIUS.	
 	 */
-	public AdvancedEntity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
+	public AdvancedEntity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass, double MIN_RADIUS)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, mass);
+		super(x, y, xVelocity, yVelocity, radius, mass, MIN_RADIUS);
 		
 
 

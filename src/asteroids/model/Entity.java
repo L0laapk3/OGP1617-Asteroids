@@ -30,7 +30,7 @@ public abstract class Entity extends Instance {
 	
 	
 	/**
-	 * Create a new entity with the given position, velocity and radius.
+	 * Create a new entity with the given position, velocity, mass and radius.
 	 * 
 	 * @param  x
 	 * 	       The x coordinate where the new entity has to be created.
@@ -43,7 +43,9 @@ public abstract class Entity extends Instance {
 	 * @param  radius
 	 * 		   The size of the newly created entity.
 	 * @param  mass
-	 * 		   The mass of the newly created entity
+	 * 		   The mass of the newly created entity.
+	 * @param  MIN_RADIUS
+	 * 		   sets MIN_RADIUS constant.
 	 * @post   The x coordinate of this new entity is equal to the given x coordinate.
 	 * 	     | getPosition(new)[0] == x
 	 * @post   The y coordinate of this new entity is equal to the given y coordinate.
@@ -76,9 +78,12 @@ public abstract class Entity extends Instance {
 	 * 		   The radius must not be smaller than MIN_RADIUS.	
 	 */
 	@Raw
-	public Entity(double x, double y, double xVelocity, double yVelocity, double radius, double mass)
+	Entity(double x, double y, double xVelocity, double yVelocity, double radius, double mass, double MIN_RADIUS)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 
+		if (!isValidMinRadius(MIN_RADIUS))
+			throw new InvalidRadiusException("The minimum radius is not valid.");
+		this.MIN_RADIUS = MIN_RADIUS;
 		this.maxSpeed = 300000;
 
 		// DEFENSIVE
@@ -128,6 +133,8 @@ public abstract class Entity extends Instance {
 	public double getBaseMass() {
 		return this.baseMass;
 	}
+	
+	
 	
 	/**
 	 * Calculates mass from rho and radius.
@@ -327,7 +334,7 @@ public abstract class Entity extends Instance {
 	/**
 	 * Variable that holds the minimum radius from a entity.
 	 */
-	private double MIN_RADIUS = 0;
+	private final double MIN_RADIUS;
 
 	/**
 	 * Returns the minimum radius of the entity.
@@ -354,32 +361,7 @@ public abstract class Entity extends Instance {
 	public static boolean isValidMinRadius(double radius) {
 		return radius >= 0 && radius < Double.POSITIVE_INFINITY;
 	}
-
-	/**
-	 * Set the minimum radius from a entity to the given radius
-	 * 
-	 * @param  radius
-	 * 		   The new minimum radius.
-	 * @post   The new minimum radius is equal to the given radius, if this radius is invalid an InvalidRadiusException is thrown.
-	 * 		 | new.getMinRadius = radius
-	 * @throws InvalidRadiusException
-	 * 		   If the minimum radius is not valid the function will throw a InvalidRadiusException
-	 * 		 | !isValidRadius throw InvalidRadiusException 
-	 * @throws InvalidRadiusException
-	 * 		   If the existing radius of the entity is smaller than the new min radius.
-	 *       | MIN_RADIUS <= this.getRadius() throw InvalidRadiusException
-	 */
-	@Raw
-	void setMinRadius(double radius) throws InvalidRadiusException {
-		if (isValidMinRadius(radius)) {
-			MIN_RADIUS = radius;
-		} else {
-			throw new InvalidRadiusException("Minimum radius is invalid");
-		}
-
-		if (MIN_RADIUS > this.getRadius())
-			throw new InvalidRadiusException();
-	}
+	
 
 	/**
 	 * Variable registering the size of the entity.
@@ -397,19 +379,35 @@ public abstract class Entity extends Instance {
 	public double getRadius() {
 		return this.radius;
 	}
+	
+	
+
+
+	/**
+	 * Sets the radius of this entity to the given radius.
+	 * 
+	 * @param radius
+	 * 		  The new radius of the entity.
+	 */
+	@Raw
+	@Basic
+	void setRadius(double radius) {
+		this.radius = radius;
+	}
+	
 
 	/**
 	 * Check whether the radius is valid for a entity.
 	 * 
 	 * @param  radius
 	 * 		   The radius to check.
-	 * @return True if and only if given radius is not smaller than MIN_RADIUS.
+	 * @return True if and only if given radius is a valid number and not smaller than MIN_RADIUS.
 	 *       | result == (radius >= MIN_RADIUS)
 	 */
 	@Raw
 	@Basic
 	public boolean isValidRadius(double radius) {
-		return radius >= this.getMinRadius();
+		return radius >= 0 && radius < Double.POSITIVE_INFINITY && radius >= this.getMinRadius();
 	}
 		
 	

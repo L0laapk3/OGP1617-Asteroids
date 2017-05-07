@@ -40,6 +40,15 @@ public class Ship extends AdvancedEntity {
 	 * Variable defining the minimum mass density for ships.
 	 */
 	private static final double MIN_RHO = 1.42E12;
+	/**
+	 * Constant that defines how fast the ship shoots its bullets.
+	 */
+	private static final double BULLET_LAUNCHING_SPEED = 250;
+	
+	/**
+	 * Constant that defines the minimum radius of a ship.
+	 */
+	private static final double SHIP_MIN_RADIUS = 10;
 	
 	
 	
@@ -76,19 +85,9 @@ public class Ship extends AdvancedEntity {
 	 */
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, orientation, Math.max(mass, calculateBassMass(MIN_RHO, radius))); //total: if the mass is too low, it will be set to a higher value
-		this.setMinRadius(MIN_RADIUS);
+		super(x, y, xVelocity, yVelocity, radius, orientation, Math.max(mass, calculateBassMass(MIN_RHO, radius)), SHIP_MIN_RADIUS); //total: if the mass is too low, it will be set to a higher value
 	}
 
-	/**
-	 * Constant that defines how fast the ship shoots its bullets.
-	 */
-	private static final double BULLET_LAUNCHING_SPEED = 250;
-	
-	/**
-	 * Constant that defines the minimum radius of a ship.
-	 */
-	private static final double MIN_RADIUS = 10;
 
 	/**
 	 * HashSet holding the loaded bullets from the ship

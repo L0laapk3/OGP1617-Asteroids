@@ -2,10 +2,11 @@ package asteroids.model;
 
 import asteroids.exceptions.*;
 import asteroids.util.Vector2;
-import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
 public class Planetoid extends MinorPlanet {
+
+	private static final double RHO_PLANETOID = 0.917E12;
 	
 	/**
 	 * Function to make a new Planetoid.
@@ -20,37 +21,15 @@ public class Planetoid extends MinorPlanet {
 	 * @param  radius
 	 * 		   The size of the newly created Planetoid.
 	 * @effect This new Planetoid is initialized as a new MinorPlanet with given position, velocity and radius.
-	 * 		 | super(x,y,xVelocity,yVelocity,radius,MASS_DENSITY_PLANETOID)
+	 * 		 | super(x, y, xVelocity, yVelocity, radius, 0.917E12)
 	 */
 	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, MASS_DENSITY_PLANETOID);
+		super(x, y, xVelocity, yVelocity, radius, RHO_PLANETOID);
 		// TODO Auto-generated constructor stub
 	}
 	
-	/**
-	 * Variable holding the mass density of a planetoid.
-	 */
-	private final static double MASS_DENSITY_PLANETOID = 0.917E12;
 	
-	/**
-	 * Function that will update the mass of a planetoid after its radius is changed.
-	 */
-	public void updateMass() {
-		this.baseMass = calculateBassMass(MASS_DENSITY_PLANETOID, this.getRadius());
-	}
-
-	/**
-	 * Sets the radius of this entity to the given radius.
-	 * 
-	 * @param radius
-	 * 		  The new radius of the entity.
-	 */
-	@Raw
-	@Basic
-	public void setRadius(double radius) {
-		this.radius=radius;
-	}
 	
 	/**
 	 * Function that handles when the entity dies.
@@ -100,9 +79,8 @@ public class Planetoid extends MinorPlanet {
 
 		super.move(dt);
 		
-		double newRadius = this.getRadius() - dt * this.getVelocityVector() * 0.000001;
+		double newRadius = this.getRadius() - dt * this.getVelocity() * 0.000001;
 		this.setRadius(newRadius);
-		this.updateMass();
 		
 		
 	}

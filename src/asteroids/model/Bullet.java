@@ -22,23 +22,17 @@ import be.kuleuven.cs.som.annotate.Raw;
  * @author   Rik Pauwels
  */
 
-public class Bullet extends Entity {
+public class Bullet extends EntityWithConstantDensity {
 
 
-	/**
-	 * Constant holding the minimum radius from a bullet.
-	 */
 	private static final double MIN_RADIUS_BULLET = 1;
+	private static final double RHO_BULLET = 7.8E12;
 	
 	/**
 	 * Constant holding the max amount of bounces before a bullet dissapears.
 	 */
 	private static final double MAX_BOUNCES = 3;
-	
-	/**
-	 * Constant defining the mass density of all bullets.
-	 */
-	private static final double RHO = 7.8E12;
+
 	
 	
 	/**
@@ -56,14 +50,13 @@ public class Bullet extends Entity {
 	 * @param  motherShip
 	 * 		   The mothership of the newly created bullet
 	 * @effect This new bullet is initialized as a new Entity with given position, velocity and radius.
-	 * 		 | super(x,y,xVelocity,yVelocity,radius,calculateBassMass(RHO, radius))
+	 * 		 | super(x, y, xVelocity, yVelocity, radius)
 	 * @post   The minimum radius of the bullet is set to MIN_RADIUS_BULLET.
 	 * @post   The mothership of this bullet will be set to the given mothership.
 	 */
 
 	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, calculateBassMass(RHO, radius));
-		this.setMinRadius(MIN_RADIUS_BULLET);		
+		super(x, y, xVelocity, yVelocity, radius, RHO_BULLET, MIN_RADIUS_BULLET);	
 
 		
 		this.motherShip = motherShip;
