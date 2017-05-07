@@ -22,7 +22,7 @@ public class Planetoid extends MinorPlanet {
 	 * @effect This new Planetoid is initialized as a new MinorPlanet with given position, velocity and radius.
 	 * 		 | super(x,y,xVelocity,yVelocity,radius,MASS_DENSITY_PLANETOID)
 	 */
-	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double mass)
+	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, MASS_DENSITY_PLANETOID);
 		// TODO Auto-generated constructor stub

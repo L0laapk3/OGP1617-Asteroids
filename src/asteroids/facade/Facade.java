@@ -1,6 +1,7 @@
 package asteroids.facade;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import asteroids.exceptions.DoubleEntityException;
@@ -9,12 +10,16 @@ import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
 import asteroids.model.CollisionInformation;
 import asteroids.model.Entity;
+import asteroids.model.Planetoid;
 import asteroids.model.Ship;
 import asteroids.model.World;
 import asteroids.part2.CollisionListener;
+import asteroids.part3.facade.Program;
+import asteroids.part3.programs.IProgramFactory;
 import asteroids.util.ModelException;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
@@ -761,8 +766,250 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	/**
 	 * Return a set of all the entities in the given world.
 	 */
-	public Set<Entity> getEntities(World world) throws ModelException {
+	public Set<Entity> getEntities(World world) {
 		return world.getAllEntitiesWithCollision();
 	}
 
+	/***********************
+	 * ADMINISTRATIVE STUFF
+	 ***********************/
+
+	/**
+	 * Return the number of students in your team (used to adapt the tests for
+	 * single-student groups).
+	 * 
+	 * @return 1 or 2
+	 */
+	public int getNbStudentsInTeam() {
+		return 2;
+	}
+
+	/**************
+	 * WORLD: Asteroids and planetoids
+	 *************/
+
+	/**
+	 * Return all asteroids located in <code>world</code>.
+	 */
+	public Set<? extends Asteroid> getWorldAsteroids(World world) {
+		return world.getAllEntities(Asteroid.class);
+	}
+
+	/**
+	 * Add <code>asteroid</code> to <code>world</code>.
+	 */
+	public void addAsteroidToWorld(World world, Asteroid asteroid) throws ModelException {
+		try {
+			world.addEntity(asteroid);
+		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
+			throw new ModelException(ex);
+		}
+	}
+
+	/**
+	 * Remove <code>asteroid</code> from <code>world</code>.
+	 */
+	public void removeAsteroidFromWorld(World world, Asteroid asteroid) {
+		world.removeEntity(asteroid);
+	}
+
+	/**
+	 * Return all planetoids located in <code>world</code>.
+	 */
+	public Set<? extends Planetoid> getWorldPlanetoids(World world) {
+		return world.getAllEntities(Planetoid.class);
+	}
+
+	/**
+	 * Add <code>planetoid</code> to <code>world</code>.
+	 */
+	public void addPlanetoidToWorld(World world, Planetoid planetoid) throws ModelException {
+		try {
+			world.addEntity(planetoid);
+		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
+			// TODO Auto-generated catch block
+			throw new ModelException(ex);
+		}
+	}
+
+	/**
+	 * Remove <code>planetoid</code> from <code>world</code>.
+	 */
+	public void removePlanetoidFromWorld(World world, Planetoid planetoid) {
+		world.removeEntity(planetoid);
+	}
+
+	/**************
+	 * ASTEROID: Basic methods
+	 *************/
+
+	/**
+	 * Create a new non-null asteroid with the given position, velocity and
+	 * radius.
+	 * 
+	 * The asteroid is not located in a world.
+	 */
+	public Asteroid createAsteroid(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException {
+		try {
+			return new Asteroid(x, y, xVelocity, yVelocity, radius);
+		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
+			throw new ModelException(ex);
+		}
+	}
+
+	/**
+	 * Terminate <code>asteroid</code>.
+	 */
+	public void terminateAsteroid(Asteroid asteroid) {
+		asteroid.terminate();
+	}
+
+	/**
+	 * Check whether <code>asteroid</code> is terminated.
+	 */
+	public boolean isTerminatedAsteroid(Asteroid asteroid) {
+		return asteroid.isTerminated();
+	}
+
+	/**
+	 * Return the position of <code>asteroid</code> as an array containing the
+	 * x-coordinate, followed by the y-coordinate.
+	 */
+	public double[] getAsteroidPosition(Asteroid asteroid) {
+		return asteroid.getPosition().toProfNotation();
+	}
+
+	/**
+	 * Return the velocity of <code>asteroid</code> as an array containing the
+	 * velocity along the X-axis, followed by the velocity along the Y-axis.
+	 */
+	public double[] getAsteroidVelocity(Asteroid asteroid) {
+		return asteroid.getVelocity().toProfNotation();
+	}
+
+	/**
+	 * Return the radius of <code>asteroid</code>.
+	 */
+	public double getAsteroidRadius(Asteroid asteroid) {
+		return asteroid.getRadius();
+	}
+
+	/**
+	 * Return the mass of <code>asteroid</code>.
+	 */
+	public double getAsteroidMass(Asteroid asteroid) {
+		return asteroid.getMass();
+	}
+
+	/**
+	 * Return the world in which <code>asteroid</code> is positioned.
+	 */
+	public World getAsteroidWorld(Asteroid asteroid) {
+		return asteroid.getWorld();
+	}
+
+	/**************
+	 * PLANETOID: Basic methods
+	 *************/
+
+	/**
+	 * Create a new non-null planetoid with the given position, velocity,
+	 * radius, and total traveled distance.
+	 * 
+	 * The planetoid is not located in a world.
+	 */
+	public Planetoid createPlanetoid(double x, double y, double xVelocity, double yVelocity, double radius,
+			double totalTraveledDistance) throws ModelException {
+		try {
+			return new Planetoid(x, y, xVelocity, yVelocity, radius);
+		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
+			throw new ModelException(ex);
+		}
+	}
+
+	/**
+	 * Terminate <code>planetoid</code>.
+	 */
+	public void terminatePlanetoid(Planetoid planetoid) {
+		planetoid.terminate();
+	}
+
+	/**
+	 * Check whether <code>planetoid</code> is terminated.
+	 */
+	public boolean isTerminatedPlanetoid(Planetoid planetoid) {
+		return planetoid.isTerminated();
+	}
+
+	/**
+	 * Return the position of <code>planetoid</code> as an array containing the
+	 * x-coordinate, followed by the y-coordinate.
+	 */
+	public double[] getPlanetoidPosition(Planetoid planetoid) {
+		return planetoid.getPosition().toProfNotation();
+	}
+
+	/**
+	 * Return the velocity of <code>planetoid</code> as an array containing the
+	 * velocity along the X-axis, followed by the velocity along the Y-axis.
+	 */
+	public double[] getPlanetoidVelocity(Planetoid planetoid) {
+		return planetoid.getVelocity().toProfNotation();
+	}
+
+	/**
+	 * Return the radius of <code>planetoid</code>.
+	 */
+	public double getPlanetoidRadius(Planetoid planetoid) {
+		return planetoid.getRadius();
+	}
+
+	/**
+	 * Return the mass of <code>planetoid</code>.
+	 */
+	public double getPlanetoidMass(Planetoid planetoid) {
+		return planetoid.getMass();
+	}
+
+	/**
+	 * Return the total traveled distance of <code>planetoid</code>.
+	 */
+	public double getPlanetoidTotalTraveledDistance(Planetoid planetoid) throws ModelException;
+
+	/**
+	 * Return the world in which <code>planetoid</code> is positioned.
+	 */
+	public World getPlanetoidWorld(Planetoid planetoid) throws ModelException;
+
+	/**********
+	 * PROGRAMS
+	 **********/
+
+	/**
+	 * Return the program loaded on the given ship.
+	 */
+	public Program getShipProgram(Ship ship) throws ModelException;
+
+	/**
+	 * Load the given program on the given ship.
+	 */
+	public void loadProgramOnShip(Ship ship, Program program) throws ModelException;
+
+	/**
+	 * Execute the program loaded on the given ship during the given period of
+	 * time. The ship is positioned in some world. Returns null if the program
+	 * is not completely executed. Otherwise, returns the objects that have been
+	 * printed.
+	 * 
+	 * This method is only used in the tests. The GUI never calls this method,
+	 * only the
+	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
+	 */
+	public List<Object> executeProgram(Ship ship, double dt) throws ModelException;
+
+	/**
+	 * Creates a new program factory.
+	 */
+	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException;
 }
+
