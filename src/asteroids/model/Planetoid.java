@@ -23,10 +23,14 @@ public class Planetoid extends MinorPlanet {
 	 * 		   The size of the newly created Planetoid.
 	 * @param  totalTraveledDistance
 	 * 		   The total distance travelled that the planetoid has to be initialised with. Defaults to 0.
+	 * @throws InvalidPositionException 
+	 * @throws InvalidRadiusException 
+	 * @throws IllegalArgumentException 
 	 * @effect This new Planetoid is initialized as a new MinorPlanet with given position, velocity and radius.
 	 * 		 | super(x, y, xVelocity, yVelocity, radius, 0.917E12)
 	 */
-	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius) { this(x, y, xVelocity, yVelocity, radius, 0) };
+	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException
+		{ this(x, y, xVelocity, yVelocity, radius, 0); };
 	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double totalTraveledDistance)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, RHO_PLANETOID);
