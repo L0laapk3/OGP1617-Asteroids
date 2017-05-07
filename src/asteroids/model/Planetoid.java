@@ -23,10 +23,47 @@ public class Planetoid extends MinorPlanet {
 	 * @effect This new Planetoid is initialized as a new MinorPlanet with given position, velocity and radius.
 	 * 		 | super(x, y, xVelocity, yVelocity, radius, 0.917E12)
 	 */
-	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius)
+	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double totalTraveledDistance)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, RHO_PLANETOID);
-		// TODO Auto-generated constructor stub
+		
+		this.setTotalTraveledDistance(totalTraveledDistance);
+	}
+	
+	/**
+	 * Variable that holds the total traveled distance of the planetoid.
+	 */
+	private double totalTraveledDistance = 0;
+	
+	/**
+	 * Function that returns the total traveled distance of the planetoid.
+	 * 
+	 * @return the total traveled distance of the planetoid
+	 */
+	public double getTotalTraveledDistance() {
+		return this.totalTraveledDistance;
+	}
+	
+	/**
+	 * Function that sets the total traveled distance of the planetoid to the given distance;
+	 * 
+	 * @param totalTraveledDistance
+	 * 		  The new total traveled distance of the planetoid.
+	 * @post  The new totalTraveledDistance of the planetoid is equal to the given value.
+	 */
+	public void setTotalTraveledDistance(double totalTraveledDistance) {
+		this.totalTraveledDistance=totalTraveledDistance;
+	}
+	
+	/**
+	 * Function that adds a given distance to the original totalTraveledDistance of the planetoid.
+	 * 
+	 * @param distance
+	 * 		  The distance that has to be added to the original totalTraveledDistance of the planetoid.
+	 * @effect The totalTraveldDistance will be added by the given amount.
+	 */
+	public void addTraveledDistance(double distance) {
+		this.setTotalTraveledDistance(this.getTotalTraveledDistance() + distance);
 	}
 	
 	

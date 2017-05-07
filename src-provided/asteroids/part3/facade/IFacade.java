@@ -233,34 +233,34 @@ public interface IFacade extends asteroids.part2.facade.IFacade {
 	 */
 	public World getPlanetoidWorld(Planetoid planetoid) throws ModelException;
 
-	/**********
-	 * PROGRAMS
-	 **********/
-
-	/**
-	 * Return the program loaded on the given ship.
-	 */
-	public Program getShipProgram(Ship ship) throws ModelException;
-
-	/**
-	 * Load the given program on the given ship.
-	 */
-	public void loadProgramOnShip(Ship ship, Program program) throws ModelException;
-
-	/**
-	 * Execute the program loaded on the given ship during the given period of
-	 * time. The ship is positioned in some world. Returns null if the program
-	 * is not completely executed. Otherwise, returns the objects that have been
-	 * printed.
-	 * 
-	 * This method is only used in the tests. The GUI never calls this method,
-	 * only the
-	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
-	 */
-	public List<Object> executeProgram(Ship ship, double dt) throws ModelException;
-
-	/**
-	 * Creates a new program factory.
-	 */
-	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException;
+//	/**********
+//	 * PROGRAMS
+//	 **********/
+//
+//	/**
+//	 * Return the program loaded on the given ship.
+//	 */
+//	public Program getShipProgram(Ship ship) throws ModelException;
+//
+//	/**
+//	 * Load the given program on the given ship.
+//	 */
+//	public void loadProgramOnShip(Ship ship, Program program) throws ModelException;
+//
+//	/**
+//	 * Execute the program loaded on the given ship during the given period of
+//	 * time. The ship is positioned in some world. Returns null if the program
+//	 * is not completely executed. Otherwise, returns the objects that have been
+//	 * printed.
+//	 * 
+//	 * This method is only used in the tests. The GUI never calls this method,
+//	 * only the
+//	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
+//	 */
+//	public List<Object> executeProgram(Ship ship, double dt) throws ModelException;
+//
+//	/**
+//	 * Creates a new program factory.
+//	 */
+//	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException;
 }
