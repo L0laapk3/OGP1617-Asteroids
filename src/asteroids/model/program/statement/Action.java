@@ -1,4 +1,4 @@
-package asteroids.program;
+package asteroids.model.program.statement;
 
 public abstract class Action extends Statement {
 	

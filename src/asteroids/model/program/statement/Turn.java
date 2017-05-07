@@ -1,4 +1,6 @@
-package asteroids.program;
+package asteroids.model.program.statement;
+
+import asteroids.model.program.Program;
 
 public class Turn extends Action {
 
@@ -10,7 +12,7 @@ public class Turn extends Action {
 	}
 	
 	@Override
-	protected boolean step(Program program) {
+	public boolean step(Program program) {
 		program.ship.turn(angle);
 		return false;
 	}

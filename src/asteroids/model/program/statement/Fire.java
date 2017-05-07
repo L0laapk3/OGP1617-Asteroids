@@ -1,6 +1,7 @@
-package asteroids.program;
+package asteroids.model.program.statement;
 
 import asteroids.exceptions.*;
+import asteroids.model.program.Program;
 
 public class Fire extends Action {
 
@@ -9,7 +10,7 @@ public class Fire extends Action {
 	}
 	
 	@Override
-	protected boolean step(Program program) throws ProgramErrorException {
+	public boolean step(Program program) throws ProgramErrorException {
 		try {
 			program.ship.shootBullet();
 		} catch (NoWorldException | MisMatchWorldsException | BulletNotLoadedException | InvalidParentShipException e) {

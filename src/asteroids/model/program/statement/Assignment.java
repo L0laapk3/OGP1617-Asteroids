@@ -1,4 +1,7 @@
-package asteroids.program;
+package asteroids.model.program.statement;
+
+import asteroids.model.program.Program;
+import asteroids.model.program.expression.Expression;
 
 public class Assignment extends Statement {
 
@@ -12,8 +15,8 @@ public class Assignment extends Statement {
 	}
 
 	@Override
-	protected boolean step(Program program) {
-		program.variables.add(new Variable(varname, expression.evaluate(program)));
+	public boolean step(Program program) {
+		program.variables.put(varname, expression.evaluate(program));
 		return false;
 	}
 

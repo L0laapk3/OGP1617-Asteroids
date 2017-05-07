@@ -1,6 +1,7 @@
-package asteroids.program;
+package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramErrorException;
+import asteroids.model.program.Program;
 
 public class BlockStatement extends Statement {
 	
@@ -8,19 +9,19 @@ public class BlockStatement extends Statement {
 	protected int i = 0;
 	public final boolean isEmpty;
 	
-	protected BlockStatement() {
+	public BlockStatement() {
 		super();
 		this.statements = new Statement[0];
 		isEmpty = true;
 	}
-	protected BlockStatement(Statement... statements) {
+	public BlockStatement(Statement... statements) {
 		super();
 		this.statements = statements;
 		isEmpty = false;
 	}
 
 	@Override
-	protected boolean step(Program program) throws ProgramErrorException {
+	public boolean step(Program program) throws ProgramErrorException {
 		if (isEmpty)
 			return false;
 		if (!getNextStatement().step(program)) //if false: statement is done, go to next statement
@@ -50,12 +51,17 @@ public class BlockStatement extends Statement {
 	@Override
 	protected void reset(Program program) {
 		i = 0;
-		resetAll(program);
-	}
-	
-	protected void resetAll(Program program) {
 		if (!isEmpty)
 			for (Statement statement : statements)
 				statement.reset(program);
+		super.reset(program);
+	}
+	
+	
+	@Override
+	protected void makeContextAware(ContextContainer context) {
+		if (!isEmpty)
+			for (Statement statement : statements)
+				statement.makeContextAware(context);
 	}
 }

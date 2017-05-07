@@ -1,17 +1,18 @@
-package asteroids.program;
+package asteroids.model.program;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.ProgramErrorException;
 import asteroids.model.Ship;
+import asteroids.model.program.statement.*;
 
 
 
 public class Program {
 	
-	public Set<Variable> variables = new HashSet<Variable>();
+	public Map<String, Object> variables = new HashMap<String, Object>();
 
 	public final Ship ship;
 	

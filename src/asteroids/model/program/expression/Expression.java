@@ -1,4 +1,7 @@
-package asteroids.program;
+package asteroids.model.program.expression;
+
+import asteroids.model.program.Program;
+import asteroids.model.program.statement.Statement;
 
 public abstract class Expression extends Statement {
 	
@@ -7,7 +10,7 @@ public abstract class Expression extends Statement {
 	}
 	
 	@Override
-	protected boolean step(Program program) {
+	public boolean step(Program program) {
 		return false;
 	}
 	
