@@ -244,14 +244,25 @@ public abstract class Entity extends Instance {
 	}
 
 	/**
-	 * Return the velocity of entity.
+	 * Return the velocity vecotr of entity.
 	 * 
 	 * @note   This is written in a total fashion.
 	 */
 	@Raw
 	@Basic
-	public Vector2 getVelocity() {
-		return this.velocity;
+	public Vector2 getVelocityVector() {
+		return new Vector2(this.velocity);
+	}
+
+	/**
+	 * Return the velocity of entity.
+	 * 
+	 * @return The total velocity
+	 * @note   This is written in a total fashion.
+	 */
+	@Raw
+	public double getVelocity() {
+		return this.velocity.pythagoras();
 	}
 
 	/**
@@ -437,15 +448,11 @@ public abstract class Entity extends Instance {
 	@Raw
 	void move(double dt) {
 
+		//The defensive part of this function is only checked in the public code that calls this function: world.evolve()
+		
 		// Berekeningen die geen rekening houden met acceleratie.
 		Vector2 positionFirst = this.getPosition();
-		this.setPosition(Vector2.add(positionFirst, Vector2.multiply(this.getVelocity(), dt)));
-		
-		if (this instanceof Planetoid) {
-			((Planetoid)this).setRadius(this.getRadius()-(Vector2.distance(positionFirst, this.getPosition()))*0.000001);
-			((Planetoid)this).updateMass();
-		}
-		
+		this.setPosition(Vector2.add(positionFirst, Vector2.multiply(this.getVelocityVector(), dt)));		
 	}	
 	
 	/**
@@ -654,7 +661,7 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	Vector2 getWallCollisionPosition(double Dt) {
-		Vector2 newpos = Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocity(), Dt));
+		Vector2 newpos = Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocityVector(), Dt));
 		if ((newpos.x - 1.01 * this.radius) <= 0)
 			return new Vector2(0, newpos.y);
 		if ((newpos.x + 1.01 * this.radius) >= this.getCollisionWorld().getWidth())
@@ -769,9 +776,9 @@ public abstract class Entity extends Instance {
 	@Raw
 	void collideWithWall() {
 		if ((this.getPosition().x - 1.01 * this.radius) <= 0 || (this.getPosition().x + 1.01 * this.radius) >= this.getCollisionWorld().getWidth())
-			this.setVelocity(new Vector2(-this.getVelocity().x, this.getVelocity().y));
+			this.setVelocity(new Vector2(-this.getVelocityVector().x, this.getVelocityVector().y));
 		if ((this.getPosition().y - 1.01 * this.radius) <= 0 || (this.getPosition().y + 1.01 * this.radius) >= this.getCollisionWorld().getHeight())
-			this.setVelocity(new Vector2(this.getVelocity().x, -this.getVelocity().y));
+			this.setVelocity(new Vector2(this.getVelocityVector().x, -this.getVelocityVector().y));
 	}
 	
 	
@@ -796,11 +803,11 @@ public abstract class Entity extends Instance {
 		double sigma = first.getRadius() + second.getRadius();
 		Vector2 J = Vector2.multiply(Vector2.subtract(first.getPosition(), second.getPosition()),
 				2 * first.getMass() * second.getMass()
-						* Vector2.dot(Vector2.subtract(first.getVelocity(), second.getVelocity()), Vector2.subtract(first.getPosition(), second.getPosition()))
+						* Vector2.dot(Vector2.subtract(first.getVelocityVector(), second.getVelocityVector()), Vector2.subtract(first.getPosition(), second.getPosition()))
 						/ (sigma * sigma * (first.getMass() + second.getMass())));
 
-		first.setVelocity(Vector2.subtract(first.getVelocity(), Vector2.divide(J, first.getMass())));
-		second.setVelocity(Vector2.add(second.getVelocity(), Vector2.divide(J, second.getMass())));
+		first.setVelocity(Vector2.subtract(first.getVelocityVector(), Vector2.divide(J, first.getMass())));
+		second.setVelocity(Vector2.add(second.getVelocityVector(), Vector2.divide(J, second.getMass())));
 	}
 
 	

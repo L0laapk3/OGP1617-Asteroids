@@ -5,15 +5,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import asteroids.exceptions.DoubleEntityException;
-import asteroids.exceptions.EntitiesOverlapException;
-import asteroids.exceptions.IllegalEntityException;
-import asteroids.exceptions.NegativeTimeException;
-import asteroids.exceptions.NoWorldException;
-import asteroids.exceptions.NotWithinBoundariesException;
-import asteroids.part2.CollisionListener;
+import asteroids.exceptions.*;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
+
+import asteroids.part2.CollisionListener;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -516,14 +513,10 @@ public class World extends Instance {
 	 * 		   The time of the action should not be infinite.
 	 * @throws IllegalArgumentException
 	 * 		   The time of the action should not be NaN.
-	 * @throws NegativeTimeException
-	 * 		   The time of the action should be positive. 
+	 * @throws InvalidTimeException 
 	 * @note   This is written in a defensive manner.
 	 */
-	public void evolve(double Dt) throws IllegalArgumentException, NegativeTimeException {
-		OGUtil.throwErrorIfInvalidNumbers(Dt);
-		if (!OGUtil.isValidDeltaTime(Dt))
-			throw new NegativeTimeException();
+	public void evolve(double Dt) throws IllegalArgumentException, InvalidTimeException {
 		
 		this.evolve(Dt, null);
 	}
@@ -538,9 +531,14 @@ public class World extends Instance {
 	 * @post  Simulates the world for Dt seconds.
 	 * @post  if CollisionListener is not null, collisionListener.boundaryCollision will be called on wall collisions.
 	 * @post  if CollisionListener is not null, collisionListener.objectCollision will be called on entity collisions.
+	 * @note  defensive
 	 */
-	public void evolve(double Dt, CollisionListener collisionListener) {
+	public void evolve(double Dt, CollisionListener collisionListener) throws InvalidTimeException {
 
+		OGUtil.throwErrorIfInvalidNumbers(Dt);
+		if (!OGUtil.isValidDeltaTime(Dt))
+			throw new NegativeTimeException();
+		
 		try {
 
 			// do not simulate collision physics for loaded bullets.

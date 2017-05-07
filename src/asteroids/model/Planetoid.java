@@ -64,8 +64,8 @@ public class Planetoid extends MinorPlanet {
 			double direction = Math.random() * 2 * Math.PI;
 			Vector2 firstPosition = Vector2.add(this.getPosition(), Vector2.fromPolar(direction, this.getRadius() / 2));
 			Vector2 secondPosition = Vector2.add(this.getPosition(), Vector2.fromPolar(direction + Math.PI, this.getRadius() / 2));
-			Vector2 firstVelocity = Vector2.fromPolar(direction, this.getVelocity().pythagoras() * 1.5);
-			Vector2 SecondVelocity = Vector2.fromPolar(direction + Math.PI, this.getVelocity().pythagoras() * 1.5);
+			Vector2 firstVelocity = Vector2.fromPolar(direction, this.getVelocityVector().pythagoras() * 1.5);
+			Vector2 SecondVelocity = Vector2.fromPolar(direction + Math.PI, this.getVelocityVector().pythagoras() * 1.5);
 			
 			//TODO: RADIUS, orientation, die hebbe toch geen orientation, in constructor van minorplanets aanpassen (opgelost denk ik)
 			
@@ -81,6 +81,30 @@ public class Planetoid extends MinorPlanet {
 			}
 		} else
 			super.die();
+	}
+	
+	
+	
+
+	/**
+	 * Update <code>entity</code>'s position, assuming it moves <code>dt</code>
+	 * seconds at its current velocity.
+	 * 
+	 * @param  	dt
+	 * 		   	The amount of time that the entity should move forward.
+	 * @effect  Entity.move()
+	 */
+	@Override
+	@Raw
+	void move(double dt) {
+
+		super.move(dt);
+		
+		double newRadius = this.getRadius() - dt * this.getVelocityVector() * 0.000001;
+		this.setRadius(newRadius);
+		this.updateMass();
+		
+		
 	}
 	
 }

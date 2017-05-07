@@ -43,8 +43,8 @@ public class Part1Tests {
 		Ship ship = new Ship(10, 20, 30, 40, 50, Math.PI, 1);
 		assertEquals(10, ship.getPosition().x, EPSILON);
 		assertEquals(20, ship.getPosition().y, EPSILON);
-		assertEquals(30, ship.getVelocity().x, EPSILON);
-		assertEquals(40, ship.getVelocity().y, EPSILON);
+		assertEquals(30, ship.getVelocityVector().x, EPSILON);
+		assertEquals(40, ship.getVelocityVector().y, EPSILON);
 		assertEquals(50, ship.getRadius(), EPSILON);
 		assertEquals(Math.PI, ship.getOrientation(), EPSILON);
 	}
@@ -70,13 +70,13 @@ public class Part1Tests {
 	@Test
 	public void testNewShip4InvalidVelocity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		Ship ship1 = new Ship(0, 0, Double.NaN, 0, 3478, 0, 1);
-		assertTrue( ship1.getVelocity().pythagoras() - EPSILON < MAX_SPEED );
+		assertTrue( ship1.getVelocityVector().pythagoras() - EPSILON < MAX_SPEED );
 		
 		Ship ship2 = new Ship(0, 0, 0, Double.NEGATIVE_INFINITY, 178, 0, 1);
-		assertTrue( ship2.getVelocity().pythagoras() - EPSILON < MAX_SPEED );
+		assertTrue( ship2.getVelocityVector().pythagoras() - EPSILON < MAX_SPEED );
 		
 		Ship ship3 = new Ship(0, 0, MAX_SPEED, MAX_SPEED, 14564, 0, 1);
-		assertTrue( ship3.getVelocity().pythagoras() - EPSILON < MAX_SPEED );
+		assertTrue( ship3.getVelocityVector().pythagoras() - EPSILON < MAX_SPEED );
 		
 	}
 	
@@ -181,8 +181,8 @@ public class Part1Tests {
     public void testThrust() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
     	Ship ship = new Ship(0, 2, 4, 2, 10, 5 * Math.PI / 3, 1);
     	ship.thrust(10);
-    	assertEquals(ship.getVelocity().x, 9, EPSILON);
-    	assertEquals(ship.getVelocity().y, 2 - 5 * Math.sqrt(3), EPSILON);
+    	assertEquals(ship.getVelocityVector().x, 9, EPSILON);
+    	assertEquals(ship.getVelocityVector().y, 2 - 5 * Math.sqrt(3), EPSILON);
     }
     
     @Test
@@ -200,8 +200,8 @@ public class Part1Tests {
     	world.evolve(3);
     	assertEquals(ship.getPosition().x, 84, EPSILON);
     	assertEquals(ship.getPosition().y, 308, EPSILON);
-    	assertEquals(ship.getVelocity().x, 8, EPSILON);
-    	assertEquals(ship.getVelocity().y, 18, EPSILON);
+    	assertEquals(ship.getVelocityVector().x, 8, EPSILON);
+    	assertEquals(ship.getVelocityVector().y, 18, EPSILON);
     	assertEquals(ship.getOrientation(), 0, EPSILON);
     }
     

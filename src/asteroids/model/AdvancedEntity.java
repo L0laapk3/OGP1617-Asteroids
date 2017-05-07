@@ -128,7 +128,7 @@ public abstract class AdvancedEntity extends Entity {
 	public void thrust(double amount) {
 		if (OGUtil.isInvalidNumber(amount) || amount < 0)
 			return;
-		setVelocity(Vector2.add(this.getVelocity(), Vector2.fromPolar(this.getOrientation(), amount)));
+		setVelocity(Vector2.add(this.getVelocityVector(), Vector2.fromPolar(this.getOrientation(), amount)));
 	}
 
 	
@@ -221,7 +221,7 @@ public abstract class AdvancedEntity extends Entity {
 
 		if (this.getAcceleration() == 0)
 			return; // optimalisation
-		this.setVelocity(Vector2.add(this.getVelocity(), Vector2.multiply(this.getAccelerationVector(), Dt)));
+		this.setVelocity(Vector2.add(this.getVelocityVector(), Vector2.multiply(this.getAccelerationVector(), Dt)));
 	}
 
 	

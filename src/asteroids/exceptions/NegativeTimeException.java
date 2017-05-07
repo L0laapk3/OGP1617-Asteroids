@@ -1,7 +1,7 @@
 package asteroids.exceptions;
 
 @SuppressWarnings("serial")
-public class NegativeTimeException extends IllegalArgumentException {
+public class NegativeTimeException extends InvalidTimeException {
 
 	  public NegativeTimeException() {
 	    super("The time parameter cannot be negative.");

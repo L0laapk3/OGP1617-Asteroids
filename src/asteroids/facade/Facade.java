@@ -149,7 +149,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	public double[] getShipVelocity(Ship ship) {
 		if (isInvalidShip(ship))
 			return null;
-		return ship.getVelocity().toProfNotation();
+		return ship.getVelocityVector().toProfNotation();
 	}
 
 	/**
@@ -427,7 +427,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * velocity along the X-axis, followed by the velocity along the Y-axis.
 	 */
 	public double[] getBulletVelocity(Bullet bullet) {
-		return bullet.getVelocity().toProfNotation();
+		return bullet.getVelocityVector().toProfNotation();
 	}
 
 	/**
