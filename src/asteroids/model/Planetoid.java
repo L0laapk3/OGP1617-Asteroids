@@ -1,6 +1,7 @@
 package asteroids.model;
 
 import asteroids.exceptions.*;
+import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Raw;
 
@@ -20,13 +21,17 @@ public class Planetoid extends MinorPlanet {
 	 * 		   The initial speed in the y direction of the new Planetoid.
 	 * @param  radius
 	 * 		   The size of the newly created Planetoid.
+	 * @param  totalTraveledDistance
+	 * 		   The total distance travelled that the planetoid has to be initialised with. Defaults to 0.
 	 * @effect This new Planetoid is initialized as a new MinorPlanet with given position, velocity and radius.
 	 * 		 | super(x, y, xVelocity, yVelocity, radius, 0.917E12)
 	 */
+	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius) { this(x, y, xVelocity, yVelocity, radius, 0) };
 	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double totalTraveledDistance)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, RHO_PLANETOID);
 		
+		OGUtil.throwErrorIfInvalidNumbers(totalTraveledDistance);
 		this.setTotalTraveledDistance(totalTraveledDistance);
 	}
 	
@@ -51,8 +56,8 @@ public class Planetoid extends MinorPlanet {
 	 * 		  The new total traveled distance of the planetoid.
 	 * @post  The new totalTraveledDistance of the planetoid is equal to the given value.
 	 */
-	public void setTotalTraveledDistance(double totalTraveledDistance) {
-		this.totalTraveledDistance=totalTraveledDistance;
+	void setTotalTraveledDistance(double totalTraveledDistance) {
+		this.totalTraveledDistance = totalTraveledDistance;
 	}
 	
 	/**
@@ -62,7 +67,7 @@ public class Planetoid extends MinorPlanet {
 	 * 		  The distance that has to be added to the original totalTraveledDistance of the planetoid.
 	 * @effect The totalTraveldDistance will be added by the given amount.
 	 */
-	public void addTraveledDistance(double distance) {
+	void addTraveledDistance(double distance) {
 		this.setTotalTraveledDistance(this.getTotalTraveledDistance() + distance);
 	}
 	
@@ -115,11 +120,11 @@ public class Planetoid extends MinorPlanet {
 	void move(double dt) {
 
 		super.move(dt);
+
+		this.addTraveledDistance(dt*this.getVelocity());
 		
 		double newRadius = this.getRadius() - dt * this.getVelocity() * 0.000001;
 		this.setRadius(newRadius);
-		
-		
 	}
 	
 }
