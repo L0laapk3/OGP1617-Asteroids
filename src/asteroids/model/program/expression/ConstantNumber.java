@@ -1,8 +1,8 @@
 package asteroids.model.program.expression;
 
-public class ConstantNumber<T extends Number> extends Constant<T> implements INumber {
+public class ConstantNumber extends Constant<Double> implements INumeric {
 
-	public ConstantNumber(T value) {
+	public ConstantNumber(Double value) {
 		super(value);
 	}
 }

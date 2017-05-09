@@ -4,11 +4,11 @@ import asteroids.exceptions.NotInvertableException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public class Negative extends Number {
+public class Negative extends Numeric {
 
 	private final Expression expression;
 	
-	public <T extends Expression & INumber> Negative(T expression) {
+	public <T extends Expression & INumeric> Negative(T expression) {
 		super();
 		this.expression = expression;
 	}

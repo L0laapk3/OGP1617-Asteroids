@@ -87,7 +87,8 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	@Override
 	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return new Negative<Number>((Number)expression);
+		return null;
+		return new Negative<Numeric>((Numeric)expression);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	@Override
 	public Expression createDoubleLiteralExpression(double value, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return new ;
+		return null;
 	}
 
 	@Override

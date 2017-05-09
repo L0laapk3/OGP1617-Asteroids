@@ -3,9 +3,9 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public abstract class Number extends Expression implements INumber {
+public abstract class Numeric extends Expression implements INumeric {
 
-	protected Number() {
+	protected Numeric() {
 		super();
 	}
 
