@@ -1,6 +1,6 @@
 package asteroids.model.program.statement;
 
-import asteroids.exceptions.ProgramErrorException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
 public abstract class ContextContainer extends Statement {
@@ -17,7 +17,7 @@ public abstract class ContextContainer extends Statement {
 	}
 	
 	@Override
-	public boolean step(Program program) throws ProgramErrorException {
+	public boolean step(Program program) throws ProgramException {
 		return !doBreak;
 	}
 	
