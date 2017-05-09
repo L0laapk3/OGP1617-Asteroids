@@ -4,17 +4,17 @@ import asteroids.exceptions.NotInvertableException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public class Invert extends Expression {
+public class Invert extends Condition {
 
 	private final Expression expression;
 	
-	public Invert(Expression expression) {
+	public <T extends Expression & ICondition> Invert(T expression) {
 		super();
 		this.expression = expression;
 	}
 
 	@Override
-	public Object evaluate(Program program) throws ProgramException {
+	public Boolean evaluate(Program program) throws ProgramException {
 		Object result = expression.evaluate(program);
 		
 		if (result instanceof Boolean)

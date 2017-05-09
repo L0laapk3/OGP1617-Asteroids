@@ -194,4 +194,12 @@ public class Vector2 {
 	public static Vector2 fromPolar(double rot, double len) {
 		return new Vector2(Math.cos(rot) * len, Math.sin(rot) * len);
 	}
+	
+	/**
+	 * Returns the rotation value in polar coordinate system of this Vector2 object.
+	 * @return the rotation value in polar coordinate system of this Vector2 object.
+	 */
+	public Double getRotation() {
+		return this.y > 0 ? Math.acos(this.x / this.pythagoras()) : -Math.acos(this.x / this.pythagoras());
+	}
 }

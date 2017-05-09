@@ -2,6 +2,7 @@ package asteroids.model.program;
 
 import java.util.List;
 
+import asteroids.exceptions.InvalidExpressionTypeException;
 import asteroids.model.program.expression.*;
 import asteroids.model.program.statement.*;
 import asteroids.part3.programs.IProgramFactory;
@@ -85,76 +86,75 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	}
 
 	@Override
-	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) {
+	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) throws InvalidExpressionTypeException {
 		OGUtil.println(sourceLocation);
-		return null;
-		return new Negative<Numeric>((Numeric)expression);
+		return new Negative((Numeric)expression);
 	}
 
 	@Override
 	public Expression createNotExpression(Expression expression, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return new Invert(expression);
+		return new Invert((Condition)expression);
 	}
 
 	@Override
 	public Expression createDoubleLiteralExpression(double value, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return null;
+		return new ConstantNumber(value);
 	}
 
 	@Override
 	public Expression createNullExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.NULL);
 	}
 
 	@Override
 	public Expression createSelfExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.SELF);
 	}
 
 	@Override
 	public Expression createShipExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.SHIP);
 	}
 
 	@Override
 	public Expression createAsteroidExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.ASTEROID);
 	}
 
 	@Override
 	public Expression createPlanetoidExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.PLANETOID);
 	}
 
 	@Override
 	public Expression createBulletExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.BULLET);
 	}
 
 	@Override
 	public Expression createPlanetExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.PLANET);
 	}
 
 	@Override
 	public Expression createAnyExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new FindEntity(FindEntity.Filter.ANY);
 	}
 
 	@Override
 	public Expression createGetXExpression(Expression e, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new GetAttribute(GetAttribute.Attribute.X, (EntityExpression)e);
 	}
 
 	@Override

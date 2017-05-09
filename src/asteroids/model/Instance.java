@@ -13,7 +13,7 @@ import be.kuleuven.cs.som.annotate.Raw;
  * @author  Kris Keersmaekers
  * @author  Rik Pauwels
  */
-public abstract class Instance {
+public abstract class Instance extends Object {
 
 	/**
 	 * Check whether this object exists and is not terminated.
