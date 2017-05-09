@@ -1,5 +1,6 @@
 package asteroids.model.program.statement;
 
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.Expression;
 
@@ -15,7 +16,7 @@ public class Assignment extends Statement {
 	}
 
 	@Override
-	public boolean step(Program program) {
+	public boolean step(Program program) throws ProgramException {
 		program.variables.put(varname, expression.evaluate(program));
 		return false;
 	}

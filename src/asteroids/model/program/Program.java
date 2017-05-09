@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import asteroids.exceptions.InvalidShipException;
-import asteroids.exceptions.ProgramErrorException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.Ship;
 import asteroids.model.program.statement.*;
 
@@ -36,7 +36,7 @@ public class Program {
 	
 	private double totalTime = 0;
 	private double totalTimeTruncated = 0;
-	public void run(double dt) throws ProgramErrorException {
+	public void run(double dt) throws ProgramException {
 		totalTime += dt;
 		double requiredTime = main.getRequiredTime();
 		while (requiredTime + totalTimeTruncated <= totalTime && !completed) {

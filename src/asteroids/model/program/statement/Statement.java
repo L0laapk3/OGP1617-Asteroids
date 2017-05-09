@@ -1,6 +1,6 @@
 package asteroids.model.program.statement;
 
-import asteroids.exceptions.ProgramErrorException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
 public abstract class Statement {
@@ -10,7 +10,7 @@ public abstract class Statement {
 	}
 	
 	//returns false only if this is the last step to be executed.
-	public abstract boolean step(Program program) throws ProgramErrorException;
+	public abstract boolean step(Program program) throws ProgramException;
 	
 	//warning: before modification of this function, has to be made sure that all subclasses have the super.reset()
 	protected void reset(Program program) { }

@@ -1,6 +1,6 @@
 package asteroids.model.program.statement;
 
-import asteroids.exceptions.ProgramErrorException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.Expression;
 import asteroids.model.program.expression.ICondition;
@@ -21,7 +21,7 @@ public class WhileLoop extends ContextContainer {
 
 	
 	@Override
-	public boolean step(Program program) throws ProgramErrorException {
+	public boolean step(Program program) throws ProgramException {
 		if (nextIsCondition) {
 			nextIsCondition = false;
 			return (boolean)this.condition.evaluate(program);

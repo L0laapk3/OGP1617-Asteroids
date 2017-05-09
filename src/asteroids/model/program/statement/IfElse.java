@@ -1,6 +1,6 @@
 package asteroids.model.program.statement;
 
-import asteroids.exceptions.ProgramErrorException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.Condition;
 import asteroids.model.program.expression.Expression;
@@ -22,7 +22,7 @@ public class IfElse extends Statement {
 	}
 
 	@Override
-	public boolean step(Program program) throws ProgramErrorException {
+	public boolean step(Program program) throws ProgramException {
 		if (!conditionDone) {
 			conditionDone = true;
 			conditionResult = condition.evaluate(program);

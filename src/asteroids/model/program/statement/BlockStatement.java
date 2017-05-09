@@ -1,6 +1,6 @@
 package asteroids.model.program.statement;
 
-import asteroids.exceptions.ProgramErrorException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
 public class BlockStatement extends Statement {
@@ -21,7 +21,7 @@ public class BlockStatement extends Statement {
 	}
 
 	@Override
-	public boolean step(Program program) throws ProgramErrorException {
+	public boolean step(Program program) throws ProgramException {
 		if (isEmpty)
 			return false;
 		if (!getNextStatement().step(program)) //if false: statement is done, go to next statement
