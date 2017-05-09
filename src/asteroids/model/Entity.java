@@ -1,5 +1,8 @@
 package asteroids.model;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import asteroids.exceptions.*;
 import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;
@@ -814,6 +817,35 @@ public abstract class Entity extends Instance {
 	 */
 	void die() {
 		this.terminate();
+	}
+	/**
+	 * Function that will return the nearest entity of one of the given types.
+	 * @param c
+	 * 		  All the valid types of the entity that will be returned.
+	 * @return The nearest entity of one of the given types.
+	 * 		  | see implementation
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends Entity> T getNearestEntity(Class<T>... c) {
+		for(Class<T> type : c) {
+			Set<T> entities = this.getWorld().getAllEntities(type);
+			double closestDistance = Double.POSITIVE_INFINITY;
+			Entity closestEntity = null;
+			if (entities.isEmpty()) {
+				return null;
+			}
+			else {
+				for (T entity : entities) {
+					double newDistance = getDistanceBetween(this, entity);
+					if (newDistance<closestDistance) {
+						closestEntity = entity;
+						closestDistance = getDistanceBetween(this, entity);
+					}
+				}
+			}
+			return (T) closestEntity;
+		}
+		return null;
 	}
 	
 }
