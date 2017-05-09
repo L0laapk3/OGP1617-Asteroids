@@ -125,7 +125,7 @@ public abstract class AdvancedEntity extends Entity {
 	 * @note   This is written in a total manner.
 	 */
 	@Raw
-	public void thrust(double amount) {
+	void thrust(double amount) {
 		if (OGUtil.isInvalidNumber(amount) || amount < 0)
 			return;
 		setVelocity(Vector2.add(this.getVelocityVector(), Vector2.fromPolar(this.getOrientation(), amount)));
@@ -260,7 +260,7 @@ public abstract class AdvancedEntity extends Entity {
 	 * @throws InvalidRadiusException
 	 * 		   The radius must not be smaller than MIN_RADIUS.	
 	 */
-	public AdvancedEntity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass, double MIN_RADIUS)
+	AdvancedEntity(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass, double MIN_RADIUS)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, mass, MIN_RADIUS);
 		

@@ -1,7 +1,5 @@
 package asteroids.model;
 
-import java.util.Vector;
-
 import asteroids.exceptions.*;
 import asteroids.util.*;
 import be.kuleuven.cs.som.annotate.*;

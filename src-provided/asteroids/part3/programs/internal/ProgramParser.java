@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
-import asteroids.model.Program;
+import asteroids.model.program.statement.Statement;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.internal.generated.AsteroidsProgramLexer;
 import asteroids.part3.programs.internal.generated.AsteroidsProgramParser;
@@ -187,9 +187,9 @@ public class ProgramParser<E, S, F, P> {
 	 * @return The parsed program, if any, or null if an error occurred during
 	 *         parsing.
 	 */
-	public static Program parseProgramFromString(String text, IProgramFactory<?, ?, ?, Program> factory) {
-		ProgramParser<?, ?, ?, Program> parser = create(factory);
-		ParseOutcome<Program> outcome = parser.parseString(text);
+	public static Statement parseProgramFromString(String text, IProgramFactory<?, ?, ?, Statement> factory) {
+		ProgramParser<?, ?, ?, Statement> parser = create(factory);
+		ParseOutcome<Statement> outcome = parser.parseString(text);
 		if (outcome.isFail()) {
 			System.out.println("Parsing failed: " + outcome.getFailValue());
 			return null;
@@ -207,10 +207,10 @@ public class ProgramParser<E, S, F, P> {
 	 * @return The parsed program, if any, or null if an error occurred during
 	 *         parsing.
 	 */
-	public static Program parseTasksFromFile(String filename, IProgramFactory<?, ?, ?, Program> factory)
+	public static Statement parseTasksFromFile(String filename, IProgramFactory<?, ?, ?, Statement> factory)
 			throws IOException {
-		ProgramParser<?, ?, ?, Program> parser = create(factory);
-		ParseOutcome<Program> outcome = parser.parseFile(filename);
+		ProgramParser<?, ?, ?, Statement> parser = create(factory);
+		ParseOutcome<Statement> outcome = parser.parseFile(filename);
 		if (outcome.isFail()) {
 			System.out.println("Parsing failed: " + outcome.getFailValue());
 			return null;
@@ -228,10 +228,10 @@ public class ProgramParser<E, S, F, P> {
 	 * @return The parsed program, if any, or null if an error occurred during
 	 *         parsing.
 	 */
-	public static Program parseTasksFromURL(URL url, IProgramFactory<?, ?, ?, Program> factory)
+	public static Statement parseTasksFromURL(URL url, IProgramFactory<?, ?, ?, Statement> factory)
 			throws IOException {
-		ProgramParser<?, ?, ?, Program> parser = create(factory);
-		ParseOutcome<Program> outcome = parser.parseFile(url);
+		ProgramParser<?, ?, ?, Statement> parser = create(factory);
+		ParseOutcome<Statement> outcome = parser.parseFile(url);
 		if (outcome.isFail()) {
 			System.out.println("Parsing failed: " + outcome.getFailValue());
 			return null;

@@ -53,7 +53,7 @@ public abstract class EntityWithConstantDensity extends Entity {
 	 * @throws InvalidRadiusException
 	 * 		   The radius must not be smaller than MIN_RADIUS.	
 	 */
-	public EntityWithConstantDensity(double x, double y, double xVelocity, double yVelocity, double radius, double RHO, double MIN_RADIUS)
+	EntityWithConstantDensity(double x, double y, double xVelocity, double yVelocity, double radius, double RHO, double MIN_RADIUS)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, calculateBassMass(RHO, radius), MIN_RADIUS);
 		this.RHO = RHO;
