@@ -68,7 +68,7 @@ public class AsteroidsFrame3 extends AsteroidsFrame2<IFacade> {
 				handleError(e);
 			}
 		}
-		int nbAsteroids = (int) (Math.random() * 4 + 1);
+		int nbAsteroids = (int) (Math.random() * 4 + 1); 
 		Set<Asteroid> asteroids = new HashSet<>();
 		for (int j = 0; j < nbAsteroids; j++) {
 			try {
