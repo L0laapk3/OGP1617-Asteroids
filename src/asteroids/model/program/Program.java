@@ -11,8 +11,6 @@ import asteroids.model.program.statement.*;
 
 
 public class Program {
-	
-	public Map<String, Object> variables = new HashMap<String, Object>();
 
 	public final Ship ship;
 	
@@ -23,14 +21,16 @@ public class Program {
 		return this.completed;
 	}
 	
-	private final BlockStatement main;
+	private final Statement main;
 	
-	public Program(Ship ship, Statement... statements) throws InvalidShipException {
+	private Statement
+	
+	public Program(Ship ship, Statement statement) throws InvalidShipException {
 		if (ship == null)
 			throw new InvalidShipException();
 		this.ship = ship;
 		
-		main = new BlockStatement(statements);
+		main = statement;
 	}
 	
 	

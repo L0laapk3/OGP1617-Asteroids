@@ -4,7 +4,7 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.Expression;
 
-public class Assignment extends Statement {
+public class Assignment extends ContextAwareStatement {
 
 	public final String varname;
 	public final Expression expression;
@@ -17,8 +17,11 @@ public class Assignment extends Statement {
 
 	@Override
 	public boolean step(Program program) throws ProgramException {
-		program.variables.put(varname, expression.evaluate(program));
+		this.context.setVariable(varname, expression.evaluate(program));
 		return false;
 	}
+	
+	@Override
+	protected Statement[] getChildStatements() { return new Statement[] {expression}; }
 
 }

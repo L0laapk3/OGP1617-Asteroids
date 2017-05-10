@@ -2,8 +2,8 @@ package asteroids.model.program.statement;
 
 public abstract class Action extends Statement {
 	
-	protected Action() {
-		super();
+	protected Action(Statement... statements) {
+		super(statements);
 	}
 
 	@Override

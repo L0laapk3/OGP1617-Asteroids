@@ -6,7 +6,7 @@ import asteroids.model.program.expression.Condition;
 import asteroids.model.program.expression.Expression;
 import asteroids.model.program.expression.ICondition;
 
-public class IfElse extends Statement {
+public class IfElse extends ContextContainer {
 	
 	private Condition condition;
 	private Statement onTrue;
@@ -15,7 +15,7 @@ public class IfElse extends Statement {
 	private boolean conditionResult;
 
 	public <T extends Expression & ICondition> IfElse(Condition condition, Statement ifBody, Statement elseBody) {
-		super();
+		super(ifBody, elseBody, condition);
 		this.onTrue = ifBody;
 		this.onFalse = elseBody;
 		this.condition = condition;
@@ -42,6 +42,7 @@ public class IfElse extends Statement {
 				onFalse.reset(program);
 		}
 		conditionDone = false;
+		super.reset(program);
 	}
 	
 	@Override
@@ -53,5 +54,4 @@ public class IfElse extends Statement {
 		else
 			return onFalse.getRequiredTime();
 	}
-	
 }

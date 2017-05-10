@@ -1,4 +1,4 @@
-package asteroids.model.program.statement;
+ package asteroids.model.program.statement;
 
 import asteroids.model.program.Program;
 
@@ -10,7 +10,7 @@ public class Break extends ContextAwareStatement {
 
 	@Override
 	public boolean step(Program program) {
-		this.context.doBreak();
+		this.loopContext.doBreak();
 		return false;
 	}
 

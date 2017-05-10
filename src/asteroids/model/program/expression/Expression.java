@@ -4,13 +4,13 @@ import asteroids.model.program.Program;
 import asteroids.model.program.statement.Statement;
 
 public abstract class Expression extends Statement {
-	
-	protected Expression() {
-		super();
+
+	public Expression(Statement[] statements) {
+		super(statements);
 	}
-	
+
 	@Override
-	public boolean step(Program program) {
+	public final boolean step(Program program) {
 		return false;
 	}
 	

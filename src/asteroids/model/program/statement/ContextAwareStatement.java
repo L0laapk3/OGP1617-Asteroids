@@ -8,7 +8,7 @@ public abstract class ContextAwareStatement extends Statement {
 	}
 	
 	@Override
-	protected void makeContextAware(ContextContainer context) {
+	protected void setContext(ContextContainer context) {
 		this.context = context;
 	}
 	

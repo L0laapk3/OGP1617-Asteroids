@@ -5,7 +5,7 @@ import asteroids.model.program.Program;
 import asteroids.model.program.expression.Expression;
 import asteroids.model.program.expression.ICondition;
 
-public class WhileLoop extends ContextContainer {
+public class WhileLoop extends LoopContextContainer {
 
 	private Expression condition;
 	private Statement statement;
@@ -14,7 +14,7 @@ public class WhileLoop extends ContextContainer {
 	private boolean firstTime = true;
 	
 	public <T extends Expression & ICondition> WhileLoop(T condition, Statement statement) {
-		super(statement);
+		super(statement, condition);
 		this.condition = condition;
 		this.statement = statement;
 	}
@@ -42,7 +42,14 @@ public class WhileLoop extends ContextContainer {
 	protected void reset(Program program) {
 		nextIsCondition = true;
 		firstTime = true;
-		statement.reset(program);
 		super.reset(program);
+	}
+	
+	
+	@Override
+	public double getRequiredTime() {
+		if (nextIsCondition)
+			return condition.getRequiredTime();
+		return statement.getRequiredTime();
 	}
 }

@@ -3,7 +3,6 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.*;
 
 public class GetAttribute extends Numeric {
 
@@ -23,6 +22,7 @@ public class GetAttribute extends Numeric {
 	public final Expression expression;
 	
 	public <T extends Expression & IEntity> GetAttribute(Attribute attribute, T expression) {
+		super(expression);
 		this.expression = expression;
 		this.attribute = attribute;
 	}

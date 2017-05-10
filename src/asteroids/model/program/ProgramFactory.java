@@ -13,11 +13,25 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	@Override
 	public Program createProgram(List<Function> functions, Statement main) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Program(main);
 	}
 
 	@Override
 	public Function createFunctionDefinition(String functionName, Statement body, SourceLocation sourceLocation) {
+		OGUtil.println(sourceLocation);
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Expression createReadParameterExpression(String parameterName, SourceLocation sourceLocation) {
+		OGUtil.println(sourceLocation);
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Expression createFunctionCallExpression(String functionName, List<Expression> actualArgs, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
 		// TODO Auto-generated method stub
 		return null;
@@ -69,19 +83,6 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	public Expression createReadVariableExpression(String variableName, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
 		return new Variable(variableName);
-	}
-
-	@Override
-	public Expression createReadParameterExpression(String parameterName, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Expression createFunctionCallExpression(String functionName, List<Expression> actualArgs, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
