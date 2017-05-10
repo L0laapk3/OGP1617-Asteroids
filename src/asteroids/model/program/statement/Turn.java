@@ -1,19 +1,21 @@
 package asteroids.model.program.statement;
 
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.expression.*;
 
 public class Turn extends Action {
 
-	public final double angle;
+	public final Expression angle;
 	
-	public Turn(double angle) {
+	public <T extends Expression & INumeric> Turn(Expression angle) {
 		super();
 		this.angle = angle;
 	}
 	
 	@Override
-	public boolean step(Program program) {
-		program.ship.turn(angle);
+	public boolean step(Program program) throws ProgramException {
+		program.ship.turn(((Numeric)angle).evaluate(program));
 		return false;
 	}
 

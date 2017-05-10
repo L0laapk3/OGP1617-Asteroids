@@ -2,7 +2,6 @@ package asteroids.model.program;
 
 import java.util.List;
 
-import asteroids.exceptions.InvalidExpressionTypeException;
 import asteroids.model.program.expression.*;
 import asteroids.model.program.statement.*;
 import asteroids.part3.programs.IProgramFactory;
@@ -86,7 +85,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	}
 
 	@Override
-	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) throws InvalidExpressionTypeException {
+	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
 		return new Negative((Numeric)expression);
 	}
@@ -159,26 +158,26 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 
 	@Override
 	public Expression createGetYExpression(Expression e, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new GetAttribute(GetAttribute.Attribute.Y, (EntityExpression)e);
 	}
 
 	@Override
 	public Expression createGetVXExpression(Expression e, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new GetAttribute(GetAttribute.Attribute.VX, (EntityExpression)e);
 	}
 
 	@Override
 	public Expression createGetVYExpression(Expression e, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new GetAttribute(GetAttribute.Attribute.VY, (EntityExpression)e);
 	}
 
 	@Override
 	public Expression createGetRadiusExpression(Expression e, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new GetAttribute(GetAttribute.Attribute.RADIUS, (EntityExpression)e);
 	}
 
 	@Override
@@ -219,32 +218,32 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 
 	@Override
 	public Statement createThrustOnStatement(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new SetThruster(true);
 	}
 
 	@Override
 	public Statement createThrustOffStatement(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new SetThruster(false);
 	}
 
 	@Override
 	public Statement createFireStatement(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new Fire();
 	}
 
 	@Override
 	public Statement createTurnStatement(Expression angle, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new Turn(angle);
 	}
 
 	@Override
 	public Statement createSkipStatement(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new Skip();
 	}
 
 }
