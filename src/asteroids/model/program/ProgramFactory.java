@@ -212,8 +212,8 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 
 	@Override
 	public Expression createGetDirectionExpression(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return new GetAttribute(GetAttribute.Attribute.DIRECTION, new FindEntity(FindEntity.Filter.SELF));
 	}
 
 	@Override

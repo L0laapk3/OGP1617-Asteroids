@@ -2,6 +2,8 @@ package asteroids.model;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 
 import asteroids.exceptions.*;
 import asteroids.util.*;
@@ -820,32 +822,27 @@ public abstract class Entity extends Instance {
 	}
 	/**
 	 * Function that will return the nearest entity of one of the given types.
-	 * @param c
-	 * 		  All the valid types of the entity that will be returned.
+	 * @param filter
+	 * 		  Lamdba filter function. Optional.
+	 * @param classes
+	 * 		  All the valid types of the entity that will be returned. Optional: if no class types are passed, all class types will be valid.
 	 * @return The nearest entity of one of the given types.
 	 * 		  | see implementation
 	 */
-	@SuppressWarnings("unchecked")
-	public <T extends Entity> T getNearestEntity(Class<T>... c) {
-		for(Class<T> type : c) {
-			Set<T> entities = this.getWorld().getAllEntities(type);
-			double closestDistance = Double.POSITIVE_INFINITY;
-			Entity closestEntity = null;
-			if (entities.isEmpty()) {
-				return null;
+		
+	@SafeVarargs public final Entity getNearestEntity(Class<? extends Entity>... classes) { return getNearestEntity(e -> true, classes); }
+	@SafeVarargs public final Entity getNearestEntity(Predicate<Entity> filter, Class<? extends Entity>... classes) {
+		double closestDistance = Double.POSITIVE_INFINITY;
+		Entity closestEntity = null;
+		Set<? extends Entity> entities = this.getWorld().getAllEntities(classes.length > 0 ? entity -> { for (Class<? extends Entity> c : classes) if (c.isInstance(entity)) return filter.test(entity); return false; } : entity -> filter.test(entity) );
+		for (Entity entity : entities) {
+			double newDistance = getDistanceBetween(this, entity);
+			if (newDistance < closestDistance) {
+				closestEntity = entity;
+				closestDistance = newDistance;
 			}
-			else {
-				for (T entity : entities) {
-					double newDistance = getDistanceBetween(this, entity);
-					if (newDistance<closestDistance) {
-						closestEntity = entity;
-						closestDistance = getDistanceBetween(this, entity);
-					}
-				}
-			}
-			return (T) closestEntity;
 		}
-		return null;
+		return closestEntity;
 	}
 	
 }
