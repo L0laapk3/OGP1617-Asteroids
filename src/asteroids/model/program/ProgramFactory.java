@@ -183,8 +183,8 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 
 	@Override
 	public Expression createLessThanExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		OGUtil.println(sourceLocation);
+		return ;
 	}
 
 	@Override

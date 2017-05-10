@@ -4,7 +4,7 @@ package asteroids.exceptions;
 public class NotInvertableException extends ProgramException {
 
 	  public NotInvertableException() {
-	    super("The time parameter cannot be negative.");
+	    super("Variable is not a double.");
 	  }
 	  
 	  public NotInvertableException(String message) {
