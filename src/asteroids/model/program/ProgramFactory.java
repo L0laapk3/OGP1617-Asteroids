@@ -75,7 +75,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, St
 	@Override
 	public Statement createSequenceStatement(List<Statement> statements, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return new BlockStatement((Statement[]) statements.toArray());
+		return new BlockStatement(statements.toArray(new Statement[statements.size()]));
 	}
 
 	@Override

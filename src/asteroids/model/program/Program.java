@@ -35,7 +35,9 @@ public class Program {
 		return ship;
 	}
 
-	public void setShip(Ship ship) {
+	public void setShip(Ship ship) throws InvalidShipException {
+		if (totalTime > 0)
+			throw new InvalidShipException("Ship cannot be changed after program has already started executing.");
 		this.ship = ship;
 	}
 	
@@ -46,13 +48,16 @@ public class Program {
 	
 	private double totalTime = 0;
 	private double totalTimeTruncated = 0;
-	public void run(double dt) throws ProgramException {
+	public void run(double dt) throws ProgramException, InvalidShipException {
+		if (ship == null)
+			throw new InvalidShipException("Cannot run program, no ship assigned.");
 		totalTime += dt;
 		double requiredTime = main.getRequiredTime();
 		while (requiredTime + totalTimeTruncated <= totalTime && !completed) {
-			completed = main.step(this) || main.getIsReturned();
+			completed = !main.step(this) || main.getIsReturned();
 			totalTimeTruncated += requiredTime;
-			requiredTime = main.getRequiredTime();
+			if (!completed)
+				requiredTime = main.getRequiredTime();
 		}
 	}
 	

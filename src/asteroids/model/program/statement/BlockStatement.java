@@ -31,6 +31,8 @@ public class BlockStatement extends Statement {
 	public double getRequiredTime() {
 		if (isEmpty)
 			return 0;
+		System.out.print("hehe xD ");
+		System.out.println(i);
 		return this.childStatements[i].getRequiredTime();
 	}
 	

@@ -4,6 +4,7 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.ContextContainer;
 import asteroids.model.program.expression.FunctionContextContainer;
+import asteroids.part3.programs.SourceLocation;
 
 public abstract class Statement {
 	

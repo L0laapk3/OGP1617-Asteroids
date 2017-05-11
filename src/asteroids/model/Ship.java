@@ -11,6 +11,7 @@ import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
@@ -474,11 +475,12 @@ public class Ship extends AdvancedEntity {
 	 * Sets the program for the ship.
 	 * @param  program
 	 * 		   The program to set for the ship.
+	 * @throws InvalidShipException 
 	 * @effect if (oldprogram != null) oldprogram.getShip() == null
 	 * @effect if (newprogram != null) newprogram.getShip() == this
 	 */
 	@Raw
-	public void setProgram(Program program) {
+	public void setProgram(Program program) throws InvalidShipException {
 		if (this.program == program)
 			return;
 		if (this.program != null)

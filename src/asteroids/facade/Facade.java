@@ -11,6 +11,7 @@ import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.InvalidTimeException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoWorldException;
@@ -1014,7 +1015,11 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * Load the given program on the given ship.
 	*/
 	public void loadProgramOnShip(Ship ship, Program program) throws ModelException {
-		ship.setProgram(program);
+		try {
+			ship.setProgram(program);
+		} catch (InvalidShipException e) {
+			throw new ModelException(e);
+		}
 	}
 
 	/**
@@ -1030,7 +1035,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	public List<Object> executeProgram(Ship ship, double dt) throws ModelException {
 		try {
 			ship.getProgram().run(dt);
-		} catch (ProgramException e) {
+		} catch (ProgramException | InvalidShipException e) {
 			throw new ModelException(e);
 		}
 		return ship.getProgram().isCompleted() ? ship.getProgram().getPrints() : null;
