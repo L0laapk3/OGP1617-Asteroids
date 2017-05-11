@@ -189,24 +189,28 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, St
 
 	@Override
 	public Expression createEqualityExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
+		OGUtil.println(sourceLocation);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Expression createAdditionExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
+		OGUtil.println(sourceLocation);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Expression createMultiplicationExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
+		OGUtil.println(sourceLocation);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Expression createSqrtExpression(Expression e, SourceLocation sourceLocation) {
+		OGUtil.println(sourceLocation);
 		// TODO Auto-generated method stub
 		return null;
 	}
