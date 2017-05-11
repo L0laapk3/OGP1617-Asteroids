@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.Statement;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.internal.generated.AsteroidsProgramLexer;
 import asteroids.part3.programs.internal.generated.AsteroidsProgramParser;
@@ -182,13 +183,13 @@ public class ProgramParser<E, S, F, P> {
 	 * 
 	 * @param text
 	 *            The text to parse
-	 * @param factory
+	 * @param programFactory
 	 *            The factory to use
 	 * @return The parsed program, if any, or null if an error occurred during
 	 *         parsing.
 	 */
-	public static Program parseProgramFromString(String text, IProgramFactory<?, ?, ?, Program> factory) {
-		ProgramParser<?, ?, ?, Program> parser = create(factory);
+	public static Statement parseProgramFromString(String text, IProgramFactory<?, ?, ?, Program> programFactory) {
+		ProgramParser<?, ?, ?, Program> parser = create(programFactory);
 		ParseOutcome<Program> outcome = parser.parseString(text);
 		if (outcome.isFail()) {
 			System.out.println("Parsing failed: " + outcome.getFailValue());
@@ -207,7 +208,7 @@ public class ProgramParser<E, S, F, P> {
 	 * @return The parsed program, if any, or null if an error occurred during
 	 *         parsing.
 	 */
-	public static Program parseTasksFromFile(String filename, IProgramFactory<?, ?, ?, Program> factory)
+	public static Statement parseTasksFromFile(String filename, IProgramFactory<?, ?, ?, Program> factory)
 			throws IOException {
 		ProgramParser<?, ?, ?, Program> parser = create(factory);
 		ParseOutcome<Program> outcome = parser.parseFile(filename);
@@ -228,7 +229,7 @@ public class ProgramParser<E, S, F, P> {
 	 * @return The parsed program, if any, or null if an error occurred during
 	 *         parsing.
 	 */
-	public static Program parseTasksFromURL(URL url, IProgramFactory<?, ?, ?, Program> factory)
+	public static Statement parseTasksFromURL(URL url, IProgramFactory<?, ?, ?, Program> factory)
 			throws IOException {
 		ProgramParser<?, ?, ?, Program> parser = create(factory);
 		ParseOutcome<Program> outcome = parser.parseFile(url);

@@ -13,7 +13,7 @@ import asteroids.model.Bullet;
 import asteroids.model.Planetoid;
 import asteroids.model.Ship;
 import asteroids.model.World;
-import asteroids.model.program.Program;
+import asteroids.model.program.statement.Statement;
 import asteroids.part2.internal.AsteroidsFrame2;
 import asteroids.part2.internal.FileSoundManager;
 import asteroids.part2.internal.NullSound;
@@ -68,7 +68,7 @@ public class AsteroidsFrame3 extends AsteroidsFrame2<IFacade> {
 				handleError(e);
 			}
 		}
-		int nbAsteroids = (int) (Math.random() * 4 + 1);
+		int nbAsteroids = (int) (Math.random() * 4 + 1); 
 		Set<Asteroid> asteroids = new HashSet<>();
 		for (int j = 0; j < nbAsteroids; j++) {
 			try {
@@ -151,9 +151,9 @@ public class AsteroidsFrame3 extends AsteroidsFrame2<IFacade> {
 		}
 
 		try {
-			ParseOutcome<? extends Program> parseOutcome;
+			ParseOutcome<? extends Statement> parseOutcome;
 			try {
-				IProgramFactory<?, ?, ?, ? extends Program> programFactory = facade.createProgramFactory();
+				IProgramFactory<?, ?, ?, ? extends Statement> programFactory = facade.createProgramFactory();
 				parseOutcome = ProgramParser.create(programFactory).parseFile(aiProgramUrl);
 			} catch (IOException e) {
 				System.err.println(e.getMessage());
@@ -161,7 +161,7 @@ public class AsteroidsFrame3 extends AsteroidsFrame2<IFacade> {
 				return;
 			}
 			if (parseOutcome.isSuccess()) {
-				Program program = parseOutcome.getSuccessValue();
+				Statement program = parseOutcome.getSuccessValue();
 				facade.loadProgramOnShip(playerAI, program);
 			} else {
 				System.err.println(parseOutcome.getFailValue());
