@@ -14,6 +14,7 @@ import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.model.program.Program;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
@@ -449,4 +450,43 @@ public class Ship extends AdvancedEntity {
 			this.terminate();
 		}
 	}
+	
+	
+	
+	
+	
+
+	/**
+	 * Variable storing program for ship.
+	 */
+	private Program program = null;
+
+	/**
+	 * Gets the current program for the ship.
+	 */
+	@Raw
+	@Basic
+	public Program getProgram() {
+		return program;
+	}
+
+	/**
+	 * Sets the program for the ship.
+	 * @param  program
+	 * 		   The program to set for the ship.
+	 * @effect if (oldprogram != null) oldprogram.getShip() == null
+	 * @effect if (newprogram != null) newprogram.getShip() == this
+	 */
+	@Raw
+	public void setProgram(Program program) {
+		if (this.program == program)
+			return;
+		if (this.program != null)
+			this.program.setShip(null);
+		this.program = program;
+		if (this.program != null)
+			this.program.setShip(this);
+	}
+
+	
 }

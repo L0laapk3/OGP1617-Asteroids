@@ -1,5 +1,8 @@
 package asteroids.model.program;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Ship;
@@ -51,5 +54,18 @@ public class Program {
 			totalTimeTruncated += requiredTime;
 			requiredTime = main.getRequiredTime();
 		}
+	}
+	
+	
+	
+	private final List<Object> prints = new ArrayList<Object>();
+
+	public List<Object> getPrints() {
+		return new ArrayList<Object>(prints);
+	}
+	
+	public void print(Object object) {
+		System.out.println(object);
+		prints.add(object);
 	}
 }
