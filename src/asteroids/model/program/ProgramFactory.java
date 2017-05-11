@@ -183,36 +183,31 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, St
 	@Override
 	public Expression createLessThanExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new LessThan(e1, e2);
 	}
 
 	@Override
 	public Expression createEqualityExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new Equality(e1, e2);
 	}
 
 	@Override
 	public Expression createAdditionExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new Addition(e1, e2);
 	}
 
 	@Override
 	public Expression createMultiplicationExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new Multiplication(e1, e2);
 	}
 
 	@Override
 	public Expression createSqrtExpression(Expression e, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new Sqrt(e);
 	}
 
 	@Override
