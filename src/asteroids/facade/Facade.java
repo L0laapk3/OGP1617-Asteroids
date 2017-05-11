@@ -4,13 +4,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import asteroids.exceptions.BulletNotLoadedException;
 import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.InvalidTimeException;
+import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
 import asteroids.model.CollisionInformation;
@@ -18,6 +23,10 @@ import asteroids.model.Entity;
 import asteroids.model.Planetoid;
 import asteroids.model.Ship;
 import asteroids.model.World;
+import asteroids.model.program.Program;
+import asteroids.model.program.ProgramFactory;
+import asteroids.model.program.expression.Expression;
+import asteroids.model.program.statement.Statement;
 import asteroids.part2.CollisionListener;
 //import asteroids.part3.facade.Program;
 import asteroids.part3.programs.IProgramFactory;
@@ -629,8 +638,12 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	/**
 	 * <code>ship</code> fires a bullet.
 	 */
-	public void fireBullet(Ship ship) {
-		ship.shootBullet();
+	public void fireBullet(Ship ship) throws ModelException {
+		try {
+			ship.shootBullet();
+		} catch (NoWorldException | MisMatchWorldsException | BulletNotLoadedException | InvalidParentShipException e) {
+			throw new ModelException(e);
+		}
 	}
 
 	/**************\
@@ -829,7 +842,6 @@ public class Facade implements asteroids.part3.facade.IFacade {
 		try {
 			world.addEntity(planetoid);
 		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
-			// TODO Auto-generated catch block
 			throw new ModelException(ex);
 		}
 	}
@@ -987,35 +999,48 @@ public class Facade implements asteroids.part3.facade.IFacade {
 		return planetoid.getWorld();
 	}
 
-//	/**********
-//	 * PROGRAMS
-//	 **********/
-//
-//	/**
-//	 * Return the program loaded on the given ship.
-//	 */
-//	public Program getShipProgram(Ship ship) throws ModelException;
-//
-//	/**
-//	 * Load the given program on the given ship.
-//	 */
-//	public void loadProgramOnShip(Ship ship, Program program) throws ModelException;
-//
-//	/**
-//	 * Execute the program loaded on the given ship during the given period of
-//	 * time. The ship is positioned in some world. Returns null if the program
-//	 * is not completely executed. Otherwise, returns the objects that have been
-//	 * printed.
-//	 * 
-//	 * This method is only used in the tests. The GUI never calls this method,
-//	 * only the
-//	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
-//	 */
-//	public List<Object> executeProgram(Ship ship, double dt) throws ModelException;
-//
-//	/**
-//	 * Creates a new program factory.
-//	 */
-//	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException;
+	/**********
+	 * PROGRAMS
+	 **********/
+
+	/**
+	 * Return the program loaded on the given ship.
+	 */
+	public Program getShipProgram(Ship ship) throws ModelException {
+		return ship.getProgram();
+	}
+	
+	/**
+	 * Load the given program on the given ship.
+	*/
+	public void loadProgramOnShip(Ship ship, Program program) throws ModelException {
+		ship.setProgram(program);
+	}
+
+	/**
+	 * Execute the program loaded on the given ship during the given period of
+	 * time. The ship is positioned in some world. Returns null if the program
+	 * is not completely executed. Otherwise, returns the objects that have been
+	 * printed.
+	 * 
+	 * This method is only used in the tests. The GUI never calls this method,
+	 * only the
+	 * {@link #evolve(World, double, asteroids.part2.CollisionListener)} method.
+	 */
+	public List<Object> executeProgram(Ship ship, double dt) throws ModelException {
+		try {
+			ship.getProgram().run(dt);
+		} catch (ProgramException e) {
+			throw new ModelException(e);
+		}
+		return ship.getProgram().isCompleted() ? ship.getProgram().getPrints() : null;
+	}
+
+	/**
+	 * Creates a new program factory.
+	 */
+	public IProgramFactory<Expression, Statement, Statement, Program> createProgramFactory() throws ModelException {
+		return new ProgramFactory();
+	}
 }
 

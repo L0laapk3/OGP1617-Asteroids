@@ -16,14 +16,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import asteroids.model.World;
-import asteroids.part3.facade.IFacade;
 import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
 import asteroids.model.Planetoid;
-import asteroids.model.Program;
 import asteroids.model.Ship;
-import asteroids.model.programs.ProgramFactory;
+import asteroids.model.World;
+import asteroids.model.program.Program;
+import asteroids.model.program.ProgramFactory;
+import asteroids.model.program.statement.Statement;
+import asteroids.part3.facade.IFacade;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.internal.ProgramParser;
 import asteroids.util.ModelException;
@@ -36,7 +37,7 @@ public class Part3TestFull {
 
   static int nbStudentsInTeam;
   IFacade facade;
-  IProgramFactory<?, ?, ?, Statement> programFactory = new ProgramFactory();
+  IProgramFactory<?, ?, ?, Program> programFactory = new ProgramFactory();
   World filledWorld;
   Ship ship1, ship2, ship3;
   Bullet bullet1;

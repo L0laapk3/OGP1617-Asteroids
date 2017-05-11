@@ -14,7 +14,7 @@ public class Print extends Statement {
 	
 	@Override
 	public boolean step(Program program) throws ProgramException {
-		System.out.println(expression.evaluate(program));
+		program.print(expression.evaluate(program));
 		return false;
 	}
 

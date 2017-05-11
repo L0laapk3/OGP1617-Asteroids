@@ -125,7 +125,7 @@ public abstract class AdvancedEntity extends Entity {
 	 * @note   This is written in a total manner.
 	 */
 	@Raw
-	void thrust(double amount) {
+	public void thrust(double amount) {
 		if (OGUtil.isInvalidNumber(amount) || amount < 0)
 			return;
 		setVelocity(Vector2.add(this.getVelocityVector(), Vector2.fromPolar(this.getOrientation(), amount)));
