@@ -1,7 +1,6 @@
 package asteroids.model.program.expression;
 
 import asteroids.exceptions.NotComparableException;
-import asteroids.exceptions.NotInvertableException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 

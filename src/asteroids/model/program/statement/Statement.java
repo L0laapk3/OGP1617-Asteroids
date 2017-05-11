@@ -2,6 +2,8 @@ package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.expression.ContextContainer;
+import asteroids.model.program.expression.FunctionContextContainer;
 
 public abstract class Statement {
 	
@@ -17,13 +19,17 @@ public abstract class Statement {
 	
 	protected Statement[] getChildStatements() { return childStatements; }
 	
-	protected void setContext(ContextContainer context) { 
+	public void setContext(ContextContainer context) { 
 		for (Statement statement : getChildStatements())
 			statement.setContext(context);
 	}
-	protected void setLoopContext(LoopContextContainer context) { 
+	public void setLoopContext(LoopContextContainer context) { 
 		for (Statement statement : getChildStatements())
 			statement.setLoopContext(context);
+	}
+	public void setFunctionContext(FunctionContextContainer context) { 
+		for (Statement statement : getChildStatements())
+			statement.setFunctionContext(context);
 	}
 	protected void reset(Program program) {
 		for (Statement statement : getChildStatements())

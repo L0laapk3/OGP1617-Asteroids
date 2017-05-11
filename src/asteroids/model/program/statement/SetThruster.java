@@ -1,5 +1,7 @@
 package asteroids.model.program.statement;
 
+import asteroids.exceptions.InvalidShipException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
 public class SetThruster extends Action {
@@ -11,8 +13,12 @@ public class SetThruster extends Action {
 	}
 	
 	@Override
-	public boolean step(Program program) {
-		program.ship.setThruster(state);
+	public boolean step(Program program) throws ProgramException {
+		try {
+			program.getShip().setThruster(state);
+		} catch (InvalidShipException e) {
+			throw new ProgramException(e);
+		}
 		return false;
 	}
 

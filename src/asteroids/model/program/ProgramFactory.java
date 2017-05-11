@@ -8,33 +8,32 @@ import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.SourceLocation;
 import asteroids.util.OGUtil;
 
-public class ProgramFactory implements IProgramFactory<Expression, Statement, Function, Program> {
+public class ProgramFactory implements IProgramFactory<Expression, Statement, Statement, Program> {
 
 	@Override
-	public Program createProgram(List<Function> functions, Statement main) {
-		// TODO Auto-generated method stub
-		return new Program(main);
+	public Program createProgram(List<Statement> functions, Statement main) {
+		Statement[] statements = new Statement[functions.size() + 1];
+		functions.toArray(statements);
+		statements[statements.length - 1] = main;
+		return new Program(new BlockStatement(statements));
 	}
 
 	@Override
-	public Function createFunctionDefinition(String functionName, Statement body, SourceLocation sourceLocation) {
+	public Statement createFunctionDefinition(String functionName, Statement body, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new DefineFunction(functionName, body);
 	}
 
 	@Override
 	public Expression createReadParameterExpression(String parameterName, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new ReadParameter(parameterName);
 	}
 
 	@Override
 	public Expression createFunctionCallExpression(String functionName, List<Expression> actualArgs, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		// TODO Auto-generated method stub
-		return null;
+		return new CallFunction(functionName, actualArgs);
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	@Override
 	public Expression createReadVariableExpression(String variableName, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return new Variable(variableName);
+		return new ReadVariable(variableName);
 	}
 
 	@Override
@@ -184,7 +183,8 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	@Override
 	public Expression createLessThanExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
 		OGUtil.println(sourceLocation);
-		return ;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

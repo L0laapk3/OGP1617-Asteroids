@@ -14,15 +14,16 @@ public class WhileLoop extends LoopContextContainer {
 	private boolean firstTime = true;
 	
 	public <T extends Expression & ICondition> WhileLoop(T condition, Statement statement) {
-		super(statement, condition);
+		super((Expression)statement, condition);
 		this.condition = condition;
 		this.statement = statement;
 	}
 
 	
-	@Override
 	public boolean step(Program program) throws ProgramException {
 		if (nextIsCondition) {
+			if (condition.step(program))
+				return true;
 			nextIsCondition = false;
 			return (boolean)this.condition.evaluate(program);
 		}
@@ -51,5 +52,11 @@ public class WhileLoop extends LoopContextContainer {
 		if (nextIsCondition)
 			return condition.getRequiredTime();
 		return statement.getRequiredTime();
+	}
+	
+
+	@Override
+	public Object evaluate(Program program) throws ProgramException {
+		throw new ProgramException("Internal program exception: evaluate was called on a statement.");
 	}
 }

@@ -1,11 +1,13 @@
-package asteroids.model.program.statement;
+package asteroids.model.program.expression;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.Statement;
 
-public abstract class ContextContainer extends Statement {
+public abstract class ContextContainer extends ContextAwareExpression {
 	
 	protected ContextContainer selfContext = null;
 	
@@ -14,9 +16,9 @@ public abstract class ContextContainer extends Statement {
 		for (Statement statement : statements)
 			statement.setContext(this);
 	}
-	
+
 	@Override
-	protected void setContext(ContextContainer context) { //dont overwrite context of child classes, instead save to selfContext
+	public void setContext(ContextContainer context) { //dont overwrite context of child classes, instead save to selfContext
 		selfContext = context;
 	}
 
@@ -24,7 +26,6 @@ public abstract class ContextContainer extends Statement {
 	
 	private Map<String, Object> variables = new HashMap<String, Object>();
 	
-	@Override
 	protected void reset(Program program) {
 		variables.clear();
 		super.reset(program);
@@ -41,5 +42,10 @@ public abstract class ContextContainer extends Statement {
 	
 	public void setVariable(String name, Object value) {
 		variables.put(name, value);
+	}
+
+	public Object evaluate(Program program) throws ProgramException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

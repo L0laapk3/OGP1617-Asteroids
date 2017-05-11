@@ -1,13 +1,18 @@
 package asteroids.model;
 
-import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
 
-import asteroids.exceptions.*;
-import asteroids.util.*;
-import be.kuleuven.cs.som.annotate.*;
+import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.NoWorldException;
+import asteroids.util.OGUtil;
+import asteroids.util.Vector2;
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
+import be.kuleuven.cs.som.annotate.Raw;
 
 
 

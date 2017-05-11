@@ -1,36 +1,43 @@
 package asteroids.model.program;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Ship;
-import asteroids.model.program.statement.*;
+import asteroids.model.program.expression.FunctionContainer;
+import asteroids.model.program.statement.Statement;
 
 
+
+//TODO: WERK
 
 public class Program {
 
-	public final Ship ship;
-	
 	private boolean completed = false;
-	private boolean returned = false;
-	private Object returnValue;
+	
 	public boolean isCompleted() {
-		return this.completed;
+		return completed;
 	}
 	
-	private final Statement main;
+	public Object getReturnValue() {
+		return main.getReturnValue();
+	}
 	
-	private Statement
-	
-	public Program(Ship ship, Statement statement) throws InvalidShipException {
-		if (ship == null)
+	private final FunctionContainer main;
+
+	private Ship ship = null;
+
+	public Ship getShip() throws InvalidShipException {
+		if (getShip() == null)
 			throw new InvalidShipException();
+		return ship;
+	}
+
+	public void setShip(Ship ship) {
 		this.ship = ship;
-		
-		main = statement;
+	}
+	
+	public Program(Statement statement) {
+		main = new FunctionContainer(statement);
 	}
 	
 	
@@ -40,14 +47,9 @@ public class Program {
 		totalTime += dt;
 		double requiredTime = main.getRequiredTime();
 		while (requiredTime + totalTimeTruncated <= totalTime && !completed) {
-			completed = main.step(this) || returned;
+			completed = main.step(this) || main.getIsReturned();
 			totalTimeTruncated += requiredTime;
 			requiredTime = main.getRequiredTime();
 		}
-	}
-	
-	public void doReturn(Object returnValue) {
-		returned = true;
-		this.returnValue = returnValue;
 	}
 }
