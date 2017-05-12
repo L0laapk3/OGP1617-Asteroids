@@ -287,8 +287,12 @@ public class World extends Instance {
 	 * @note    Defensive
 	 */
 	@Raw
-	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException {
+	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException, IllegalEntityException {
 
+		if (entity == null) {
+			throw new IllegalEntityException();
+		}
+		
 		if (entities.contains(entity)) {
 			throw new DoubleEntityException();
 		}
@@ -534,7 +538,7 @@ public class World extends Instance {
 	 * @note  defensive
 	 */
 	public void evolve(double Dt, CollisionListener collisionListener) throws InvalidTimeException {
-
+			
 		OGUtil.throwErrorIfInvalidNumbers(Dt);
 		if (!OGUtil.isValidDeltaTime(Dt))
 			throw new NegativeTimeException();
@@ -569,6 +573,8 @@ public class World extends Instance {
 							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 						}
+						System.out.print("juist voor oproepen van hit");
+						System.out.println(collInfo.secondEntity.getClass());
 						Collisions.collide(collInfo.firstEntity, collInfo.secondEntity);
 					}
 				} else {

@@ -188,6 +188,11 @@ public class Bullet extends EntityWithConstantDensity {
 		OGUtil.println("---hit---");
 		//OGUtil.println(this.getParent());
 		//OGUtil.println(ship);
+		
+		System.out.print("Het moederschip in de hitfunctie: ");
+		System.out.println(this.getMotherShip());
+
+		
 		if (ship == this.getMotherShip())
 			try {
 				ship.loadBullet(this);

@@ -26,11 +26,18 @@ public class Collisions {
 	 * +--------------+------------------+------------------------------+---------------+----------+-----------+
 	 */
 	public static void collide(Entity first, Entity second) {
-		if (!collideOne(first, second) && !collideOne(second, first))
+		if (collideOne(first, second) || collideOne(second, first))
 			throw new RuntimeException(new UndefinedCollisionBehaviourException(first, second));
 	}
 	
 	private static boolean collideOne(Entity first, Entity second) {
+		System.out.println("hij doet collide");
+		
+		System.out.println(first.getClass());
+		System.out.println(second.getClass());
+		
+		
+		
 		if (first instanceof Bullet)
 			((Bullet)first).collideEntity(second);
 		else if (first instanceof Ship) {

@@ -356,7 +356,7 @@ public class Ship extends AdvancedEntity {
 	/**
 	 * Variable that holds the thrustforce from the ship
 	 */
-	private static final double THRUSTFORCE = 1.1 * Math.pow(10, 21);
+	private static final double THRUSTFORCE = 1.1 * Math.pow(10, 18);
 
 	/**
 	 * function that calculates the acceleration of the ship
