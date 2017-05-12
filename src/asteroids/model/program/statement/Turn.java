@@ -7,21 +7,41 @@ import asteroids.model.program.expression.*;
 
 public class Turn extends Action {
 
-	public final Expression angle;
+	public final Expression angleExpression;
 	
-	public <T extends Expression & INumeric> Turn(Expression angle) {
-		super();
-		this.angle = angle;
+	public <T extends Expression & INumeric> Turn(T angleExpression) throws ProgramException {
+		super(angleExpression);
+		this.angleExpression = angleExpression;
 	}
+	
+	private boolean done = false;
 	
 	@Override
 	public boolean step(Program program) throws ProgramException {
+		if (!done) {
+			if (!angleExpression.step(program))
+				done = true;
+			return true;
+		}
 		try {
-			program.getShip().turn(((Numeric)angle).evaluate(program));
+			program.getShip().turn(((Expression & INumeric)angleExpression).evaluate(program));
 		} catch (InvalidShipException e) {
 			throw new ProgramException(e);
 		}
 		return false;
+	}
+	
+	@Override
+	public void reset(Program program) {
+		super.reset(program);
+		done = false;
+	}
+	
+	@Override
+	public double getRequiredTime() {
+		if (done)
+			return super.getRequiredTime();
+		return angleExpression.getRequiredTime();
 	}
 
 }

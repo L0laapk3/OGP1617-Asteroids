@@ -8,15 +8,23 @@ public class Print extends Statement {
 
 	public final Expression expression;
 	
-	public Print(Expression value) {
-		this.expression = value;
+	public Print(Expression expression) throws ProgramException {
+		super(expression);
+		this.expression = expression;
 	}
 	
 	@Override
 	public boolean step(Program program) throws ProgramException {
-		System.out.println();
+		if (expression.step(program))
+			return true;
 		program.print(expression.evaluate(program));
 		return false;
+	}
+	
+	
+	@Override
+	public double getRequiredTime() {
+		return expression.getRequiredTime();
 	}
 
 }

@@ -524,19 +524,22 @@ public class World extends Instance {
 	/**
 	 * Simulates the world for time Dt.
 	 * 
-	 * @param Dt
-	 * 		  The time to simulate the world for.
-	 * @param CollisionListener.
-	 * 		  CollisionListener containing functions to callback where to render the collision particles.
-	 * @post  Simulates the world for Dt seconds.
-	 * @post  if CollisionListener is not null, collisionListener.boundaryCollision will be called on wall collisions.
-	 * @post  if CollisionListener is not null, collisionListener.objectCollision will be called on entity collisions.
-	 * @note  defensive
+	 * @param  dt
+	 * 		   The time to simulate the world for.
+	 * @param  CollisionListener.
+	 * 		   CollisionListener containing functions to callback where to render the collision particles.
+	 * @throws InvalidTimeException
+	 * 		   If the time parameter is not a positive double.
+	 * @post   Simulates the world for Dt seconds.
+	 * @post   if CollisionListener is not null, collisionListener.boundaryCollision will be called on wall collisions.
+	 * @post   if CollisionListener is not null, collisionListener.objectCollision will be called on entity collisions.
+	 * @note   defensive
 	 */
-	public void evolve(double Dt, CollisionListener collisionListener) throws InvalidTimeException {
+	public void evolve(double dt, CollisionListener collisionListener) throws InvalidTimeException {
 
-		OGUtil.throwErrorIfInvalidNumbers(Dt);
-		if (!OGUtil.isValidDeltaTime(Dt))
+		double originalDt = dt;
+		OGUtil.throwErrorIfInvalidNumbers(dt);
+		if (!OGUtil.isValidDeltaTime(dt))
 			throw new NegativeTimeException();
 		
 		try {
@@ -547,12 +550,12 @@ public class World extends Instance {
 				Set<Entity> entitiesWithCollision = getAllEntitiesWithCollision();
 				CollisionInformation collInfo = getNextCollision(entitiesWithCollision);
 
-				if (collInfo.timeToCollision < Dt) { // collision happens before end Dt
+				if (collInfo.timeToCollision < dt) { // collision happens before end Dt
 					if (!collInfo.isWallCollision())
 						OGUtil.println("explosion prediction: " + Entity.getCollisionPosition(collInfo.firstEntity, collInfo.secondEntity, collInfo.timeToCollision));
 
 					doTime(collInfo.timeToCollision, entitiesWithCollision);
-					Dt -= collInfo.timeToCollision;
+					dt -= collInfo.timeToCollision;
 					if (collInfo.isWallCollision()) { // wall collision
 						if (collisionListener != null) {
 							Vector2 collPos = collInfo.firstEntity.getWallCollisionPosition(0);
@@ -572,15 +575,15 @@ public class World extends Instance {
 						Collisions.collide(collInfo.firstEntity, collInfo.secondEntity);
 					}
 				} else {
-					doTime(Dt, entitiesWithCollision);
-					Dt = 0;
+					doTime(dt, entitiesWithCollision);
+					dt = 0;
 				}
-			} while (Dt > 0);
+			} while (dt > 0);
 
-			// set loaded bullets' location to their parent.
-			for (Bullet loadedBullet : getAllLoadedBullets()) {
-				loadedBullet.setPosition(loadedBullet.getMotherShip().getPosition());
-			}
+			// run evolve script on all entities
+			for (Entity entity : entities)
+				entity.evolve(originalDt);
+			
 
 		} catch (EntitiesOverlapException | NoWorldException ex) { // this should never happen, not user input fault if it happens but code fault.
 			throw new RuntimeException(ex);

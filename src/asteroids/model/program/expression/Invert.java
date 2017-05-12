@@ -8,8 +8,8 @@ public class Invert extends Condition {
 
 	private final Expression expression;
 	
-	public <T extends Expression & ICondition> Invert(T expression) {
-		super();
+	public <T extends Expression & ICondition> Invert(T expression) throws ProgramException {
+		super(expression);
 		this.expression = expression;
 	}
 
@@ -22,5 +22,14 @@ public class Invert extends Condition {
 		else
 			throw new NotInvertableException("Cannot get negative of expression because expression is not a number.");
 	}
-
+	
+	@Override
+	public boolean step(Program program) throws ProgramException {
+		return expression.step(program);
+	}
+	
+	@Override
+	public double getRequiredTime() {
+		return expression.getRequiredTime();
+	}
 }

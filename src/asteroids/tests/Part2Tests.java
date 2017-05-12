@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.InvalidTimeException;
@@ -463,7 +464,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testIsLoadedInParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
+	public void testIsLoadedInParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidParentShipException {
 		World world = new World(500, 600);
 		Ship ship = new Ship(50, 50, 2, 2, 20, 2, 2);
 		world.addEntity(ship);

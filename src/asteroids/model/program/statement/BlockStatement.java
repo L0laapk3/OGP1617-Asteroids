@@ -8,11 +8,11 @@ public class BlockStatement extends Statement {
 	protected int i = 0;
 	public final boolean isEmpty;
 	
-	public BlockStatement() {
+	public BlockStatement() throws ProgramException {
 		super();
 		isEmpty = true;
 	}
-	public BlockStatement(Statement... statements) {
+	public BlockStatement(Statement... statements) throws ProgramException {
 		super(statements);
 		isEmpty = false;
 	}
@@ -31,8 +31,6 @@ public class BlockStatement extends Statement {
 	public double getRequiredTime() {
 		if (isEmpty)
 			return 0;
-		System.out.print("hehe xD ");
-		System.out.println(i);
 		return this.childStatements[i].getRequiredTime();
 	}
 	

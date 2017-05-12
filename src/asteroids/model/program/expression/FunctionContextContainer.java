@@ -9,30 +9,33 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.statement.LoopContextContainer;
 import asteroids.model.program.statement.Statement;
+import asteroids.util.OGUtil;
 
 public abstract class FunctionContextContainer extends LoopContextContainer {
 	
-	protected FunctionContextContainer(Statement... statements) {
+	protected FunctionContextContainer(Statement... statements) throws ProgramException {
 		super(statements);
+		OGUtil.println("im " + this);
 		for (Statement statement : statements)
 			statement.setFunctionContext(this);
 	}
 	
 	@Override
-	public void setFunctionContext(FunctionContextContainer context) { } //dont overwrite context of child classes
+	public void setFunctionContext(FunctionContextContainer context) { OGUtil.println("stopped functioncontext chaining, im " + this); } //dont overwrite context of child classes
 
 	@Override
-	public void doBreak() {
-		throw new RuntimeException(new BadBreakStatementException());
+	public void doBreak() throws BadBreakStatementException {
+		throw new BadBreakStatementException();
 	}
 	
 	
 	protected boolean doReturn = false;
-	protected Object returnValue;
+	private Object returnValue = null;
 	
 	public void doReturn(Object value) {
 		this.doReturn = true;
 		this.returnValue = value;
+		OGUtil.println("registered doreturn " + this.returnValue + " " + this);
 	}
 	
 	public boolean getIsReturned() {
@@ -50,7 +53,15 @@ public abstract class FunctionContextContainer extends LoopContextContainer {
 	
 	@Override
 	public Object evaluate(Program program) throws ProgramException {
-		return returnValue;
+		OGUtil.println("asked return value " + this.doReturn + " " + this.returnValue + " " + this);
+		return this.returnValue;
+	}
+	
+	@Override
+	public void reset(Program program) {
+		super.reset(program);
+		this.returnValue = null;
+		this.doReturn = false;
 	}
 	
 	

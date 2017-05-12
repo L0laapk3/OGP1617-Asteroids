@@ -1,10 +1,11 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.statement.Statement;
 
 public abstract class ContextAwareExpression extends Expression {
 
-	protected ContextAwareExpression(Statement... statements) {
+	protected ContextAwareExpression(Statement... statements) throws ProgramException {
 		super(statements);
 	}
 	
@@ -16,6 +17,7 @@ public abstract class ContextAwareExpression extends Expression {
 	@Override
 	public void setContext(ContextContainer context) {
 		this.variableContext = context;
+		super.setContext(context);
 	}
 
 }

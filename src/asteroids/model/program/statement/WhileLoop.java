@@ -13,7 +13,7 @@ public class WhileLoop extends LoopContextContainer {
 	private boolean nextIsCondition = true;
 	private boolean firstTime = true;
 	
-	public <T extends Expression & ICondition> WhileLoop(T condition, Statement statement) {
+	public <T extends Expression & ICondition> WhileLoop(T condition, Statement statement) throws ProgramException {
 		super((Expression)statement, condition);
 		this.condition = condition;
 		this.statement = statement;

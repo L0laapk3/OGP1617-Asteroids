@@ -14,6 +14,7 @@ import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.InvalidTimeException;
 import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoProgramException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.exceptions.ProgramException;
@@ -1034,6 +1035,8 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 */
 	public List<Object> executeProgram(Ship ship, double dt) throws ModelException {
 		try {
+			if (ship.getProgram() == null)
+				throw new ModelException(new NoProgramException("ship does not have a program assigned to it."));
 			ship.getProgram().run(dt);
 		} catch (ProgramException | InvalidShipException e) {
 			throw new ModelException(e);

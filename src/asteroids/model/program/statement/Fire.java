@@ -4,8 +4,8 @@ import asteroids.exceptions.*;
 import asteroids.model.program.Program;
 
 public class Fire extends Action {
-
-	public Fire() {
+	
+	public Fire() throws ProgramException {
 		super();
 	}
 	

@@ -241,4 +241,20 @@ public class Bullet extends EntityWithConstantDensity {
 	}
 
 
+	/**
+	 * Function that gets called on each entity when world.evolve(dt) gets called.
+	 * @param  dt
+	 * 	       The time that the world has evolved with.
+	 * @effect Sets the position of this bullet to follow the mothership, if the bullet is loaded in that ship.
+	 */
+	@Raw
+	@Override
+	void evolve(double dt) {
+		if (this.isLoadedInMotherShip())
+			this.setPosition(this.getMotherShip().getPosition());
+	}
 }
+
+
+
+

@@ -6,7 +6,7 @@ import asteroids.model.program.statement.Statement;
 
 public abstract class Numeric extends Expression implements INumeric {
 
-	public Numeric(Statement... statements) {
+	protected Numeric(Statement... statements) throws ProgramException {
 		super(statements);
 	}
 

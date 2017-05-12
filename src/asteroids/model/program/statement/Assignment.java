@@ -10,7 +10,7 @@ public class Assignment extends ContextAwareExpression {
 	public final String varname;
 	public final Expression expression;
 	
-	public Assignment(String varname, Expression expression) {
+	public Assignment(String varname, Expression expression) throws ProgramException {
 		super(expression);
 		this.varname = varname;
 		this.expression = expression;
@@ -18,6 +18,8 @@ public class Assignment extends ContextAwareExpression {
 
 	@Override
 	public boolean step(Program program) throws ProgramException {
+		if (expression.step(program))
+			return true;
 		this.variableContext.setVariable(varname, expression.evaluate(program));
 		return false;
 	}
@@ -28,6 +30,11 @@ public class Assignment extends ContextAwareExpression {
 	@Override
 	public Object evaluate(Program program) throws ProgramException {
 		throw new ProgramException("Internal program exception: evaluate was called on a statement.");
+	}
+	
+	@Override
+	public double getRequiredTime() {
+		return expression.getRequiredTime();
 	}
 
 }

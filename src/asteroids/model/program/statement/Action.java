@@ -1,8 +1,10 @@
 package asteroids.model.program.statement;
 
+import asteroids.exceptions.ProgramException;
+
 public abstract class Action extends Statement {
 	
-	protected Action(Statement... statements) {
+	protected Action(Statement... statements) throws ProgramException {
 		super(statements);
 	}
 

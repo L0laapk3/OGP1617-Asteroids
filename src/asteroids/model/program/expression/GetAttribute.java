@@ -3,6 +3,7 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
 import asteroids.model.program.Program;
+import asteroids.util.OGUtil;
 
 public class GetAttribute extends Numeric {
 
@@ -21,7 +22,7 @@ public class GetAttribute extends Numeric {
 	
 	public final Expression expression;
 	
-	public <T extends Expression & IEntity> GetAttribute(Attribute attribute, T expression) {
+	public <T extends Expression & IEntity> GetAttribute(Attribute attribute, T expression) throws ProgramException {
 		super(expression);
 		this.expression = expression;
 		this.attribute = attribute;
@@ -31,6 +32,7 @@ public class GetAttribute extends Numeric {
 	public Double evaluate(Program program) throws ProgramException {
 		
 		Entity entity = ((EntityExpression)expression).evaluate(program);
+		OGUtil.println("getattribute " + entity + " " + attribute);
 		
 		switch(attribute) {
 		case DIRECTION:	return entity.getVelocityVector().getRotation();
@@ -43,7 +45,16 @@ public class GetAttribute extends Numeric {
 		case WEIGHT:	return entity.getMass();
 		default:		return null;
 		}
-		
+	}
+	
+	@Override
+	public boolean step(Program program) throws ProgramException {
+		return expression.step(program);
+	}
+	
+	@Override
+	public double getRequiredTime() {
+		return expression.getRequiredTime();
 	}
 
 }

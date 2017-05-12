@@ -5,7 +5,7 @@ import asteroids.model.program.statement.Statement;
 
 public abstract class Expression extends Statement {
 	
-	public Expression(Statement... statements) {
+	public Expression(Statement... statements) throws ProgramException {
 		super(statements);
 	}
 

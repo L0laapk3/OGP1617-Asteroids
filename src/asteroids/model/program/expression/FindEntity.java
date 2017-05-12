@@ -20,7 +20,8 @@ public class FindEntity extends EntityExpression {
 	
 	public final Filter filter;
 
-	public FindEntity(Filter filter) {
+	public FindEntity(Filter filter) throws ProgramException {
+		super();
 		this.filter = filter;
 	}
 	

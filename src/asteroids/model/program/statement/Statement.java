@@ -1,17 +1,25 @@
 package asteroids.model.program.statement;
 
+import asteroids.exceptions.NullStatementException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.ContextContainer;
 import asteroids.model.program.expression.FunctionContextContainer;
-import asteroids.part3.programs.SourceLocation;
+import asteroids.util.OGUtil;
 
 public abstract class Statement {
 	
 	protected final Statement[] childStatements;
 	
 	//TODO: zien ofda alle subclasses wel super() callen bij create
-	protected Statement(Statement... childStatements) {
+	protected Statement(Statement... childStatements) throws ProgramException {
+		OGUtil.print("creating " + this + " with children: ");
+		for (Statement statement : childStatements) {
+			if (statement == null)
+				throw new NullStatementException();
+			OGUtil.print(statement + " ");
+		}
+		OGUtil.println("");
 		this.childStatements = childStatements;
 	}
 	
@@ -29,7 +37,7 @@ public abstract class Statement {
 			statement.setLoopContext(context);
 	}
 	public void setFunctionContext(FunctionContextContainer context) { 
-		for (Statement statement : getChildStatements())
+		for (Statement statement : getChildStatements()) 
 			statement.setFunctionContext(context);
 	}
 	protected void reset(Program program) {

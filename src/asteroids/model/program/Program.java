@@ -8,6 +8,7 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.Ship;
 import asteroids.model.program.expression.FunctionContainer;
 import asteroids.model.program.statement.Statement;
+import asteroids.util.OGUtil;
 
 
 
@@ -30,7 +31,7 @@ public class Program {
 	private Ship ship = null;
 
 	public Ship getShip() throws InvalidShipException {
-		if (getShip() == null)
+		if (ship == null)
 			throw new InvalidShipException();
 		return ship;
 	}
@@ -41,8 +42,9 @@ public class Program {
 		this.ship = ship;
 	}
 	
-	public Program(Statement statement) {
+	public Program(Statement statement) throws ProgramException {
 		main = new FunctionContainer(statement);
+		OGUtil.println("program functioncontainer is: " + main);
 	}
 	
 	

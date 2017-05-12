@@ -1,10 +1,11 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.statement.Statement;
 
 public abstract class FunctionContextAwareExpression extends LoopContextAwareExpression {
 
-	protected FunctionContextAwareExpression(Statement... statements) {
+	protected FunctionContextAwareExpression(Statement... statements) throws ProgramException {
 		super(statements);
 	}
 	
@@ -15,5 +16,6 @@ public abstract class FunctionContextAwareExpression extends LoopContextAwareExp
 	
 	public void setFunctionContext(FunctionContextContainer context) {
 		this.functionContext = context;
+		super.setFunctionContext(context);
 	}
 }
