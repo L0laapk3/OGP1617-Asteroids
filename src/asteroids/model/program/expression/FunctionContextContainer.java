@@ -7,16 +7,17 @@ import java.util.Map;
 import asteroids.exceptions.BadBreakStatementException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.IStatement;
 import asteroids.model.program.statement.LoopContextContainer;
 import asteroids.model.program.statement.Statement;
 import asteroids.util.OGUtil;
 
-public abstract class FunctionContextContainer extends LoopContextContainer {
+public abstract class FunctionContextContainer extends LoopContextContainer implements IExpression<Object> {
 	
-	protected FunctionContextContainer(Statement... statements) throws ProgramException {
+	protected FunctionContextContainer(IStatement... statements) throws ProgramException {
 		super(statements);
 		OGUtil.println("im " + this);
-		for (Statement statement : statements)
+		for (IStatement statement : statements)
 			statement.setFunctionContext(this);
 	}
 	
@@ -72,10 +73,12 @@ public abstract class FunctionContextContainer extends LoopContextContainer {
 	public Object getArgument(String name) {
 		if (arguments.containsKey(name))
 			return arguments.get(name);
+		OGUtil.println("getArgument no key: " + name);
 		return null;
 	}
 	
 	public void setArgument(String name, Object value) {
+		OGUtil.println("setArgument: " + name + " " + value );
 		arguments.put(name, value);
 	}
 	

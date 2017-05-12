@@ -5,6 +5,7 @@ import java.util.List;
 
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.ProgramException;
+import asteroids.exceptions.TooLongWithoutYieldingException;
 import asteroids.model.Ship;
 import asteroids.model.program.expression.FunctionContainer;
 import asteroids.model.program.statement.Statement;
@@ -16,6 +17,8 @@ import asteroids.util.OGUtil;
 
 public class Program {
 
+	private static final int MAX_STEPS_IN_ONE_CYCLE = 50; //100000;
+	
 	private boolean completed = false;
 	
 	public boolean isCompleted() {
@@ -51,6 +54,7 @@ public class Program {
 	private double totalTime = 0;
 	private double totalTimeTruncated = 0;
 	public void run(double dt) throws ProgramException, InvalidShipException {
+		int i = 0;
 		if (ship == null)
 			throw new InvalidShipException("Cannot run program, no ship assigned.");
 		totalTime += dt;
@@ -60,6 +64,8 @@ public class Program {
 			totalTimeTruncated += requiredTime;
 			if (!completed)
 				requiredTime = main.getRequiredTime();
+			if (i++ > MAX_STEPS_IN_ONE_CYCLE)
+				throw new TooLongWithoutYieldingException();
 		}
 	}
 	

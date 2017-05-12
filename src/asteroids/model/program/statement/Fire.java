@@ -3,7 +3,7 @@ package asteroids.model.program.statement;
 import asteroids.exceptions.*;
 import asteroids.model.program.Program;
 
-public class Fire extends Action {
+public class Fire extends Statement implements IAction {
 	
 	public Fire() throws ProgramException {
 		super();

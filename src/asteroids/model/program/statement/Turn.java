@@ -5,26 +5,18 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.*;
 
-public class Turn extends Action {
-
-	public final Expression angleExpression;
+public class Turn extends SingleContainerStatement<IExpression<? extends Double>> implements IAction {
 	
-	public <T extends Expression & INumeric> Turn(T angleExpression) throws ProgramException {
+	public Turn(IExpression<? extends Double> angleExpression) throws ProgramException {
 		super(angleExpression);
-		this.angleExpression = angleExpression;
 	}
 	
-	private boolean done = false;
+	
 	
 	@Override
-	public boolean step(Program program) throws ProgramException {
-		if (!done) {
-			if (!angleExpression.step(program))
-				done = true;
-			return true;
-		}
+	public boolean selfStep(Program program) throws ProgramException {
 		try {
-			program.getShip().turn(((Expression & INumeric)angleExpression).evaluate(program));
+			program.getShip().turn(statement.evaluate(program));
 		} catch (InvalidShipException e) {
 			throw new ProgramException(e);
 		}
@@ -32,16 +24,8 @@ public class Turn extends Action {
 	}
 	
 	@Override
-	public void reset(Program program) {
-		super.reset(program);
-		done = false;
-	}
-	
-	@Override
-	public double getRequiredTime() {
-		if (done)
-			return super.getRequiredTime();
-		return angleExpression.getRequiredTime();
+	public double selfGetRequiredTime() {
+		return IAction.super.getRequiredTime();
 	}
 
 }

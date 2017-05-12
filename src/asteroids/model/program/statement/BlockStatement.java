@@ -12,7 +12,7 @@ public class BlockStatement extends Statement {
 		super();
 		isEmpty = true;
 	}
-	public BlockStatement(Statement... statements) throws ProgramException {
+	public BlockStatement(IStatement... statements) throws ProgramException {
 		super(statements);
 		isEmpty = false;
 	}
@@ -36,7 +36,7 @@ public class BlockStatement extends Statement {
 	
 	
 	@Override
-	protected void reset(Program program) {
+	public void reset(Program program) {
 		i = 0;
 		super.reset(program);
 	}

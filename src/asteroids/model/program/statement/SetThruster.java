@@ -3,29 +3,19 @@ package asteroids.model.program.statement;
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.Expression;
-import asteroids.model.program.expression.ICondition;
+import asteroids.model.program.expression.IExpression;
 
-public class SetThruster extends Action {
-	
-	public final Expression state;
+public class SetThruster extends SingleContainerStatement<IExpression<? extends Boolean>> implements IAction {
 
-	public <T extends Expression & ICondition> SetThruster(T state) throws ProgramException {
+	public SetThruster(IExpression<? extends Boolean> state) throws ProgramException {
 		super(state);
-		this.state = state;
 	}
 	
-	private boolean done = false;
 	
 	@Override
-	public boolean step(Program program) throws ProgramException {
-		if (!done) {
-			if (!state.step(program))
-				done = true;
-			return true;
-		}
+	public boolean selfStep(Program program) throws ProgramException {
 		try {
-			program.getShip().setThruster(((Expression & ICondition)state).evaluate(program));
+			program.getShip().setThruster(this.statement.evaluate(program));
 		} catch (InvalidShipException e) {
 			throw new ProgramException(e);
 		}
@@ -33,16 +23,8 @@ public class SetThruster extends Action {
 	}
 	
 	@Override
-	public void reset(Program program) {
-		super.reset(program);
-		done = false;
-	}
-	
-	@Override
-	public double getRequiredTime() {
-		if (done)
-			return super.getRequiredTime();
-		return state.getRequiredTime();
+	public double selfGetRequiredTime() {
+		return 0;
 	}
 
 }

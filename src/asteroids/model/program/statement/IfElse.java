@@ -2,20 +2,19 @@ package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.ContextContainer;
-import asteroids.model.program.expression.Expression;
-import asteroids.model.program.expression.ICondition;
+import asteroids.model.program.expression.VariableContextContainer;
+import asteroids.model.program.expression.IExpression;
 import asteroids.util.OGUtil;
 
-public class IfElse extends ContextContainer {
+public class IfElse extends VariableContextContainer {
 	
-	private Expression condition;
-	private Statement onTrue;
-	private Statement onFalse;
+	private IExpression<? extends Boolean> condition;
+	private IStatement onTrue;
+	private IStatement onFalse;
 	private boolean conditionDone = false;
 	private boolean conditionResult;
 
-	public <T extends Expression & ICondition> IfElse(T condition2, Statement ifBody, Statement elseBody) throws ProgramException {
+	public IfElse(IExpression<? extends Boolean> condition2, IStatement ifBody, IStatement elseBody) throws ProgramException {
 		super(ifBody, elseBody, condition2);
 		OGUtil.println("if statement " + condition2 + " " + ifBody + " " + elseBody);
 		this.onTrue = ifBody;
@@ -38,7 +37,7 @@ public class IfElse extends ContextContainer {
 	}
 	
 	@Override
-	protected void reset(Program program) {
+	public void reset(Program program) {
 		if (conditionDone) {
 			if (conditionResult)
 				onTrue.reset(program);

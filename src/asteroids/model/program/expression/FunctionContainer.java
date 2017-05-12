@@ -2,13 +2,13 @@ package asteroids.model.program.expression;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.Statement;
+import asteroids.model.program.statement.IStatement;
 import asteroids.util.OGUtil;
 
 public class FunctionContainer extends FunctionContextContainer {
 	
-	public final Statement statement;
-	public FunctionContainer(Statement statement) throws ProgramException {
+	public final IStatement statement;
+	public FunctionContainer(IStatement statement) throws ProgramException {
 		super(statement);
 		this.statement = statement;
 	}

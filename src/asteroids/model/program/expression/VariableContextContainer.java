@@ -6,23 +6,22 @@ import java.util.Map;
 import asteroids.exceptions.BadClassAssignmentException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.IStatement;
 import asteroids.model.program.statement.Statement;
-import asteroids.util.OGUtil;
 
-public abstract class ContextContainer extends ContextAwareExpression {
+public abstract class VariableContextContainer extends Statement {
 	
-	protected ContextContainer selfContext = null;
+	protected VariableContextContainer selfContext = null;
 	
-	protected ContextContainer(Statement... statements) throws ProgramException {
+	protected VariableContextContainer(IStatement... statements) throws ProgramException {
 		super(statements);
-		for (Statement statement : statements) {
-			OGUtil.println("setContext: " + statement);
+		for (IStatement statement : statements) {
 			statement.setContext(this);
 		}
 	}
 
 	@Override
-	public void setContext(ContextContainer context) { //dont overwrite context of child classes, instead save to selfContext
+	public void setContext(VariableContextContainer context) { //dont overwrite context of child classes, instead save to selfContext
 		selfContext = context;
 	}
 
@@ -30,7 +29,7 @@ public abstract class ContextContainer extends ContextAwareExpression {
 	
 	private Map<String, Object> variables = new HashMap<String, Object>();
 	
-	protected void reset(Program program) {
+	public void reset(Program program) {
 		variables.clear();
 		super.reset(program);
 	}
@@ -48,10 +47,5 @@ public abstract class ContextContainer extends ContextAwareExpression {
 		if (variables.containsKey(name) && variables.get(name).getClass() != value.getClass())
 			throw new BadClassAssignmentException();
 		variables.put(name, value);
-	}
-
-	public Object evaluate(Program program) throws ProgramException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

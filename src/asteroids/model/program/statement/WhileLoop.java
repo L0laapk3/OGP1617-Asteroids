@@ -2,29 +2,31 @@ package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.Expression;
-import asteroids.model.program.expression.ICondition;
+import asteroids.model.program.expression.IExpression;
 
 public class WhileLoop extends LoopContextContainer {
 
-	private Expression condition;
-	private Statement statement;
+	private IExpression<? extends Boolean> condition;
+	private IStatement statement;
 	
 	private boolean nextIsCondition = true;
 	private boolean firstTime = true;
 	
-	public <T extends Expression & ICondition> WhileLoop(T condition, Statement statement) throws ProgramException {
-		super((Expression)statement, condition);
+	public WhileLoop(IExpression<? extends Boolean> condition, IStatement body) throws ProgramException {
+		super(body, condition);
 		this.condition = condition;
-		this.statement = statement;
-	}
+		this.statement = body;
+	} 
 
 	
 	public boolean step(Program program) throws ProgramException {
+		boolean step = condition.step(program);
+		System.out.println(nextIsCondition + " " + step);
 		if (nextIsCondition) {
-			if (condition.step(program))
+			if (step)
 				return true;
 			nextIsCondition = false;
+			System.out.println(this.condition.evaluate(program));
 			return (boolean)this.condition.evaluate(program);
 		}
 		if(!statement.step(program)) {
@@ -40,7 +42,7 @@ public class WhileLoop extends LoopContextContainer {
 	
 
 	@Override
-	protected void reset(Program program) {
+	public void reset(Program program) {
 		nextIsCondition = true;
 		firstTime = true;
 		super.reset(program);
@@ -52,11 +54,5 @@ public class WhileLoop extends LoopContextContainer {
 		if (nextIsCondition)
 			return condition.getRequiredTime();
 		return statement.getRequiredTime();
-	}
-	
-
-	@Override
-	public Object evaluate(Program program) throws ProgramException {
-		throw new ProgramException("Internal program exception: evaluate was called on a statement.");
 	}
 }

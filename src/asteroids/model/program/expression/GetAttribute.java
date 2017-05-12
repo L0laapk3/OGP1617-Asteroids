@@ -3,9 +3,10 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.SingleContainerStatement;
 import asteroids.util.OGUtil;
 
-public class GetAttribute extends Numeric {
+public class GetAttribute extends SingleContainerStatement<IExpression<? extends Entity>> implements IExpression<Double> {
 
 	public enum Attribute {
 		X,
@@ -20,18 +21,15 @@ public class GetAttribute extends Numeric {
 	
 	public final Attribute attribute;
 	
-	public final Expression expression;
-	
-	public <T extends Expression & IEntity> GetAttribute(Attribute attribute, T expression) throws ProgramException {
+	public GetAttribute(Attribute attribute, IExpression<? extends Entity> expression) throws ProgramException {
 		super(expression);
-		this.expression = expression;
 		this.attribute = attribute;
 	}
 	
 	@Override
 	public Double evaluate(Program program) throws ProgramException {
 		
-		Entity entity = ((EntityExpression)expression).evaluate(program);
+		Entity entity = statement.evaluate(program);
 		OGUtil.println("getattribute " + entity + " " + attribute);
 		
 		switch(attribute) {
@@ -46,15 +44,4 @@ public class GetAttribute extends Numeric {
 		default:		return null;
 		}
 	}
-	
-	@Override
-	public boolean step(Program program) throws ProgramException {
-		return expression.step(program);
-	}
-	
-	@Override
-	public double getRequiredTime() {
-		return expression.getRequiredTime();
-	}
-
 }

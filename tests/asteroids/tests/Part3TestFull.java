@@ -43,7 +43,7 @@ public class Part3TestFull {
 	
 	@AfterClass
 	public static void tearDownAfterClass() {
-		System.out.println("Score: " + score + "/" + max_score);
+		System.out.println("Score: " + score + "/" + max_score + " (" + Math.round(100000 * score / max_score) / 1000 + "%)");
 	}
 
 	@Before
@@ -1732,7 +1732,7 @@ public class Part3TestFull {
 	public void testTurnStatement_InvalidAngle() throws ModelException {
 		max_score += 5;
 		try {
-			String code = 
+			String code = //TODO: in de opgave zien ofda da wel echt niet mag...
 				"turn 10.0; 												" + 
 				"print 0.4; ";
 			facade.turn(ship1, 1.5);
@@ -2024,8 +2024,8 @@ public class Part3TestFull {
 				"  while 1.5 < a { 												" + 
 				"    t := t + (a*sumfac(a + -1.0));												" + 
 				"    a := a + -1.0; 												" + 
-				"  }"
-				+ "  return t; 												" + 
+				"  }                                                                " +
+				"  return t; 												" + 
 				"} 												" + 
 				"print sumfac(4.0); ";
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
