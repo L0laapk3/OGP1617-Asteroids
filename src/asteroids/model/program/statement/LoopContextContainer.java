@@ -10,6 +10,11 @@ public abstract class LoopContextContainer<T extends IStatement> extends Variabl
 	@SafeVarargs
 	protected LoopContextContainer(T... statements) throws ProgramException {
 		super(statements);
+	}
+	
+	@Override
+	protected void initChildsContext() {
+		super.initChildsContext();
 		for (T statement : statements)
 			statement.setLoopContext(this);
 	}
@@ -28,5 +33,4 @@ public abstract class LoopContextContainer<T extends IStatement> extends Variabl
 	public boolean step(Program program) throws ProgramException {
 		return !doBreak;
 	}
-	
 }

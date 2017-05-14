@@ -17,7 +17,7 @@ public class ReadVariable extends Statement implements IExpression<Object>, IVar
 	}
 	
 	public Object evaluate(Program program) throws ProgramException {
-		System.out.println(this.variableContext);
+		System.out.println("reading " + varname + "; result: " + this.variableContext.getVariable(varname));
 		return this.variableContext.getVariable(varname);
 	}
 	

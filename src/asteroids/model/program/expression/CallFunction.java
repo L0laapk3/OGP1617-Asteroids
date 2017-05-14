@@ -7,6 +7,7 @@ import asteroids.model.program.statement.FunctionContainer;
 import asteroids.model.program.statement.IStatement;
 import asteroids.model.program.statement.IVariableContextAwareStatement;
 import asteroids.model.program.statement.VariableContextContainer;
+import asteroids.util.OGUtil;
 
 
 //TODO: callfunction moet eigenlijk heel die functie shit clonen denk ik
@@ -32,16 +33,20 @@ public class CallFunction extends MultiContainerExpression<Object> implements IE
 		if (!(variable instanceof FunctionContainer))
 			throw new NotAFunctionException();
 		function = new FunctionContainer((FunctionContainer)variable, this.getVariableContext());
+		OGUtil.println("loaded function " + function + " from " + this);
+		function.recursivePrint();
 		iArgument = 0;
 	}
 	
 	@Override
 	public boolean selfStep(Program program) throws ProgramException {
+		OGUtil.println(this + " " + iArgument + " " + function);
 		if (function == null) {
 			loadFunction();
 			return true;
 		} else if (iArgument < statements.length) { //not done yet with computing the arguments!
-			function.setArgument("$" + (iArgument + 1), statements[iArgument++].evaluate(program));
+			while (iArgument < statements.length)
+				function.setArgument("$" + (iArgument + 1), getResult(iArgument++));
 			return true;
 		}
 		boolean result = function.step(program);

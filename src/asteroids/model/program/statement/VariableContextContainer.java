@@ -14,7 +14,11 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 	@SafeVarargs
 	protected VariableContextContainer(T... statements) throws ProgramException {
 		super(statements);
-		for (T statement : statements)
+		initChildsContext();
+	}
+	
+	protected void initChildsContext() {
+		for (IStatement statement : statements)
 			statement.setContext(this);
 	}
 
@@ -33,17 +37,47 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 	}
 	
 	public Object getVariable(String name) {
-		if (variables.containsKey(name))
+		//OGUtil.println("try get " + name + " from " + this);
+		if (variables.containsKey(name)) {
+			//OGUtil.println("get " + name + " from " + this);
 			return variables.get(name);
-		else if (selfContext != null)
+		} else if (selfContext != null)
 			return selfContext.getVariable(name);
 		else
 			return null;
 	}
 	
+	
+	
+	protected boolean setIfContains(String name, Object value) throws BadClassAssignmentException {
+		//OGUtil.println("try put " + name + " in " + this);
+		if (variables.containsKey(name)) {
+			if (variables.get(name).getClass() != value.getClass())
+				throw new BadClassAssignmentException();
+			else {
+				//OGUtil.println("put " + name + " to " + this);
+				variables.put(name, value);
+				return true;
+			}
+		} else if (selfContext != null)
+			return selfContext.setIfContains(name, value);
+		else
+			return false;
+	}
+	
 	public void setVariable(String name, Object value) throws BadClassAssignmentException {
-		if (variables.containsKey(name) && variables.get(name).getClass() != value.getClass())
-			throw new BadClassAssignmentException();
-		variables.put(name, value);
+		if (!setIfContains(name, value)) {
+			variables.put(name, value);
+			//OGUtil.println("put " + name + " to " + this);
+		}
+	}
+	
+	
+	
+	@Override
+	public VariableContextContainer<T> clone() {
+		VariableContextContainer<T> n = (VariableContextContainer<T>)super.clone();
+		n.initChildsContext();
+		return n;
 	}
 }

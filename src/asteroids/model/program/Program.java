@@ -9,6 +9,7 @@ import asteroids.exceptions.TooLongWithoutYieldingException;
 import asteroids.model.Ship;
 import asteroids.model.program.statement.FunctionContainer;
 import asteroids.model.program.statement.IStatement;
+import asteroids.util.OGUtil;
 
 
 
@@ -16,7 +17,7 @@ import asteroids.model.program.statement.IStatement;
 
 public class Program {
 
-	private static final int MAX_STEPS_IN_ONE_CALL = 1000; //1000-10000;
+	private static final int MAX_STEPS_IN_ONE_CALL = 15; //1000-10000;
 	
 	private boolean completed = false;
 	
@@ -47,25 +48,8 @@ public class Program {
 	public Program(IStatement statement) throws ProgramException {
 		main = new FunctionContainer(statement);
 		System.out.println("\n\n\n------------------------------------\n");
-		System.out.println(this.getClass().getSimpleName() + "@" + Integer.toHexString(this.hashCode()));
-		recursivePrint(main, 0, new ArrayList<Integer>());
+		main.recursivePrint();
 		System.out.println("\n------------------------------------\n\n\n");
-	}
-	private void recursivePrint(IStatement statement, int level, List<Integer> childrenLeft) {
-		String string = level == 0 ? "  \\_" : "    ";
-		for (int i = 0; i < level ; i++)
-			if (i + 1 == level)
-				string += childrenLeft.get(i) > 0 ? "  |_" : "  \\_";
-			else
-				string += childrenLeft.get(i) > 0 ? "  | " : "    ";
-		if (childrenLeft.size() <= level)
-			childrenLeft.add(null);
-		childrenLeft.set(level, statement.getChildStatements().length);
-		System.out.println(string + statement.getClass().getSimpleName() + "@" + Integer.toHexString(statement.hashCode()));
-		for (IStatement child : statement.getChildStatements()) {
-			childrenLeft.set(level, childrenLeft.get(level) - 1);
-			recursivePrint(child, level + 1, childrenLeft);
-		}
 	}
 	
 	
@@ -78,6 +62,7 @@ public class Program {
 		totalTime += dt;
 		double requiredTime = main.getRequiredTime();
 		while (requiredTime + totalTimeTruncated <= totalTime && !completed) {
+			OGUtil.println("\n--------------- STEP -----------------\n");
 			try {
 				completed = !main.step(this) || main.getIsReturned();
 			} catch (ClassCastException e) {

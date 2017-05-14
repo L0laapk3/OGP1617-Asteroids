@@ -2047,6 +2047,7 @@ public class Part3TestFull {
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 0.3);
+		System.out.println(results);
 		Object[] expecteds = { 1155.0 };
 		assertArrayEquals(expecteds, results.toArray());
 		score += 20;
@@ -2065,7 +2066,7 @@ public class Part3TestFull {
 				"  }                                                                " +
 				"  return t; 												" + 
 				"} 												" + 
-				"print sumfac(4.0); ";
+				"print sumfac(4.0);";
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 0.3);

@@ -1,7 +1,11 @@
 package asteroids.model.program.statement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.util.OGUtil;
 
 public interface IStatement extends Cloneable {
 	
@@ -30,4 +34,31 @@ public interface IStatement extends Cloneable {
 	public default double selfGetRequiredTime() throws ProgramException { return 0; }
 	
 	public abstract IStatement clone();
+	
+	
+	
+
+	public default void recursivePrint() {
+		if (!OGUtil.VERBOSE)
+			return;
+		StackTraceElement head = new Exception().getStackTrace()[1];
+		System.out.println(head);
+		__recursivePrint(this, 0, new ArrayList<Integer>());
+	}
+	default void __recursivePrint(IStatement statement, int level, List<Integer> childrenLeft) {
+		String string = level == 0 ? "  \\_" : "    ";
+		for (int i = 0; i < level ; i++)
+			if (i + 1 == level)
+				string += childrenLeft.get(i) > 0 ? "  |_" : "  \\_";
+			else
+				string += childrenLeft.get(i) > 0 ? "  | " : "    ";
+		if (childrenLeft.size() <= level)
+			childrenLeft.add(null);
+		childrenLeft.set(level, statement.getChildStatements().length);
+		System.out.println(string + statement);
+		for (IStatement child : statement.getChildStatements()) {
+			childrenLeft.set(level, childrenLeft.get(level) - 1);
+			__recursivePrint(child, level + 1, childrenLeft);
+		}
+	}
 }

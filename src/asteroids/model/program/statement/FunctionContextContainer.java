@@ -16,13 +16,17 @@ public abstract class FunctionContextContainer<T extends IStatement> extends Loo
 	@SafeVarargs
 	protected FunctionContextContainer(T... statements) throws ProgramException {
 		super(statements);
-		OGUtil.println("im " + this);
+	}
+	
+	@Override
+	protected void initChildsContext() {
+		super.initChildsContext();
 		for (IStatement statement : statements)
 			statement.setFunctionContext(this);
 	}
 	
 	@Override
-	public void setFunctionContext(FunctionContextContainer<? extends IStatement> context) { OGUtil.println("stopped functioncontext chaining, im " + this); } //dont overwrite context of child classes
+	public void setFunctionContext(FunctionContextContainer<? extends IStatement> context) { } //dont overwrite context of child classes
 
 	@Override
 	public void doBreak() throws BadBreakStatementException {
@@ -49,6 +53,7 @@ public abstract class FunctionContextContainer<T extends IStatement> extends Loo
 	
 	@Override
 	public boolean step(Program program) throws ProgramException {
+		OGUtil.println(this + " step");
 		return !doReturn;
 	}
 	
