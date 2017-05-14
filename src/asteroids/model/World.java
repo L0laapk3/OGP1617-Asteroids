@@ -299,12 +299,12 @@ public class World extends Instance {
 			throw new IllegalEntityException();
 		}
 		
-		if (entity.getWorld() != null) {
-			return;
-		}
-		
 		if (entities.contains(entity)) {
 			throw new DoubleEntityException();
+		}
+		
+		if (entity.getWorld() != null) {
+			return;
 		}
 
 		for (Entity entityToCheck : entities) {

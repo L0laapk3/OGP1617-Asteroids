@@ -5,6 +5,7 @@ import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoMotherShipException;
+import asteroids.exceptions.NotOverlapException;
 import asteroids.util.OGUtil;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -49,13 +50,17 @@ public class Bullet extends EntityWithConstantDensity {
 	 * 		   The size of the newly created bullet.
 	 * @param  motherShip
 	 * 		   The mothership of the newly created bullet
+	 * @throws NotOverlapException 
+	 * 		   This exception will be thrown if the bullet and the ship do not overlap.
+	 * @throws RuntimeException 
+	 * @throws NullPointerException 
 	 * @effect This new bullet is initialized as a new Entity with given position, velocity and radius.
 	 * 		 | super(x, y, xVelocity, yVelocity, radius)
 	 * @post   The minimum radius of the bullet is set to MIN_RADIUS_BULLET.
 	 * @post   The mothership of this bullet will be set to the given mothership.
 	 */
 
-	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public Bullet(double x, double y, double xVelocity, double yVelocity, double radius, Ship motherShip) throws InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		super(x, y, xVelocity, yVelocity, radius, RHO_BULLET, MIN_RADIUS_BULLET);	
 
 		
@@ -180,11 +185,11 @@ public class Bullet extends EntityWithConstantDensity {
 	 * @effect ship.triggerHit()
 	 * 		   See @post
 	 * @param  ship
-	 * @throws NullPointerException  
-	 * 		   If ship is null.
+	 * @throws NullPointerException
+	 * @throws RuntimeException 
 	 */
 	@Raw
-	void hit(Ship ship) throws NullPointerException {
+	void hit(Ship ship) throws NullPointerException, RuntimeException {
 		OGUtil.println("---hit---");
 		//OGUtil.println(this.getParent());
 		//OGUtil.println(ship);
@@ -200,9 +205,9 @@ public class Bullet extends EntityWithConstantDensity {
 				System.out.print("de bullets die al geladen zijn: ");
 				System.out.println(ship.getLoadedBullets());
 				ship.loadBullet(this);
-			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen
+			} catch (DoubleEntityException | MisMatchWorldsException | NotOverlapException ex) { //these should never happen
 				System.out.println("fak");
-				throw new RuntimeException(ex);
+				throw new AssertionError(ex);
 			}		
 		else {
 			

@@ -14,6 +14,7 @@ import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.InvalidTimeException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.exceptions.NotOverlapException;
 import asteroids.model.Bullet;
 import asteroids.model.Entity;
 import asteroids.model.Ship;
@@ -336,7 +337,7 @@ public class Part2Tests {
 	// ------------------------AANMAKEN VAN BULLETS
 
 	@Test
-	public void testNewBullet_GivenParameters() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet_GivenParameters() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 
 		Bullet bullet = new Bullet(1, 2, 3, 4, 5, null);
 		assertEquals(1, bullet.getPosition().x, EPSILON);
@@ -347,12 +348,12 @@ public class Part2Tests {
 	}
 
 	@Test(expected = InvalidPositionException.class)
-	public void testNewBullet2InvalidPosition1_XNaN() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet2InvalidPosition1_XNaN() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		new Bullet(Double.NaN, 1, 0, 0, 10, null);
 	}
 
 	@Test(expected = InvalidPositionException.class)
-	public void testNewBullet2InvalidPosition2_XInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet2InvalidPosition2_XInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		new Bullet(Double.POSITIVE_INFINITY, 3, 0, 0, 0, null);
 	}
 
@@ -362,12 +363,12 @@ public class Part2Tests {
 	}
 
 	@Test(expected = InvalidPositionException.class)
-	public void testNewBullet3InvalidPosition4_YInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet3InvalidPosition4_YInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		new Bullet(0, Double.NEGATIVE_INFINITY, 7, 0, 30, null);
 	}
 
 	@Test
-	public void testNewBullet4InvalidVelocity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet4InvalidVelocity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		Ship ship1 = new Ship(100, 6, -1, 6, 11, Math.PI / 2, 1);
 		Bullet bullet1 = new Bullet(0, 4, Double.NaN, 0, 34, ship1);
 		assertTrue(bullet1.getVelocityVector().pythagoras() - EPSILON < bullet1.getMaxSpeed());
@@ -385,17 +386,17 @@ public class Part2Tests {
 	// with valid parameters
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testNewBullet5InvalidRadius1_RadNaN() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet5InvalidRadius1_RadNaN() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		new Bullet(0, 0, 0, 0, Double.NaN, null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testNewBullet5InvalidRadius2_RadInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet5InvalidRadius2_RadInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		new Bullet(0, 0, 0, 0, Double.NEGATIVE_INFINITY, null);
 	}
 
 	@Test(expected = InvalidRadiusException.class)
-	public void testNewBullet5InvalidRadius3_RadNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testNewBullet5InvalidRadius3_RadNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		new Bullet(0, 0, 0, 0, -15, null);
 	}
 
@@ -407,27 +408,27 @@ public class Part2Tests {
 	// ----------------TESTS FUNCTIONS BULLETS
 
 	@Test
-	public void testGetPositionBullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testGetPositionBullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(3, -5, 0, 0, 451, null);
 		assertEquals(bullet.getPosition().x, 3, EPSILON);
 		assertEquals(bullet.getPosition().y, -5, EPSILON);
 	}
 
 	@Test
-	public void testGetVelocityBullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testGetVelocityBullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(3, -5, 0, 0, 487, null);
 		assertEquals(bullet.getPosition().x, 3, EPSILON);
 		assertEquals(bullet.getPosition().y, -5, EPSILON);
 	}
 
 	@Test
-	public void testGetRadiusBullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testGetRadiusBullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(3, 2, -3, -3, 15.73, null);
 		assertEquals(bullet.getRadius(), 15.73, EPSILON);
 	}
 
 	@Test
-	public void testMove1Bullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
+	public void testMove1Bullet() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(7, -3, 2, -87, 100, null);
 		World world = new World(1000, 1000);
 		world.addEntity(bullet);
@@ -440,7 +441,7 @@ public class Part2Tests {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testMove2Bullet_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
+	public void testMove2Bullet_MoveInfinity() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(7, -3, 2, -87, 100, null);
 		World world = new World(1000, 1000);
 		world.addEntity(bullet);
@@ -448,7 +449,7 @@ public class Part2Tests {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testMove3Bullet_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
+	public void testMove3Bullet_MoveNegatif() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(7, -3, 2, -87, 100, null);
 		World world = new World(1000, 1000);
 		world.addEntity(bullet);
@@ -456,7 +457,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testIsLoadedInParent1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testIsLoadedInParent1() throws InvalidRadiusException, InvalidPositionException, NullPointerException, RuntimeException, NotOverlapException {
 		Ship ship = new Ship(5, 5, 1, 1, 15, 1, 1);
 		Bullet bullet = new Bullet(3, 2, 1, 5, 10, ship);
 		ship.loadBullet(bullet);
@@ -464,7 +465,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testIsLoadedInParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidParentShipException {
+	public void testIsLoadedInParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidParentShipException, NullPointerException, NotOverlapException {
 		World world = new World(500, 600);
 		Ship ship = new Ship(50, 50, 2, 2, 20, 2, 2);
 		world.addEntity(ship);
@@ -474,7 +475,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testAddToParent1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException {
+	public void testAddToParent1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, NullPointerException, NotOverlapException {
 		World world = new World(5000, 6000);
 		Ship ship = new Ship(400, 500, 9, 8, 60, 0, 0);
 		world.addEntity(ship);
@@ -483,7 +484,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testAddToParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
+	public void testAddToParent2() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, NullPointerException, NotOverlapException {
 		Bullet bullet = new Bullet(3, 2, 1, 5, 10, null);
 		assertEquals(bullet.getMotherShip(), null);
 	}
@@ -512,7 +513,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testAddEntity1() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, NotWithinBoundariesException {
+	public void testAddEntity1() throws InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, NullPointerException, RuntimeException, NotOverlapException {
 		World world = new World(1000, 2000);
 		Bullet bullet = new Bullet(10, 20, 3, 4, 5, null);
 		Ship ship = new Ship(100, 200, 300, 400, 50, 6, 7);
@@ -537,7 +538,7 @@ public class Part2Tests {
 
 	@Test(expected = NotWithinBoundariesException.class)
 	public void testAddEntity2()
-			throws IllegalArgumentException, InvalidRadiusException, DoubleEntityException, InvalidPositionException, EntitiesOverlapException, NotWithinBoundariesException {
+			throws IllegalArgumentException, InvalidRadiusException, DoubleEntityException, InvalidPositionException, EntitiesOverlapException, NotWithinBoundariesException, NullPointerException, NotOverlapException {
 		World world = new World(1000, 2000);
 		Bullet bullet = new Bullet(1, 2, 3, 4, 5, null);
 
@@ -546,7 +547,7 @@ public class Part2Tests {
 
 	@Test(expected = DoubleEntityException.class)
 	public void testAddEntity3()
-			throws IllegalArgumentException, DoubleEntityException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, NotWithinBoundariesException {
+			throws IllegalArgumentException, DoubleEntityException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, NotWithinBoundariesException, NullPointerException, NotOverlapException {
 		World world = new World(1000, 2000);
 		Bullet bullet = new Bullet(10, 20, 3, 4, 5, null);
 
@@ -605,7 +606,7 @@ public class Part2Tests {
 	}
 
 	@Test
-	public void testEvolveShipBulletCollision() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException {
+	public void testEvolveShipBulletCollision() throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException, EntitiesOverlapException, InvalidTimeException, NullPointerException, NotOverlapException {
 		World world = new World(1000, 2000);
 		// Bullet bullet = new Bullet(1, 2, 3, 4, 5, null);
 		Ship ship = new Ship(100, 200, 300, 400, 50, 6, 7);
