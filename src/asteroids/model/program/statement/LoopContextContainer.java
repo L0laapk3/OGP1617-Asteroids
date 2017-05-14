@@ -7,6 +7,7 @@ import asteroids.model.program.Program;
 
 public abstract class LoopContextContainer<T extends IStatement> extends VariableContextContainer<T> {
 	
+	
 	@SafeVarargs
 	protected LoopContextContainer(T... statements) throws ProgramException {
 		super(statements);

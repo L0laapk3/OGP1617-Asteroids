@@ -1,7 +1,8 @@
 package asteroids.util;
 
-import asteroids.model.Entity;
-import be.kuleuven.cs.som.annotate.*;
+import be.kuleuven.cs.som.annotate.Immutable;
+import be.kuleuven.cs.som.annotate.Raw;
+import be.kuleuven.cs.som.annotate.Value;
 
 /**
  * A class to define a twodimensional vector.
