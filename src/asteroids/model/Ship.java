@@ -88,7 +88,7 @@ public class Ship extends AdvancedEntity {
 	 */
 	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, orientation, (mass.isNaN() ? calculateBassMass(MIN_RHO, radius) : Math.max(mass, calculateBassMass(MIN_RHO, radius))), SHIP_MIN_RADIUS); //total: if the mass is too low, it will be set to a higher value
+		super(x, y, xVelocity, yVelocity, radius, orientation, (Double.isNaN(mass) ? calculateBassMass(MIN_RHO, radius) : Math.max(mass, calculateBassMass(MIN_RHO, radius))), SHIP_MIN_RADIUS); //total: if the mass is too low, it will be set to a higher value
 	}
 
 
