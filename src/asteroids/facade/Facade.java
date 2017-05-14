@@ -663,6 +663,9 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * boundaries of its world.
 	 */
 	public double[] getPositionCollisionBoundary(Object object) {
+		if (((Entity) object).getWallCollisionPosition() == null) {
+			return null;
+		}
 		return ((Entity) object).getWallCollisionPosition().toProfNotation();
 	}
 

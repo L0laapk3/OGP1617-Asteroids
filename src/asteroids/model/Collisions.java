@@ -26,7 +26,7 @@ public class Collisions {
 	 * +--------------+------------------+------------------------------+---------------+----------+-----------+
 	 */
 	public static void collide(Entity first, Entity second) {
-		if (collideOne(first, second) || collideOne(second, first))
+		if (!collideOne(first, second) && !collideOne(second, first))
 			throw new RuntimeException(new UndefinedCollisionBehaviourException(first, second));
 	}
 	
@@ -38,13 +38,24 @@ public class Collisions {
 		
 		
 		
-		if (first instanceof Bullet)
+		if (((first instanceof Bullet) && (second instanceof Ship) && !(((Bullet)first).getMotherShip() == second))) {
+			System.out.println("hij gaat collideEntity doen");
 			((Bullet)first).collideEntity(second);
+			
+		} else if ((first instanceof Bullet) && !(second instanceof Ship)) {
+			((Bullet)first).collideEntity(second);
+		}
+		
 		else if (first instanceof Ship) {
 			if (second instanceof Ship)
 				Entity.bounce(first, second);
-			else if (second instanceof Bullet)
+			else if (second instanceof Bullet) {
+				System.out.print(second);
+				System.out.print(" gaat hit doen met: ");
+				System.out.println(first);
 				((Bullet)second).hit((Ship)first);
+
+			}
 			else if (second instanceof Asteroid)
 				first.die();
 			else if (second instanceof Planetoid)

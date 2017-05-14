@@ -84,9 +84,9 @@ public class Ship extends AdvancedEntity {
 	 * @throws InvalidRadiusException
 	 *         If the radius is less than MIN_RADIUS.
 	 */
-	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, double mass)
+	public Ship(double x, double y, double xVelocity, double yVelocity, double radius, double orientation, Double mass)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, orientation, Math.max(mass, calculateBassMass(MIN_RHO, radius)), SHIP_MIN_RADIUS); //total: if the mass is too low, it will be set to a higher value
+		super(x, y, xVelocity, yVelocity, radius, orientation, (mass.isNaN() ? calculateBassMass(MIN_RHO, radius) : Math.max(mass, calculateBassMass(MIN_RHO, radius))), SHIP_MIN_RADIUS); //total: if the mass is too low, it will be set to a higher value
 	}
 
 
@@ -112,22 +112,27 @@ public class Ship extends AdvancedEntity {
 	public void loadBullet(Bullet bullet) throws NullPointerException, RuntimeException {
 		if (bullet == null)
 			throw new NullPointerException();
-
-		OGUtil.println("LOAD " + this + " " + bullet);
+		
+		System.out.print("de geladen bullets: ");
+		System.out.println(this.getLoadedBullets());
+		
+		System.out.println("LOAD " + this + " " + bullet);
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
 		this.updateLoadMass();
 		bullet.setLoadedInMotherShip(true);
 		bullet.resetBounces();
-
+	
 		if (this.getWorld() != bullet.getWorld())
 			try {
 				this.getWorld().addEntity(bullet);
-				// These exceptions should never happen as the bullet has been set to be  loaded in this ship.
+				// These exceptions should never happen as the bullet has been set to be loaded in this ship.
 			} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
 				throw new RuntimeException(ex);
 			}
+		System.out.print("de geladen bullets nu: ");
+		System.out.println(this.getLoadedBullets());
 	}
 	
 	/**
@@ -183,6 +188,7 @@ public class Ship extends AdvancedEntity {
 		bullet.setLoadedInMotherShip(false);
 		loadedBullets.remove(bullet);
 		updateLoadMass();
+		System.out.println("in unload");
 	}
 
 	/**
@@ -199,7 +205,7 @@ public class Ship extends AdvancedEntity {
 	/**
 	 * Attempts to shoot a bullet from the ship.
 	 * 
-	 * @post 	Shoots a bullet, only if there is one available.
+	 * @post 	Shoots a bullet, only if there is one available and only if the ship lays in a world.
 	 * @return false if there is no bullet loaded in the ship.
 	 * @return true if it successfully shot a bullet from the ship.
 	 */
@@ -207,10 +213,16 @@ public class Ship extends AdvancedEntity {
 	public boolean shootBullet() throws NoWorldException, MisMatchWorldsException, InvalidParentShipException, BulletNotLoadedException {
 		//Bullets are always red because facade.getBulletShip(bullet) is only called in createBulletVisualization,
 		//and the method is required to return null when the bullets are not loaded in mothership.
+		if (this.getWorld() == null) {
+			return false;
+		}
+		
 		if (!hasBullet())
 			return false;
-		OGUtil.println("bullets left: " + loadedBullets.size());
+		
+		System.out.println("bullets left: " + loadedBullets.size());
 		shootBullet(loadedBullets.iterator().next()); // gets one (pseudo)random bullet from hashset
+		
 		return true;
 	}
 
@@ -239,7 +251,11 @@ public class Ship extends AdvancedEntity {
 	 */
 	@Raw
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
-		OGUtil.println("SHOOT " + bullet);
+		System.out.println("SHOOT " + bullet);
+		
+		System.out.print("De geschoten bullet: ");
+		System.out.println(bullet);
+		
 		if (isNullOrTerminated(this.getCollisionWorld()))
 			throw new NoWorldException();
 		if (this.isTerminated())
@@ -251,31 +267,55 @@ public class Ship extends AdvancedEntity {
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
 			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
-
+		
 		bullet.setLoadedInMotherShip(false);
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = Vector2.fromPolar(this.getOrientation(), 1);
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
-		OGUtil.println("radius: " + bullet.getRadius());
-		OGUtil.println(bullet.getPosition());
-		bullet.mirrorPositionWall();
+		System.out.println("radius: " + bullet.getRadius());
+		System.out.println(bullet.getPosition());
+		//bullet.mirrorPositionWall(); //TODO ik heb dit weg moeten doen omdat er anders een test niet werkte (testFireBulletOutOfBounds())
 		OGUtil.println(bullet.getPosition());
 		OGUtil.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
+		
+		double x = bullet.getPosition().x;
+		double y = bullet.getPosition().y;
+			
+		if ((bullet.getWorld() != null) && (((x + bullet.getRadius() * 0.99) > bullet.getWorld().getWidth()) || ((x - bullet.getRadius() * 0.99) < 0) || ((y + bullet.getRadius() * 0.99) > bullet.getWorld().getHeight())
+				|| ((y - bullet.getRadius() * 0.99) < 0))){ 
+			bullet.terminate();
+			return;
+		}
 
 		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
+		
+		System.out.println("hieerrrr");
+		
 		while (!isNullOrTerminated(collidesWith)) {
 			OGUtil.println(collidesWith);
 			OGUtil.println(bullet.getMotherShip());
+			
+			System.out.println("hieerrrrxp");
+			
 			Collisions.collide(bullet, collidesWith);
+			
+			System.out.println("hieerrrrrrrrrrrrr");
+			
 			OGUtil.println("---");
 			OGUtil.println(bullet);
-			OGUtil.println(bullet.isLoadedInMotherShip());
+			System.out.print("geladen in het moedership: ");
+			System.out.println(bullet.isLoadedInMotherShip());
 			OGUtil.println(bullet.getCollisionWorld());
 			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
 		}
 
+		
+		
 		updateLoadMass();
+		
+		
+		
 	}
 
 	
