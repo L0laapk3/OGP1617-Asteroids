@@ -2,59 +2,49 @@ package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.VariableContextContainer;
 import asteroids.model.program.expression.IExpression;
-import asteroids.util.OGUtil;
 
-public class IfElse extends VariableContextContainer {
+public class IfElse extends VariableContextContainer<IStatement> {
 	
-	private IExpression<? extends Boolean> condition;
-	private IStatement onTrue;
-	private IStatement onFalse;
 	private boolean conditionDone = false;
 	private boolean conditionResult;
 
-	public IfElse(IExpression<? extends Boolean> condition2, IStatement ifBody, IStatement elseBody) throws ProgramException {
-		super(ifBody, elseBody, condition2);
-		OGUtil.println("if statement " + condition2 + " " + ifBody + " " + elseBody);
-		this.onTrue = ifBody;
-		this.onFalse = elseBody;
-		this.condition = condition2;
+	public IfElse(IExpression<? extends Boolean> condition, IStatement ifBody, IStatement elseBody) throws ProgramException {
+		super(condition, ifBody, elseBody);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public IExpression<? extends Boolean> getCondition() { return (IExpression<? extends Boolean>)statements[0]; }
+	public IStatement getOnTrue() { return statements[1]; }
+	public IStatement getOnFalse() { return statements[2]; }
 
 	@Override
 	public boolean step(Program program) throws ProgramException {
 		if (!conditionDone) {
-			if (condition.step(program))
+			if (getCondition().step(program))
 				return true;
 			conditionDone = true;
-			conditionResult = (boolean)condition.evaluate(program);
+			conditionResult = getCondition().evaluate(program);
 			return true;
 		} else if (conditionResult)
-			return onTrue.step(program);
+			return getOnTrue().step(program);
 		else
-			return onFalse.step(program);
+			return getOnFalse().step(program);
 	}
 	
 	@Override
 	public void reset(Program program) {
-		if (conditionDone) {
-			if (conditionResult)
-				onTrue.reset(program);
-			else
-				onFalse.reset(program);
-		}
 		conditionDone = false;
 		super.reset(program);
 	}
 	
 	@Override
-	public double getRequiredTime() {
+	public double getRequiredTime() throws ProgramException {
 		if (!conditionDone)
-			return condition.getRequiredTime();
+			return getCondition().getRequiredTime();
 		else if (conditionResult)
-			return onTrue.getRequiredTime();
+			return getOnTrue().getRequiredTime();
 		else
-			return onFalse.getRequiredTime();
+			return getOnFalse().getRequiredTime();
 	}
 }

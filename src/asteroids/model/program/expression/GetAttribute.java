@@ -1,12 +1,12 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.SingleContainerStatement;
-import asteroids.util.OGUtil;
+import asteroids.model.program.statement.ContainerStatement;
 
-public class GetAttribute extends SingleContainerStatement<IExpression<? extends Entity>> implements IExpression<Double> {
+public class GetAttribute extends ContainerStatement<IExpression<? extends Entity>> implements IExpression<Double> {
 
 	public enum Attribute {
 		X,
@@ -29,8 +29,9 @@ public class GetAttribute extends SingleContainerStatement<IExpression<? extends
 	@Override
 	public Double evaluate(Program program) throws ProgramException {
 		
-		Entity entity = statement.evaluate(program);
-		OGUtil.println("getattribute " + entity + " " + attribute);
+		Entity entity = statements[0].evaluate(program);
+		if (entity == null)
+			throw new NullComputationException();
 		
 		switch(attribute) {
 		case DIRECTION:	return entity.getVelocityVector().getRotation();

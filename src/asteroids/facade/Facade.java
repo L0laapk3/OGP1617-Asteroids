@@ -29,7 +29,7 @@ import asteroids.model.program.Program;
 import asteroids.model.program.ProgramFactory;
 import asteroids.model.program.expression.IExpression;
 import asteroids.model.program.statement.DefineFunction;
-import asteroids.model.program.statement.Statement;
+import asteroids.model.program.statement.IStatement;
 import asteroids.part2.CollisionListener;
 //import asteroids.part3.facade.Program;
 import asteroids.part3.programs.IProgramFactory;
@@ -1048,7 +1048,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	/**
 	 * Creates a new program factory.
 	 */
-	public IProgramFactory<IExpression, Statement, DefineFunction, Program> createProgramFactory() throws ModelException {
+	public IProgramFactory<IExpression<? extends Object>, IStatement, DefineFunction, Program> createProgramFactory() throws ModelException {
 		return new ProgramFactory();
 	}
 }

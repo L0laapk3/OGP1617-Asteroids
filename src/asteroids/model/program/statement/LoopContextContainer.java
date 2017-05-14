@@ -4,17 +4,17 @@ package asteroids.model.program.statement;
 import asteroids.exceptions.BadBreakStatementException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.VariableContextContainer;
 
-public abstract class LoopContextContainer extends VariableContextContainer {
+public abstract class LoopContextContainer<T extends IStatement> extends VariableContextContainer<T> {
 	
-	protected LoopContextContainer(IStatement... statements) throws ProgramException {
+	@SafeVarargs
+	protected LoopContextContainer(T... statements) throws ProgramException {
 		super(statements);
-		for (IStatement statement : statements)
+		for (T statement : statements)
 			statement.setLoopContext(this);
 	}
 
-	public void setLoopContext(LoopContextContainer context) { } //dont overwrite context of child classes
+	public void setLoopContext(LoopContextContainer<? extends IStatement> context) { } //dont overwrite context of child classes
 
 	
 	

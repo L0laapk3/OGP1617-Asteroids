@@ -4,19 +4,20 @@ import java.util.Arrays;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.IContainerStatement;
-import asteroids.model.program.statement.MultiContainerStatement;
+import asteroids.model.program.statement.ContainerStatement;
 
-public abstract class MultiPartExpression<T extends Object> extends MultiContainerStatement<IExpression<? extends T>> implements IContainerStatement {
+public abstract class MultiContainerExpression<T extends Object> extends ContainerStatement<IExpression<? extends T>> {
 
-	protected final T results[];
+	private final T[] results;
 	
 	@SafeVarargs //not actually writing to expressiosn
 	@SuppressWarnings("unchecked") //T extends object
-	public MultiPartExpression(IExpression<? extends T>... expressions) throws ProgramException {
+	public MultiContainerExpression(IExpression<? extends T>... expressions) throws ProgramException {
 		super(expressions);
 		results = (T[])new Object[expressions.length];
 	}
+	
+	protected T getResult(int index) { return this.results[index]; }
 
 	@Override
 	protected void afterEachExpressionFinish(Program program) throws ProgramException {

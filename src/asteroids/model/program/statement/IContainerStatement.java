@@ -7,6 +7,6 @@ public interface IContainerStatement extends IStatement {
 	
 	public abstract boolean selfStep(Program program) throws ProgramException;
 	
-	public default double selfGetRequiredTime() { return 0; }
+	public default double selfGetRequiredTime() throws ProgramException { return 0; }
 	
 }

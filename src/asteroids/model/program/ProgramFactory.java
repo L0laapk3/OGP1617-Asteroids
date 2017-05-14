@@ -29,7 +29,7 @@ import asteroids.model.program.statement.Print;
 import asteroids.model.program.statement.Return;
 import asteroids.model.program.statement.SetThruster;
 import asteroids.model.program.statement.Skip;
-import asteroids.model.program.statement.Statement;
+import asteroids.model.program.statement.StatementWithChildren;
 import asteroids.model.program.statement.Turn;
 import asteroids.model.program.statement.WhileLoop;
 import asteroids.part3.programs.IProgramFactory;
@@ -40,7 +40,7 @@ public class ProgramFactory implements IProgramFactory<IExpression<? extends Obj
 
 	@Override
 	public Program createProgram(List<DefineFunction> functions, IStatement main) {
-		IStatement[] statements = new Statement[functions.size() + 1];
+		IStatement[] statements = new StatementWithChildren[functions.size() + 1];
 		functions.toArray(statements);
 		statements[statements.length - 1] = main;
 		try {
@@ -72,7 +72,7 @@ public class ProgramFactory implements IProgramFactory<IExpression<? extends Obj
 	@SuppressWarnings("unchecked")
 	public IExpression<? extends Object> createFunctionCallExpression(String functionName, List<IExpression<? extends Object>> actualArgs, SourceLocation sourceLocation) {
 		try {
-			return new CallFunction(functionName, actualArgs.toArray((IExpression<? extends Object>[])new Object[actualArgs.size()]));
+			return new CallFunction(functionName, actualArgs.toArray(new IExpression[actualArgs.size()]));
 		} catch (ProgramException ex) {
 			throw new RuntimeException(ex);
 		}

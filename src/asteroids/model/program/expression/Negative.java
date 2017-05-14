@@ -1,10 +1,11 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.SingleContainerStatement;
+import asteroids.model.program.statement.ContainerStatement;
 
-public class Negative extends SingleContainerStatement<IExpression<? extends Double>> implements IExpression<Double> {
+public class Negative extends ContainerStatement<IExpression<? extends Double>> implements IExpression<Double> {
 	
 	public Negative(IExpression<? extends Double> expression) throws ProgramException {
 		super(expression);
@@ -12,6 +13,9 @@ public class Negative extends SingleContainerStatement<IExpression<? extends Dou
 
 	@Override
 	public Double evaluate(Program program) throws ProgramException {
-		return -statement.evaluate(program);
+		Double result = statements[0].evaluate(program);
+		if (result == null)
+			throw new NullComputationException();
+		return -result;
 	}
 }

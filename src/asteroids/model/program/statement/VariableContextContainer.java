@@ -1,4 +1,4 @@
-package asteroids.model.program.expression;
+package asteroids.model.program.statement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,22 +6,20 @@ import java.util.Map;
 import asteroids.exceptions.BadClassAssignmentException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.IStatement;
-import asteroids.model.program.statement.Statement;
 
-public abstract class VariableContextContainer extends Statement {
+public abstract class VariableContextContainer<T extends IStatement> extends StatementWithChildren<T> {
 	
-	protected VariableContextContainer selfContext = null;
+	protected VariableContextContainer<? extends IStatement> selfContext = null;
 	
-	protected VariableContextContainer(IStatement... statements) throws ProgramException {
+	@SafeVarargs
+	protected VariableContextContainer(T... statements) throws ProgramException {
 		super(statements);
-		for (IStatement statement : statements) {
+		for (T statement : statements)
 			statement.setContext(this);
-		}
 	}
 
 	@Override
-	public void setContext(VariableContextContainer context) { //dont overwrite context of child classes, instead save to selfContext
+	public void setContext(VariableContextContainer<? extends IStatement> context) { //dont overwrite context of child classes, instead save to selfContext
 		selfContext = context;
 	}
 

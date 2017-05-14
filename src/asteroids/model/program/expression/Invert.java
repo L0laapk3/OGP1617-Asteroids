@@ -1,10 +1,11 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.SingleContainerStatement;
+import asteroids.model.program.statement.ContainerStatement;
 
-public class Invert extends SingleContainerStatement<IExpression<? extends Boolean>> implements IExpression<Boolean> {
+public class Invert extends ContainerStatement<IExpression<? extends Boolean>> implements IExpression<Boolean> {
 	
 	public Invert(IExpression<? extends Boolean> expression) throws ProgramException {
 		super(expression);
@@ -12,6 +13,9 @@ public class Invert extends SingleContainerStatement<IExpression<? extends Boole
 
 	@Override
 	public Boolean evaluate(Program program) throws ProgramException {
-		return !statement.evaluate(program);
+		Boolean result = statements[0].evaluate(program);
+		if (result == null)
+			throw new NullComputationException();
+		return !result;
 	}
 }

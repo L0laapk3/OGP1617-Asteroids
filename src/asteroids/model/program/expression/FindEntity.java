@@ -1,6 +1,7 @@
 package asteroids.model.program.expression;
 
 import asteroids.exceptions.InvalidShipException;
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
@@ -36,6 +37,8 @@ public class FindEntity extends Statement implements IExpression<Entity> {
 	public Entity evaluate(Program program) throws ProgramException {
 		try {
 			Ship ship = program.getShip();
+			if (ship == null)
+				throw new NullComputationException();
 			switch(filter) {
 				case ANY:		return ship.getNearestEntity();
 				case ASTEROID:	return ship.getNearestEntity(Asteroid.class);

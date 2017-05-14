@@ -4,7 +4,7 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.IExpression;
 
-public class Print extends SingleContainerStatement<IExpression<? extends Object>> {
+public class Print extends ContainerStatement<IExpression<? extends Object>> {
 	
 	public Print(IExpression<? extends Object> value) throws ProgramException {
 		super(value);
@@ -12,7 +12,7 @@ public class Print extends SingleContainerStatement<IExpression<? extends Object
 	
 	@Override
 	public boolean selfStep(Program program) throws ProgramException {
-		program.print(this.statement.evaluate(program));
+		program.print(statements[0].evaluate(program));
 		return false;
 	}
 

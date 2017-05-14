@@ -1,22 +1,20 @@
- package asteroids.model.program.statement;
+package asteroids.model.program.statement;
 
-import asteroids.exceptions.BadBreakStatementException;
-import asteroids.exceptions.ProgramException;
-import asteroids.model.program.Program;
+public interface ILoopContextAwareStatement extends IVariableContextAwareStatement {
 
-public class Break extends Statement implements ILoopContextAwareStatement {
+	public abstract LoopContextContainer<? extends IStatement> getLoopContext();
+	public abstract void saveLoopContext(LoopContextContainer<? extends IStatement> loopContext);
 
-	public Break() throws ProgramException {
-		super();
-	}
-
-	@Override
-	public boolean step(Program program) throws BadBreakStatementException {
-		this.loopContext.doBreak();
-		return false;
-	}
 	
-
+	
+	
+	
+	
+	/*
+	
+	default getters and setters
+	
+	
 	private VariableContextContainer<? extends IStatement> variableContext = null;
 	@Override public void saveVariableContext(VariableContextContainer<? extends IStatement> variableContext) { this.variableContext = variableContext; }
 	@Override public VariableContextContainer<? extends IStatement> getVariableContext() { return this.variableContext; };
@@ -24,6 +22,6 @@ public class Break extends Statement implements ILoopContextAwareStatement {
 	private LoopContextContainer<? extends IStatement> loopContext = null;
 	@Override public void saveLoopContext(LoopContextContainer<? extends IStatement> loopContext) { this.loopContext = loopContext; }
 	@Override public LoopContextContainer<? extends IStatement> getLoopContext() { return this.loopContext; };
-
 	
+	 */
 }

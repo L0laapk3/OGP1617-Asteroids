@@ -1,19 +1,22 @@
 package asteroids.model.program.statement;
 
-import java.util.Arrays;
-
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public abstract class MultiContainerStatement<T extends IStatement> extends Statement implements IContainerStatement {
-
-	protected final T[] statements;
+public abstract class ContainerStatement<T extends IStatement> extends StatementWithChildren<T> implements IContainerStatement {
+	
+	public final boolean isEmpty;
 	protected int stepdone = 0;
 	
 	@SafeVarargs
-	public MultiContainerStatement(T... statements) throws ProgramException {
+	public ContainerStatement(T... statements) throws ProgramException {
 		super(statements);
-		this.statements = statements;
+		isEmpty = false;
+	}
+	
+	public ContainerStatement() throws ProgramException {
+		super();
+		isEmpty = true;
 	}
 
 
@@ -21,6 +24,8 @@ public abstract class MultiContainerStatement<T extends IStatement> extends Stat
 
 	@Override
 	public final boolean step(Program program) throws ProgramException {
+		if (isEmpty)
+			return false;
 		if (stepdone < statements.length) {
 			if (!statements[stepdone].step(program)) {
 				afterEachExpressionFinish(program);
@@ -32,7 +37,9 @@ public abstract class MultiContainerStatement<T extends IStatement> extends Stat
 	}
 
 	@Override
-	public final double getRequiredTime() {
+	public final double getRequiredTime() throws ProgramException {
+		if (isEmpty)
+			return 0;
 		if (stepdone < statements.length)
 			return statements[stepdone].getRequiredTime();
 		else
@@ -42,15 +49,6 @@ public abstract class MultiContainerStatement<T extends IStatement> extends Stat
 	@Override
 	public void reset(Program program) {
 		super.reset(program);
-		Arrays.fill(statements, false);
 		stepdone = 0;
-	}
-	
-	
-	
-	
-	@Override
-	public IStatement[] getChildStatements() {
-		return statements;
 	}
 }

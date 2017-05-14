@@ -1,20 +1,20 @@
-package asteroids.model.program.expression;
+package asteroids.model.program.statement;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 import asteroids.exceptions.BadBreakStatementException;
+import asteroids.exceptions.NoArgumentException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.IStatement;
-import asteroids.model.program.statement.LoopContextContainer;
-import asteroids.model.program.statement.Statement;
+import asteroids.model.program.expression.IExpression;
 import asteroids.util.OGUtil;
 
-public abstract class FunctionContextContainer extends LoopContextContainer implements IExpression<Object> {
+public abstract class FunctionContextContainer<T extends IStatement> extends LoopContextContainer<T> implements IExpression<Object> {
 	
-	protected FunctionContextContainer(IStatement... statements) throws ProgramException {
+	@SafeVarargs
+	protected FunctionContextContainer(T... statements) throws ProgramException {
 		super(statements);
 		OGUtil.println("im " + this);
 		for (IStatement statement : statements)
@@ -22,7 +22,7 @@ public abstract class FunctionContextContainer extends LoopContextContainer impl
 	}
 	
 	@Override
-	public void setFunctionContext(FunctionContextContainer context) { OGUtil.println("stopped functioncontext chaining, im " + this); } //dont overwrite context of child classes
+	public void setFunctionContext(FunctionContextContainer<? extends IStatement> context) { OGUtil.println("stopped functioncontext chaining, im " + this); } //dont overwrite context of child classes
 
 	@Override
 	public void doBreak() throws BadBreakStatementException {
@@ -70,11 +70,10 @@ public abstract class FunctionContextContainer extends LoopContextContainer impl
 
 	private Map<String, Object> arguments = new HashMap<String, Object>();
 	
-	public Object getArgument(String name) {
+	public Object getArgument(String name) throws NoArgumentException {
 		if (arguments.containsKey(name))
 			return arguments.get(name);
-		OGUtil.println("getArgument no key: " + name);
-		return null;
+		throw new NoArgumentException();
 	}
 	
 	public void setArgument(String name, Object value) {
