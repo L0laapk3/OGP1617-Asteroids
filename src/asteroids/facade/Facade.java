@@ -548,7 +548,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	public void addShipToWorld(World world, Ship ship) throws ModelException {
 		try {
 			world.addEntity(ship);
-		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
+		} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException | IllegalEntityException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -666,6 +666,9 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * boundaries of its world.
 	 */
 	public double[] getPositionCollisionBoundary(Object object) {
+		if (((Entity) object).getWallCollisionPosition() == null) {
+			return null;
+		}
 		return ((Entity) object).getWallCollisionPosition().toProfNotation();
 	}
 
@@ -763,12 +766,10 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * @throws ModelException 
 	 */
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
-		if (collisionListener != null) {
-			try {
-				world.evolve(dt, collisionListener);
-			} catch (InvalidTimeException ex) {
-				throw new ModelException (ex);
-			}
+		try {
+			world.evolve(dt, collisionListener);
+		} catch (InvalidTimeException ex) {
+			throw new ModelException (ex);
 		}
 	}
 

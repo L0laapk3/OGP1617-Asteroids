@@ -33,7 +33,7 @@ public class Planetoid extends MinorPlanet {
 		{ this(x, y, xVelocity, yVelocity, radius, 0); };
 	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double totalTraveledDistance)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-		super(x, y, xVelocity, yVelocity, radius, RHO_PLANETOID);
+		super(x, y, xVelocity, yVelocity, (radius - totalTraveledDistance * 0.000001) , RHO_PLANETOID);
 		
 		OGUtil.throwErrorIfInvalidNumbers(totalTraveledDistance);
 		this.setTotalTraveledDistance(totalTraveledDistance);

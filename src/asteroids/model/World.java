@@ -254,10 +254,15 @@ public class World extends Instance {
 	 */
 	@Override
 	public void terminate() {
-		for (Entity entity : entities) {
+		System.out.println("Alle entities: " + entities);
+		while (!entities.isEmpty()) {
+			Iterator<Entity> it = entities.iterator();
+			Entity entity = it.next();
 			// do not terminate, just set world to null
-			entity.setWorld(null);
+			this.removeEntity(entity);
 		}
+			
+		System.out.println("echte einde van de for loop");
 		super.terminate();
 	}
 
@@ -278,6 +283,7 @@ public class World extends Instance {
 	 * @param 	entity
 	 * 		  	Entity to add to the world.
 	 * @post 	If the given entity does not overlap with one of the entities who is already in the given world and it lays fully in the world then its added to the given world.
+	 * @post	If the entity is already in a world then the entity will remain in this world
 	 * @throws	DoubleEntityException
 	 * 			An entity can only be ones in a world.
 	 * @throws  NotWithinBoundariesException
@@ -287,8 +293,16 @@ public class World extends Instance {
 	 * @note    Defensive
 	 */
 	@Raw
-	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException {
-
+	public void addEntity(Entity entity) throws DoubleEntityException, EntitiesOverlapException, NotWithinBoundariesException, IllegalEntityException {
+				
+		if (entity == null) {
+			throw new IllegalEntityException();
+		}
+		
+		if (entity.getWorld() != null) {
+			return;
+		}
+		
 		if (entities.contains(entity)) {
 			throw new DoubleEntityException();
 		}
@@ -330,10 +344,13 @@ public class World extends Instance {
 	 */
 	@Raw
 	public void removeEntity(Entity entity) throws IllegalEntityException {
+		
 		if (entities.contains(entity)) {
 			entities.remove(entity);
+			
 			entity.setWorld(null);
 		} else {
+			System.out.println("Hij gaat in else in remove met: " + entity);
 			throw new IllegalEntityException("An entity that did not exist in this world has been tried to remove from that world.");
 		}
 	}
@@ -536,10 +553,14 @@ public class World extends Instance {
 	 * @note   defensive
 	 */
 	public void evolve(double dt, CollisionListener collisionListener) throws InvalidTimeException {
-
-		double originalDt = dt;
-		OGUtil.throwErrorIfInvalidNumbers(dt);
-		if (!OGUtil.isValidDeltaTime(dt))
+		
+		try {
+			OGUtil.throwErrorIfInvalidNumbers(Dt);
+		} catch (IllegalArgumentException ex) {
+			throw new InvalidTimeException(ex);
+		}
+		
+		if (!OGUtil.isValidDeltaTime(Dt))
 			throw new NegativeTimeException();
 		
 		try {
@@ -572,6 +593,8 @@ public class World extends Instance {
 							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 						}
+						System.out.print("juist voor oproepen van hit");
+						System.out.println(collInfo.secondEntity.getClass());
 						Collisions.collide(collInfo.firstEntity, collInfo.secondEntity);
 					}
 				} else {

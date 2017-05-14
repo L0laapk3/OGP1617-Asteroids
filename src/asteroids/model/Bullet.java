@@ -188,13 +188,24 @@ public class Bullet extends EntityWithConstantDensity {
 		OGUtil.println("---hit---");
 		//OGUtil.println(this.getParent());
 		//OGUtil.println(ship);
+		
+		System.out.print("Het moederschip in de hitfunctie: ");
+		System.out.println(this.getMotherShip());
+		System.out.print("Het meegegeven ship: ");
+		System.out.println(ship);
+		
 		if (ship == this.getMotherShip())
 			try {
+				System.out.println("bullet terug laden");
+				System.out.print("de bullets die al geladen zijn: ");
+				System.out.println(ship.getLoadedBullets());
 				ship.loadBullet(this);
 			} catch (DoubleEntityException | MisMatchWorldsException ex) { //these should never happen
+				System.out.println("fak");
 				throw new RuntimeException(ex);
-			}
+			}		
 		else {
+			
 			if (!isNullOrTerminated(this.getMotherShip()))
 				this.getMotherShip().triggerScoreOn(ship); //does nothing for now (part 3?)
 			ship.triggerHit();
@@ -239,7 +250,16 @@ public class Bullet extends EntityWithConstantDensity {
 	public static void setMaxSpeedBullet(double newMaxSpeed) {
 		maxSpeed=newMaxSpeed;
 	}
-
+	
+	@Override
+	public void terminate() {
+		System.out.print("het moederschip in terminate is: ");
+		System.out.println(this.getMotherShip());
+		if (this.getMotherShip() != null) {
+			this.getMotherShip().unloadBullet(this);
+		}
+		super.terminate();
+	}
 
 	/**
 	 * Function that gets called on each entity when world.evolve(dt) gets called.

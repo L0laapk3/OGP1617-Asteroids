@@ -88,7 +88,7 @@ public abstract class Entity extends Instance {
 	@Raw
 	Entity(double x, double y, double xVelocity, double yVelocity, double radius, double mass, double MIN_RADIUS)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
-
+				
 		if (!isValidMinRadius(MIN_RADIUS))
 			throw new InvalidRadiusException("The minimum radius is not valid.");
 		this.MIN_RADIUS = MIN_RADIUS;
@@ -97,9 +97,12 @@ public abstract class Entity extends Instance {
 		// DEFENSIVE
 		// Variables of type double can never be null, so we do not have to check if they are null.
 		Vector2 pos = new Vector2(x, y);
-		if (!isValidPosition(pos))
+		
+		if ((this.getWorld() == null) && !(Double.isNaN(x)) && !(Double.isNaN(y))) {
+			this.position = pos;
+		} else {
 			throw new InvalidPositionException();
-		this.position = pos;
+		}
 
 		// TOTAL
 		if (OGUtil.isInvalidNumber(xVelocity) || OGUtil.isInvalidNumber(yVelocity))
@@ -107,11 +110,16 @@ public abstract class Entity extends Instance {
 		else {
 			this.setVelocity(xVelocity, yVelocity);
 		}
+		
 
 		// DEFENSIVE
 		OGUtil.throwErrorIfInvalidNumbers(radius);
+		
 		if (radius < MIN_RADIUS)
-			throw new InvalidRadiusException();
+			if (this.getClass() == Planetoid.class)
+				this.die();
+			else
+				throw new InvalidRadiusException();
 		this.radius = radius;
 		
 		//mass is never checked if it is valid, because it is an abstract class. Child classes are expected to handle this themselves.
@@ -367,7 +375,7 @@ public abstract class Entity extends Instance {
 	@Basic
 	@Immutable
 	public static boolean isValidMinRadius(double radius) {
-		return radius >= 0 && radius < Double.POSITIVE_INFINITY;
+		return radius >= 0 && radius < Double.POSITIVE_INFINITY && !(Double.isNaN(radius));
 	}
 	
 
@@ -517,9 +525,16 @@ public abstract class Entity extends Instance {
 	 * Return the number of seconds until the first collision with the wall.
 	 * @return The time until the first collision. Returns positive infinity if the entity never collides with the border of the world.
 	 */
-	public double getTimeToWallCollision() throws NoWorldException {
-		if (isNullOrTerminated(this.world))
+	public double getTimeToWallCollision() throws NoWorldException {		
+		double velocityX = this.getVelocityVector().x;
+		double velocityY = this.getVelocityVector().y;
+		
+		if (isNullOrTerminated(this.world) && !((velocityX == 0) && (velocityY == 0)))
 			throw new NoWorldException();
+		
+		if ((velocityX == 0) && (velocityY == 0)) {
+			return Double.POSITIVE_INFINITY;
+		}
 
 		// Berekeningen die geen rekening hoduen met acceleratie.
 
@@ -669,6 +684,9 @@ public abstract class Entity extends Instance {
 	 */
 	@Raw
 	Vector2 getWallCollisionPosition(double Dt) {
+		if (Dt == Double.POSITIVE_INFINITY) {
+			return null;
+		}
 		Vector2 newpos = Vector2.add(this.getPosition(), Vector2.multiply(this.getVelocityVector(), Dt));
 		if ((newpos.x - 1.01 * this.radius) <= 0)
 			return new Vector2(0, newpos.y);
