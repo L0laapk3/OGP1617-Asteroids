@@ -1,27 +1,21 @@
 package asteroids.model.program.expression;
 
-import asteroids.exceptions.NotDoubleException;
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.ContainerStatement;
 
-public class Sqrt extends Numeric {
+public class Sqrt extends ContainerStatement<IExpression<? extends Double>> implements IExpression<Double> {
 	
-	private final Expression expression1;
-	
-	public <T extends Expression> Sqrt(T expression1) {
-		super();
-		this.expression1 = (Expression) expression1;	
+	public Sqrt(IExpression<? extends Double> expression) throws ProgramException {
+		super(expression);
 	}
 	
-	@Override
-	public Double evaluate(Program program) throws ProgramException {
-		Object result1 = expression1.evaluate(program);
-		
-		if (result1 instanceof Double) {
-			return (double)result1;
-		} else {
-			throw new NotDoubleException("The variable is not a double.");
-		}
 	
+	public Double evaluate(Program program) throws ProgramException {
+		Double result = statements[0].evaluate(program);
+		if (result == null)
+			throw new NullComputationException();
+		return Math.sqrt(result);
 	}
 }

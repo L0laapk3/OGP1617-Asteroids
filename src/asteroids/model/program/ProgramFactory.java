@@ -2,248 +2,396 @@ package asteroids.model.program;
 
 import java.util.List;
 
-import asteroids.model.program.expression.*;
-import asteroids.model.program.statement.*;
+import asteroids.exceptions.ProgramException;
+import asteroids.model.Entity;
+import asteroids.model.program.expression.Addition;
+import asteroids.model.program.expression.CallFunction;
+import asteroids.model.program.expression.Constant;
+import asteroids.model.program.expression.Equality;
+import asteroids.model.program.expression.FindEntity;
+import asteroids.model.program.expression.GetAttribute;
+import asteroids.model.program.expression.IExpression;
+import asteroids.model.program.expression.Invert;
+import asteroids.model.program.expression.LessThan;
+import asteroids.model.program.expression.Multiplication;
+import asteroids.model.program.expression.Negative;
+import asteroids.model.program.expression.ReadParameter;
+import asteroids.model.program.expression.ReadVariable;
+import asteroids.model.program.expression.Sqrt;
+import asteroids.model.program.statement.Assignment;
+import asteroids.model.program.statement.BlockStatement;
+import asteroids.model.program.statement.Break;
+import asteroids.model.program.statement.DefineFunction;
+import asteroids.model.program.statement.Fire;
+import asteroids.model.program.statement.IStatement;
+import asteroids.model.program.statement.IfElse;
+import asteroids.model.program.statement.Print;
+import asteroids.model.program.statement.Return;
+import asteroids.model.program.statement.SetThruster;
+import asteroids.model.program.statement.Skip;
+import asteroids.model.program.statement.StatementWithChildren;
+import asteroids.model.program.statement.Turn;
+import asteroids.model.program.statement.WhileLoop;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.SourceLocation;
 import asteroids.util.OGUtil;
 
-public class ProgramFactory implements IProgramFactory<Expression, Statement, Statement, Program> {
+public class ProgramFactory implements IProgramFactory<IExpression<? extends Object>, IStatement, DefineFunction, Program> {
 
 	@Override
-	public Program createProgram(List<Statement> functions, Statement main) {
-		Statement[] statements = new Statement[functions.size() + 1];
+	public Program createProgram(List<DefineFunction> functions, IStatement main) {
+		IStatement[] statements = new StatementWithChildren[functions.size() + 1];
 		functions.toArray(statements);
 		statements[statements.length - 1] = main;
-		return new Program(new BlockStatement(statements));
+		try {
+			return new Program(new BlockStatement(statements));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createFunctionDefinition(String functionName, Statement body, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new DefineFunction(functionName, body);
+	public DefineFunction createFunctionDefinition(String functionName, IStatement body, SourceLocation sourceLocation) {
+		try {
+			return new DefineFunction(functionName, body);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createReadParameterExpression(String parameterName, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new ReadParameter(parameterName);
+	public IExpression<? extends Object> createReadParameterExpression(String parameterName, SourceLocation sourceLocation) {
+		try {
+			return new ReadParameter(parameterName);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createFunctionCallExpression(String functionName, List<Expression> actualArgs, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new CallFunction(functionName, actualArgs);
+	@SuppressWarnings("unchecked")
+	public IExpression<? extends Object> createFunctionCallExpression(String functionName, List<IExpression<? extends Object>> actualArgs, SourceLocation sourceLocation) {
+		try {
+			return new CallFunction(functionName, actualArgs.toArray(new IExpression[actualArgs.size()]));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createAssignmentStatement(String variableName, Expression value, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Assignment(variableName, value);
+	public IStatement createAssignmentStatement(String variableName, IExpression<? extends Object> value, SourceLocation sourceLocation) {
+		try {
+			return new Assignment(variableName, value);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createWhileStatement(Expression condition, Statement body, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new WhileLoop((Condition)condition, body);
+	public IStatement createWhileStatement(IExpression<? extends Object> condition, IStatement body, SourceLocation sourceLocation) {
+		try {
+			OGUtil.println("creating while loop with " + condition + " and " + body);
+			return new WhileLoop(condition.castTo(Boolean.class), body);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createBreakStatement(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Break();
+	public IStatement createBreakStatement(SourceLocation sourceLocation) {
+		try {
+			return new Break();
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createReturnStatement(Expression value, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Return(value);
+	public IStatement createReturnStatement(IExpression<? extends Object> value, SourceLocation sourceLocation) {
+		try {
+			return new Return(value);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createIfStatement(Expression condition, Statement ifBody, Statement elseBody, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new IfElse((Condition)condition, ifBody, elseBody);
+	public IStatement createIfStatement(IExpression<? extends Object> condition, IStatement ifBody, IStatement elseBody, SourceLocation sourceLocation) {
+		try {
+			return new IfElse(condition.castTo(Boolean.class), ifBody, elseBody);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createPrintStatement(Expression value, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Print(value);
+	public IStatement createPrintStatement(IExpression<? extends Object> value, SourceLocation sourceLocation) {
+		try {
+			return new Print(value);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createSequenceStatement(List<Statement> statements, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new BlockStatement((Statement[]) statements.toArray());
+	public IStatement createSequenceStatement(List<IStatement> statements, SourceLocation sourceLocation) {
+		try {
+			return new BlockStatement(statements.toArray(new IStatement[statements.size()]));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createReadVariableExpression(String variableName, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new ReadVariable(variableName);
+	public IExpression<? extends Object> createReadVariableExpression(String variableName, SourceLocation sourceLocation) {
+		try {
+			return new ReadVariable(variableName);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Negative((Numeric)expression);
+	public IExpression<Double> createChangeSignExpression(IExpression<? extends Object> expression, SourceLocation sourceLocation) {
+		try {
+			return new Negative(expression.castTo(Double.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createNotExpression(Expression expression, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Invert((Condition)expression);
+	public IExpression<Boolean> createNotExpression(IExpression<? extends Object> expression, SourceLocation sourceLocation) {
+		try {
+			return new Invert(expression.castTo(Boolean.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createDoubleLiteralExpression(double value, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new ConstantNumber(value);
+	public IExpression<Double> createDoubleLiteralExpression(double value, SourceLocation sourceLocation) {
+		try {
+			return new Constant<Double>(value);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createNullExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.NULL);
+	public IExpression<? extends Entity> createNullExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.NULL);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createSelfExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.SELF);
+	public IExpression<? extends Entity> createSelfExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.SELF);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createShipExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.SHIP);
+	public IExpression<? extends Entity> createShipExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.SHIP);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createAsteroidExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.ASTEROID);
+	public IExpression<? extends Entity> createAsteroidExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.ASTEROID);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createPlanetoidExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.PLANETOID);
+	public IExpression<? extends Entity> createPlanetoidExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.PLANETOID);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createBulletExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.BULLET);
+	public IExpression<? extends Entity> createBulletExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.BULLET);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createPlanetExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.PLANET);
+	public IExpression<? extends Entity> createPlanetExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.PLANET);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createAnyExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new FindEntity(FindEntity.Filter.ANY);
+	public IExpression<? extends Entity> createAnyExpression(SourceLocation sourceLocation) {
+		try {
+			return new FindEntity(FindEntity.Filter.ANY);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createGetXExpression(Expression e, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new GetAttribute(GetAttribute.Attribute.X, (EntityExpression)e);
+	public IExpression<Double> createGetXExpression(IExpression<? extends Object> e, SourceLocation sourceLocation) {
+		try {
+			return new GetAttribute(GetAttribute.Attribute.X, e.castTo(Entity.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createGetYExpression(Expression e, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new GetAttribute(GetAttribute.Attribute.Y, (EntityExpression)e);
+	public IExpression<Double> createGetYExpression(IExpression<? extends Object> e, SourceLocation sourceLocation) {
+		try {
+			return new GetAttribute(GetAttribute.Attribute.Y, e.castTo(Entity.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createGetVXExpression(Expression e, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new GetAttribute(GetAttribute.Attribute.VX, (EntityExpression)e);
+	public IExpression<Double> createGetVXExpression(IExpression<? extends Object> e, SourceLocation sourceLocation) {
+		try {
+			return new GetAttribute(GetAttribute.Attribute.VX, e.castTo(Entity.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createGetVYExpression(Expression e, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new GetAttribute(GetAttribute.Attribute.VY, (EntityExpression)e);
+	public IExpression<Double> createGetVYExpression(IExpression<? extends Object> e, SourceLocation sourceLocation) {
+		try {
+			return new GetAttribute(GetAttribute.Attribute.VY, e.castTo(Entity.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createGetRadiusExpression(Expression e, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new GetAttribute(GetAttribute.Attribute.RADIUS, (EntityExpression)e);
+	public IExpression<Double> createGetRadiusExpression(IExpression<? extends Object> e, SourceLocation sourceLocation) {
+		try {
+			return new GetAttribute(GetAttribute.Attribute.RADIUS, e.castTo(Entity.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createLessThanExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new LessThan(e1, e2);
+	public IExpression<Boolean> createLessThanExpression(IExpression<? extends Object> e1, IExpression<? extends Object> e2, SourceLocation sourceLocation) {
+		try {
+			return new LessThan(e1.castTo(Double.class), e2.castTo(Double.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createEqualityExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Equality(e1, e2);
+	public IExpression<Boolean> createEqualityExpression(IExpression<? extends Object> e1, IExpression<? extends Object> e2, SourceLocation sourceLocation) {
+		try {
+			return new Equality(e1, e2);
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createAdditionExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Addition(e1, e2);
+	public IExpression<Double> createAdditionExpression(IExpression<? extends Object> e1, IExpression<? extends Object> e2, SourceLocation sourceLocation) {
+		try {
+			return new Addition(e1.castTo(Double.class), e2.castTo(Double.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createMultiplicationExpression(Expression e1, Expression e2, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Multiplication(e1, e2);
+	public IExpression<Double> createMultiplicationExpression(IExpression<? extends Object> e1, IExpression<? extends Object> e2, SourceLocation sourceLocation) {
+		try {
+			return new Multiplication(e1.castTo(Double.class), e2.castTo(Double.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createSqrtExpression(Expression e, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Sqrt(e);
+	public IExpression<Double> createSqrtExpression(IExpression<? extends Object> e, SourceLocation sourceLocation) {
+		try {
+			return new Sqrt(e.castTo(Double.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Expression createGetDirectionExpression(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new GetAttribute(GetAttribute.Attribute.DIRECTION, new FindEntity(FindEntity.Filter.SELF));
+	public IExpression<Double> createGetDirectionExpression(SourceLocation sourceLocation) {
+		try {
+			return new GetAttribute(GetAttribute.Attribute.DIRECTION, new FindEntity(FindEntity.Filter.SELF));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createThrustOnStatement(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new SetThruster(true);
+	public IStatement createThrustOnStatement(SourceLocation sourceLocation) {
+		try {
+			return new SetThruster(new Constant<Boolean>(true));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createThrustOffStatement(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new SetThruster(false);
+	public IStatement createThrustOffStatement(SourceLocation sourceLocation) {
+		try {
+			return new SetThruster(new Constant<Boolean>(false));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createFireStatement(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Fire();
+	public IStatement createFireStatement(SourceLocation sourceLocation) {
+		try {
+			return new Fire();
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createTurnStatement(Expression angle, SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Turn(angle);
+	public IStatement createTurnStatement(IExpression<? extends Object> angle, SourceLocation sourceLocation) {
+		try {
+			return new Turn(angle.castTo(Double.class));
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 	@Override
-	public Statement createSkipStatement(SourceLocation sourceLocation) {
-		OGUtil.println(sourceLocation);
-		return new Skip();
+	public IStatement createSkipStatement(SourceLocation sourceLocation) {
+		try {
+			return new Skip();
+		} catch (ProgramException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }

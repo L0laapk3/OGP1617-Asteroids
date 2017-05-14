@@ -1,10 +1,12 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.ContainerStatement;
 
-public class GetAttribute extends Numeric {
+public class GetAttribute extends ContainerStatement<IExpression<? extends Entity>> implements IExpression<Double> {
 
 	public enum Attribute {
 		X,
@@ -19,18 +21,17 @@ public class GetAttribute extends Numeric {
 	
 	public final Attribute attribute;
 	
-	public final Expression expression;
-	
-	public <T extends Expression & IEntity> GetAttribute(Attribute attribute, T expression) {
+	public GetAttribute(Attribute attribute, IExpression<? extends Entity> expression) throws ProgramException {
 		super(expression);
-		this.expression = expression;
 		this.attribute = attribute;
 	}
 	
 	@Override
 	public Double evaluate(Program program) throws ProgramException {
 		
-		Entity entity = ((EntityExpression)expression).evaluate(program);
+		Entity entity = statements[0].evaluate(program);
+		if (entity == null)
+			throw new NullComputationException();
 		
 		switch(attribute) {
 		case DIRECTION:	return entity.getVelocityVector().getRotation();
@@ -43,7 +44,5 @@ public class GetAttribute extends Numeric {
 		case WEIGHT:	return entity.getMass();
 		default:		return null;
 		}
-		
 	}
-
 }

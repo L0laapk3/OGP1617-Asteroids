@@ -11,9 +11,11 @@ import asteroids.exceptions.EntitiesOverlapException;
 import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
@@ -514,11 +516,12 @@ public class Ship extends AdvancedEntity {
 	 * Sets the program for the ship.
 	 * @param  program
 	 * 		   The program to set for the ship.
+	 * @throws InvalidShipException 
 	 * @effect if (oldprogram != null) oldprogram.getShip() == null
 	 * @effect if (newprogram != null) newprogram.getShip() == this
 	 */
 	@Raw
-	public void setProgram(Program program) {
+	public void setProgram(Program program) throws InvalidShipException {
 		if (this.program == program)
 			return;
 		if (this.program != null)
@@ -526,6 +529,32 @@ public class Ship extends AdvancedEntity {
 		this.program = program;
 		if (this.program != null)
 			this.program.setShip(this);
+	}
+	
+	
+	
+
+	/**
+	 * Function that gets called on each entity when world.evolve(dt) gets called.
+	 * @param  dt
+	 * 	       The time that the world has evolved with.
+	 * @throws ProgramException
+	 * 	       If the program throws an error 
+	 * @effect Runs program for ship, if the ship has a program assigned to it.
+	 */
+	@Raw
+	@Override
+	void evolve(double dt) {
+		if (this.program != null)
+			try {
+				this.program.run(dt);
+			} catch (InvalidShipException e) { //this should never happen
+				throw new RuntimeException(e);
+			} catch (ProgramException e) {
+				//TODO: what has to happen when a program throws an error???
+				System.out.println("[" + this + "] Program of this ship threw an error! ");
+				e.printStackTrace();
+			}
 	}
 
 	

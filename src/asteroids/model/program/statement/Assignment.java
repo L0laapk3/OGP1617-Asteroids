@@ -2,32 +2,27 @@ package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.ContextAwareExpression;
-import asteroids.model.program.expression.Expression;
+import asteroids.model.program.expression.IExpression;
 
-public class Assignment extends ContextAwareExpression {
+public class Assignment extends ContainerStatement<IExpression<? extends Object>> implements IVariableContextAwareStatement {
 
 	public final String varname;
-	public final Expression expression;
 	
-	public Assignment(String varname, Expression expression) {
+	public Assignment(String varname, IExpression<? extends Object> expression) throws ProgramException {
 		super(expression);
 		this.varname = varname;
-		this.expression = expression;
 	}
 
 	@Override
-	public boolean step(Program program) throws ProgramException {
-		this.variableContext.setVariable(varname, expression.evaluate(program));
+	public boolean selfStep(Program program) throws ProgramException {
+		this.variableContext.setVariable(varname, this.statements[0].evaluate(program));
 		return false;
 	}
 	
-	@Override
-	protected Statement[] getChildStatements() { return new Statement[] {expression}; }
+	
 
-	@Override
-	public Object evaluate(Program program) throws ProgramException {
-		throw new ProgramException("Internal program exception: evaluate was called on a statement.");
-	}
+	private VariableContextContainer<? extends IStatement> variableContext = null;
+	@Override public void saveVariableContext(VariableContextContainer<? extends IStatement> variableContext) { this.variableContext = variableContext; }
+	@Override public VariableContextContainer<? extends IStatement> getVariableContext() { return this.variableContext; };
 
 }

@@ -1,31 +1,20 @@
 package asteroids.model.program.expression;
 
-import asteroids.exceptions.NotComparableException;
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public class LessThan extends Condition {
+public class LessThan extends MultiContainerExpression<Double> implements IExpression<Boolean> {
 	
-	private final Expression expression1;
-	private final Expression expression2;
 	
-	public <T,U extends Expression> LessThan(T expression1, U expression2) {
-		super();
-		this.expression1 = (Expression) expression1;
-		this.expression2 = (Expression) expression2;		
+	public LessThan(IExpression<? extends Double> expression1, IExpression<? extends Double> expression2) throws ProgramException {
+		super(expression1, expression2);
 	}
-	
 	
 	@Override
 	public Boolean evaluate(Program program) throws ProgramException {
-		Object result1 = expression1.evaluate(program);
-		Object result2 = expression2.evaluate(program);
-		
-		if ((result1 instanceof Double) && (result2 instanceof Double)) {
-			return (double)result1 > (double)result2;
-		} else {
-			throw new NotComparableException("At least one of the variables is not a double");
-		}
-	
+		if (getResult(0) == null || getResult(1) == null)
+			throw new NullComputationException();
+		return getResult(0) < getResult(1);
 	}
 }

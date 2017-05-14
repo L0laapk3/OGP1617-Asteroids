@@ -1,11 +1,18 @@
 package asteroids.model.program.expression;
 
 import asteroids.exceptions.InvalidShipException;
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
-import asteroids.model.*;
+import asteroids.model.Asteroid;
+import asteroids.model.Bullet;
+import asteroids.model.Entity;
+import asteroids.model.MinorPlanet;
+import asteroids.model.Planetoid;
+import asteroids.model.Ship;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.Statement;
 
-public class FindEntity extends EntityExpression {
+public class FindEntity extends Statement implements IExpression<Entity> {
 
 	public enum Filter {
 		NULL,
@@ -20,7 +27,8 @@ public class FindEntity extends EntityExpression {
 	
 	public final Filter filter;
 
-	public FindEntity(Filter filter) {
+	public FindEntity(Filter filter) throws ProgramException {
+		super();
 		this.filter = filter;
 	}
 	
@@ -29,6 +37,8 @@ public class FindEntity extends EntityExpression {
 	public Entity evaluate(Program program) throws ProgramException {
 		try {
 			Ship ship = program.getShip();
+			if (ship == null)
+				throw new NullComputationException();
 			switch(filter) {
 				case ANY:		return ship.getNearestEntity();
 				case ASTEROID:	return ship.getNearestEntity(Asteroid.class);

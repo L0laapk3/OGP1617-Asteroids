@@ -2,19 +2,17 @@ package asteroids.model.program.statement;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.expression.Expression;
+import asteroids.model.program.expression.IExpression;
 
-public class Print extends Statement {
-
-	public final Expression expression;
+public class Print extends ContainerStatement<IExpression<? extends Object>> {
 	
-	public Print(Expression value) {
-		this.expression = value;
+	public Print(IExpression<? extends Object> value) throws ProgramException {
+		super(value);
 	}
 	
 	@Override
-	public boolean step(Program program) throws ProgramException {
-		program.print(expression.evaluate(program));
+	public boolean selfStep(Program program) throws ProgramException {
+		program.print(statements[0].evaluate(program));
 		return false;
 	}
 

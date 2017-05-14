@@ -5,19 +5,17 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.*;
 
-public class Turn extends Action {
-
-	public final Expression angle;
+public class Turn extends ContainerStatement<IExpression<? extends Double>> implements IAction {
 	
-	public <T extends Expression & INumeric> Turn(Expression angle) {
-		super();
-		this.angle = angle;
+	public Turn(IExpression<? extends Double> angleExpression) throws ProgramException {
+		super(angleExpression);
 	}
 	
+	
 	@Override
-	public boolean step(Program program) throws ProgramException {
+	public boolean selfStep(Program program) throws ProgramException {
 		try {
-			program.getShip().turn(((Numeric)angle).evaluate(program));
+			program.getShip().turn(statements[0].evaluate(program));
 		} catch (InvalidShipException e) {
 			throw new ProgramException(e);
 		}

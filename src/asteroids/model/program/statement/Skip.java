@@ -1,12 +1,10 @@
 package asteroids.model.program.statement;
 
-import asteroids.model.program.Program;
+import asteroids.exceptions.ProgramException;
 
-public class Skip extends Action {
+public class Skip extends Statement implements IAction {
 	
-	@Override
-	public boolean step(Program program) {
-		return false;
+	public Skip() throws ProgramException {
+		super();
 	}
-
 }

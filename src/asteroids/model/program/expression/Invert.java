@@ -1,26 +1,21 @@
 package asteroids.model.program.expression;
 
-import asteroids.exceptions.NotInvertableException;
+import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.ContainerStatement;
 
-public class Invert extends Condition {
-
-	private final Expression expression;
+public class Invert extends ContainerStatement<IExpression<? extends Boolean>> implements IExpression<Boolean> {
 	
-	public <T extends Expression & ICondition> Invert(T expression) {
-		super();
-		this.expression = expression;
+	public Invert(IExpression<? extends Boolean> expression) throws ProgramException {
+		super(expression);
 	}
 
 	@Override
 	public Boolean evaluate(Program program) throws ProgramException {
-		Object result = expression.evaluate(program);
-		
-		if (result instanceof Boolean)
-			return !(boolean)result;
-		else
-			throw new NotInvertableException("Cannot get negative of expression because expression is not a number.");
+		Boolean result = statements[0].evaluate(program);
+		if (result == null)
+			throw new NullComputationException();
+		return !result;
 	}
-
 }

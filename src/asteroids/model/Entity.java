@@ -469,6 +469,8 @@ public abstract class Entity extends Instance {
 		this.setPosition(Vector2.add(positionFirst, Vector2.multiply(this.getVelocityVector(), dt)));		
 	}	
 	
+	
+	
 	/**
 	 * Return the distance between <code>entity1</code> and <code>entity2</code>.
 	 * 
@@ -852,9 +854,8 @@ public abstract class Entity extends Instance {
 	 * @return The nearest entity of one of the given types.
 	 * 		  | see implementation
 	 */
-		
-	@SafeVarargs public final Entity getNearestEntity(Class<? extends Entity>... classes) { return getNearestEntity(e -> true, classes); }
-	@SafeVarargs public final Entity getNearestEntity(Predicate<Entity> filter, Class<? extends Entity>... classes) {
+	@Raw @SafeVarargs public final Entity getNearestEntity(Class<? extends Entity>... classes) { return getNearestEntity(e -> true, classes); }
+	@Raw @SafeVarargs public final Entity getNearestEntity(Predicate<Entity> filter, Class<? extends Entity>... classes) {
 		double closestDistance = Double.POSITIVE_INFINITY;
 		Entity closestEntity = null;
 		Set<? extends Entity> entities = this.getWorld().getAllEntities(classes.length > 0 ? entity -> { for (Class<? extends Entity> c : classes) if (c.isInstance(entity)) return filter.test(entity); return false; } : entity -> filter.test(entity) );
@@ -868,4 +869,15 @@ public abstract class Entity extends Instance {
 		return closestEntity;
 	}
 	
+	
+	
+	/**
+	 * Function that gets called on each entity when world.evolve(dt) gets called. Can optionally be overwritten by subclasses.
+	 * @param  dt
+	 *  	   The amount of time that the world has evolved by.
+	 * @throws Exception
+	 * 		   Subclasses can throw exceptions in this function.
+	 */
+	@Raw
+	void evolve(double dt) { }
 }

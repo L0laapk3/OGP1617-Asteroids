@@ -11,8 +11,10 @@ import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
+import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.InvalidTimeException;
 import asteroids.exceptions.MisMatchWorldsException;
+import asteroids.exceptions.NoProgramException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.exceptions.ProgramException;
@@ -25,8 +27,9 @@ import asteroids.model.Ship;
 import asteroids.model.World;
 import asteroids.model.program.Program;
 import asteroids.model.program.ProgramFactory;
-import asteroids.model.program.expression.Expression;
-import asteroids.model.program.statement.Statement;
+import asteroids.model.program.expression.IExpression;
+import asteroids.model.program.statement.DefineFunction;
+import asteroids.model.program.statement.IStatement;
 import asteroids.part2.CollisionListener;
 //import asteroids.part3.facade.Program;
 import asteroids.part3.programs.IProgramFactory;
@@ -1015,7 +1018,11 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * Load the given program on the given ship.
 	*/
 	public void loadProgramOnShip(Ship ship, Program program) throws ModelException {
-		ship.setProgram(program);
+		try {
+			ship.setProgram(program);
+		} catch (InvalidShipException e) {
+			throw new ModelException(e);
+		}
 	}
 
 	/**
@@ -1030,8 +1037,10 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 */
 	public List<Object> executeProgram(Ship ship, double dt) throws ModelException {
 		try {
+			if (ship.getProgram() == null)
+				throw new ModelException(new NoProgramException("ship does not have a program assigned to it."));
 			ship.getProgram().run(dt);
-		} catch (ProgramException e) {
+		} catch (ProgramException | InvalidShipException e) {
 			throw new ModelException(e);
 		}
 		return ship.getProgram().isCompleted() ? ship.getProgram().getPrints() : null;
@@ -1040,7 +1049,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	/**
 	 * Creates a new program factory.
 	 */
-	public IProgramFactory<Expression, Statement, Statement, Program> createProgramFactory() throws ModelException {
+	public IProgramFactory<IExpression<? extends Object>, IStatement, DefineFunction, Program> createProgramFactory() throws ModelException {
 		return new ProgramFactory();
 	}
 }

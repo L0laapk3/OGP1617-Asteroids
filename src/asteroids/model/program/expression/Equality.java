@@ -1,31 +1,21 @@
 package asteroids.model.program.expression;
 
-import asteroids.exceptions.NotComparableException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public class Equality extends Condition {
+public class Equality extends MultiContainerExpression<Object> implements IExpression<Boolean> {
 	
-	private final Expression expression1;
-	private final Expression expression2;
 	
-	public <T,U extends Expression> Equality(T expression1, U expression2) {
-		super();
-		this.expression1 = (Expression) expression1;
-		this.expression2 = (Expression) expression2;		
+	public <T extends Object> Equality(IExpression<? extends T> expression1, IExpression<? extends T> expression2) throws ProgramException {
+		super(expression1, expression2);
 	}
-	
 	
 	@Override
 	public Boolean evaluate(Program program) throws ProgramException {
-		Object result1 = expression1.evaluate(program);
-		Object result2 = expression2.evaluate(program);
-		
-		if ((result1 instanceof Double) && (result2 instanceof Double)) {
-			return (double)result1 == (double)result2;
-		} else {
-			throw new NotComparableException("At least one of the variables is not a double");
-		}
-	
+		if (getResult(0) == null && getResult(1) == null)
+			return true;
+		if (getResult(0) == null || getResult(1) == null)
+			return false;
+		return getResult(0).equals(getResult(1));
 	}
 }
