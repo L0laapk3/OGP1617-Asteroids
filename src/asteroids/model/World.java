@@ -555,13 +555,15 @@ public class World extends Instance {
 	public void evolve(double dt, CollisionListener collisionListener) throws InvalidTimeException {
 		
 		try {
-			OGUtil.throwErrorIfInvalidNumbers(Dt);
+			OGUtil.throwErrorIfInvalidNumbers(dt);
 		} catch (IllegalArgumentException ex) {
 			throw new InvalidTimeException(ex);
 		}
 		
-		if (!OGUtil.isValidDeltaTime(Dt))
+		if (!OGUtil.isValidDeltaTime(dt))
 			throw new NegativeTimeException();
+		
+		double originalDt = dt;
 		
 		try {
 
