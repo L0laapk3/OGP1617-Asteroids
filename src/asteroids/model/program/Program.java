@@ -3,6 +3,7 @@ package asteroids.model.program;
 import java.util.ArrayList;
 import java.util.List;
 
+import asteroids.exceptions.ForSomeReasonNotAllowedError;
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.ProgramException;
 import asteroids.exceptions.TooLongWithoutYieldingException;
@@ -17,7 +18,7 @@ import asteroids.util.OGUtil;
 
 public class Program {
 
-	private static final int MAX_STEPS_IN_ONE_CALL = 15; //1000-10000;
+	private static final int MAX_STEPS_IN_ONE_CALL = 10000; //1000-10000;
 	
 	private boolean completed = false;
 	
@@ -29,7 +30,7 @@ public class Program {
 		return main.getReturnValue();
 	}
 	
-	private final FunctionContainer main;
+	public final FunctionContainer main;
 
 	private Ship ship = null;
 
@@ -74,6 +75,8 @@ public class Program {
 			if (i++ > MAX_STEPS_IN_ONE_CALL)
 				throw new TooLongWithoutYieldingException();
 		}
+		if (main.getIsReturned())
+			throw new ForSomeReasonNotAllowedError("returning in the main function is for some reason not allowed.");
 	}
 	
 	

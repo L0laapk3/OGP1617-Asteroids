@@ -8,24 +8,24 @@ public abstract class StatementWithChildren<T extends IStatement> extends Statem
 	@SafeVarargs
 	protected StatementWithChildren(T... statements) throws ProgramException {
 		super();
-		for (T statement : statements)
-			if (statement == null)
+		for (int i = 0; i < statements.length; i++)
+			if (statements[i] == null)
 				throw new NullStatementException();
 		this.statements = statements;
 	}
 	
-	public final T[] statements;
-	public T[] getChildStatements() { return statements; }
+	public T[] statements;
+	public T[] getChildren() { return statements; }
 	
 	
 
 	@SuppressWarnings("unchecked") //TODO: ???
 	public StatementWithChildren<T> clone() {
 		StatementWithChildren<T> n = (StatementWithChildren<T>)super.clone();
+		//n.statements = (T[])new IStatement[this.statements.length];
+		n.statements = statements.clone();
 		for (int i = 0; i < this.statements.length; i++) {
-			T clone = (T)this.statements[i].clone();
-			//OGUtil.println("changing child " + n.statements[i] + " to " + clone);
-			n.statements[i] = clone;
+			n.statements[i] = (T)this.statements[i].clone();
 		}
 		return n;
 	}

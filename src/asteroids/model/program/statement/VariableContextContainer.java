@@ -5,7 +5,9 @@ import java.util.Map;
 
 import asteroids.exceptions.BadClassAssignmentException;
 import asteroids.exceptions.ProgramException;
+import asteroids.exceptions.VariableDoesntExistException;
 import asteroids.model.program.Program;
+import asteroids.util.OGUtil;
 
 public abstract class VariableContextContainer<T extends IStatement> extends StatementWithChildren<T> {
 	
@@ -18,7 +20,7 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 	}
 	
 	protected void initChildsContext() {
-		for (IStatement statement : statements)
+		for (T statement : statements)
 			statement.setContext(this);
 	}
 
@@ -36,22 +38,22 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 		super.reset(program);
 	}
 	
-	public Object getVariable(String name) {
-		//OGUtil.println("try get " + name + " from " + this);
+	public Object getVariable(String name) throws VariableDoesntExistException {
+		OGUtil.println("try get " + name + " from " + this);
 		if (variables.containsKey(name)) {
-			//OGUtil.println("get " + name + " from " + this);
+			OGUtil.println("get " + name + " from " + this);
 			return variables.get(name);
 		} else if (selfContext != null)
 			return selfContext.getVariable(name);
 		else
-			return null;
+			throw new VariableDoesntExistException();
 	}
 	
 	
 	
 	protected boolean setIfContains(String name, Object value) throws BadClassAssignmentException {
 		//OGUtil.println("try put " + name + " in " + this);
-		if (variables.containsKey(name)) {
+		if (variables.containsKey(name) && !((variables.get(name) instanceof FunctionContainer) && !(value instanceof FunctionContainer))) {
 			if (variables.get(name).getClass() != value.getClass())
 				throw new BadClassAssignmentException();
 			else {
@@ -67,6 +69,8 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 	
 	public void setVariable(String name, Object value) throws BadClassAssignmentException {
 		if (!setIfContains(name, value)) {
+			if (variables.containsKey(name)) // && (variables.get(name) instanceof FunctionContainer)) //not needed, guarranteed
+				throw new BadClassAssignmentException();
 			variables.put(name, value);
 			//OGUtil.println("put " + name + " to " + this);
 		}

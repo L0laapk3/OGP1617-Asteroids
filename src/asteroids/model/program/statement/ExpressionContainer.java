@@ -1,18 +1,18 @@
-package asteroids.model.program.expression;
+package asteroids.model.program.statement;
 
 import java.util.Arrays;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.ContainerStatement;
+import asteroids.model.program.expression.IExpression;
 
-public abstract class MultiContainerExpression<T extends Object> extends ContainerStatement<IExpression<? extends T>> {
+public abstract class ExpressionContainer<T extends Object> extends StatementContainer<IExpression<? extends T>> {
 
-	private final T[] results;
+	private T[] results;
 	
 	@SafeVarargs //not actually writing to expressiosn
-	@SuppressWarnings("unchecked") //T extends object
-	public MultiContainerExpression(IExpression<? extends T>... expressions) throws ProgramException {
+	@SuppressWarnings("unchecked")
+	public ExpressionContainer(IExpression<? extends T>... expressions) throws ProgramException {
 		super(expressions);
 		results = (T[])new Object[expressions.length];
 	}
@@ -28,5 +28,14 @@ public abstract class MultiContainerExpression<T extends Object> extends Contain
 	public void reset(Program program) {
 		super.reset(program);
 		Arrays.fill(results, null);
+	}
+	
+	
+
+	@Override
+	public ExpressionContainer<T> clone() {
+		ExpressionContainer<T> n = (ExpressionContainer<T>)super.clone();
+		n.results = results.clone();
+		return n;
 	}
 }

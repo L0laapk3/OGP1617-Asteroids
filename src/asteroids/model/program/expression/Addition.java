@@ -3,8 +3,9 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.ExpressionContainer;
 
-public class Addition extends MultiContainerExpression<Double> implements IExpression<Double> {
+public class Addition extends ExpressionContainer<Double> implements IExpression<Double> {
 	
 	
 	public Addition(IExpression<? extends Double> expression1, IExpression<? extends Double> expression2) throws ProgramException {

@@ -21,7 +21,7 @@ public abstract class FunctionContextContainer<T extends IStatement> extends Loo
 	@Override
 	protected void initChildsContext() {
 		super.initChildsContext();
-		for (IStatement statement : statements)
+		for (T statement : statements)
 			statement.setFunctionContext(this);
 	}
 	

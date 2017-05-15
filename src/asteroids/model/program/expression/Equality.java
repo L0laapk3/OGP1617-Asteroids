@@ -2,8 +2,9 @@ package asteroids.model.program.expression;
 
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.ExpressionContainer;
 
-public class Equality extends MultiContainerExpression<Object> implements IExpression<Boolean> {
+public class Equality extends ExpressionContainer<Object> implements IExpression<Boolean> {
 	
 	
 	public <T extends Object> Equality(IExpression<? extends T> expression1, IExpression<? extends T> expression2) throws ProgramException {

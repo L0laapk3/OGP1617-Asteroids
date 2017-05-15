@@ -3,18 +3,18 @@ package asteroids.model.program.statement;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 
-public abstract class ContainerStatement<T extends IStatement> extends StatementWithChildren<T> implements IContainerStatement {
+public abstract class StatementContainer<T extends IStatement> extends StatementWithChildren<T> implements IContainerStatement {
 	
 	public final boolean isEmpty;
 	protected int stepdone = 0;
 	
 	@SafeVarargs
-	public ContainerStatement(T... statements) throws ProgramException {
+	public StatementContainer(T... statements) throws ProgramException {
 		super(statements);
 		isEmpty = false;
 	}
 	
-	public ContainerStatement() throws ProgramException {
+	public StatementContainer() throws ProgramException {
 		super();
 		isEmpty = true;
 	}

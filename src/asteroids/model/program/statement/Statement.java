@@ -19,7 +19,6 @@ public abstract class Statement implements IStatement {
 	
 	
 	
-
 	
 	
 	
