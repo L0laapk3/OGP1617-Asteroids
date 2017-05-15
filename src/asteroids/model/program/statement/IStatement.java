@@ -9,8 +9,8 @@ import asteroids.util.OGUtil;
 
 public interface IStatement extends Cloneable {
 	
-	public default IStatement[] getChildStatements() { return new IStatement[0]; }
-	
+	public default IStatement[] getChildren() { return new IStatement[0]; }
+	public default List<IStatement> getAllChildren() { return new ArrayList<IStatement>(); }
 	
 	
 	//returns false only if this is the last step to be executed.
@@ -25,7 +25,7 @@ public interface IStatement extends Cloneable {
 			((ILoopContextAwareStatement)this).saveLoopContext(context);
 		}
 	public default void setFunctionContext(FunctionContextContainer<? extends IStatement> context) {
-		if (this instanceof ILoopContextAwareStatement)
+		if (this instanceof IFunctionContextAwareStatement)
 			((IFunctionContextAwareStatement)this).saveFunctionContext(context);
 		}
 	public default void reset(Program program) { }
@@ -33,7 +33,7 @@ public interface IStatement extends Cloneable {
 	public default double getRequiredTime() throws ProgramException { return 0;	}
 	public default double selfGetRequiredTime() throws ProgramException { return 0; }
 	
-	public abstract IStatement clone();
+	
 	
 	
 	
@@ -54,11 +54,14 @@ public interface IStatement extends Cloneable {
 				string += childrenLeft.get(i) > 0 ? "  | " : "    ";
 		if (childrenLeft.size() <= level)
 			childrenLeft.add(null);
-		childrenLeft.set(level, statement.getChildStatements().length);
+		childrenLeft.set(level, statement.getChildren().length);
 		System.out.println(string + statement);
-		for (IStatement child : statement.getChildStatements()) {
+		for (IStatement child : statement.getChildren()) {
 			childrenLeft.set(level, childrenLeft.get(level) - 1);
 			__recursivePrint(child, level + 1, childrenLeft);
 		}
 	}
+
+
+	public abstract IStatement clone();
 }

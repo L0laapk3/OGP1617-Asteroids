@@ -1,7 +1,9 @@
 package asteroids.model.program.expression;
 
+import asteroids.exceptions.ForSomeReasonNotAllowedError;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.FunctionContainer;
 import asteroids.model.program.statement.IStatement;
 import asteroids.model.program.statement.IVariableContextAwareStatement;
 import asteroids.model.program.statement.Statement;
@@ -17,7 +19,10 @@ public class ReadVariable extends Statement implements IExpression<Object>, IVar
 	}
 	
 	public Object evaluate(Program program) throws ProgramException {
-		System.out.println("reading " + varname + "; result: " + this.variableContext.getVariable(varname));
+		//OGUtil.println("reading " + varname + "; result: " + this.variableContext.getVariable(varname));
+		Object var = this.variableContext.getVariable(varname);
+		if (var instanceof FunctionContainer)
+			throw new ForSomeReasonNotAllowedError("Reading functions as variables is for some reason not allowed.");
 		return this.variableContext.getVariable(varname);
 	}
 	

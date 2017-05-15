@@ -1436,7 +1436,6 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			facade.executeProgram(ship1, 1.0);
 			fail();
-			fail();
 		} catch (ModelException exc) {
 			score += 4;
 		}

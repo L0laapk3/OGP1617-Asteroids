@@ -13,6 +13,7 @@ public class Constant<T extends Object> extends Statement implements IExpression
 		this.value = value;
 	}
 	
+	
 	@Override
 	public T evaluate(Program program) {
 		return value;

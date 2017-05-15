@@ -10,7 +10,7 @@ public class IfElse extends VariableContextContainer<IStatement> {
 	private boolean conditionResult;
 
 	public IfElse(IExpression<? extends Boolean> condition, IStatement ifBody, IStatement elseBody) throws ProgramException {
-		super(condition, ifBody, elseBody);
+		super(condition, ifBody, elseBody != null ? elseBody : new EmptyStatement());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -4,9 +4,9 @@ import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
 import asteroids.model.program.Program;
-import asteroids.model.program.statement.ContainerStatement;
+import asteroids.model.program.statement.ExpressionContainer;
 
-public class GetAttribute extends ContainerStatement<IExpression<? extends Entity>> implements IExpression<Double> {
+public class GetAttribute extends ExpressionContainer<Entity> implements IExpression<Double> {
 
 	public enum Attribute {
 		X,
@@ -29,19 +29,18 @@ public class GetAttribute extends ContainerStatement<IExpression<? extends Entit
 	@Override
 	public Double evaluate(Program program) throws ProgramException {
 		
-		Entity entity = statements[0].evaluate(program);
-		if (entity == null)
+		if (getResult(0) == null)
 			throw new NullComputationException();
 		
 		switch(attribute) {
-		case DIRECTION:	return entity.getVelocityVector().getRotation();
-		case RADIUS:	return entity.getRadius();
-		case VX:		return entity.getVelocityVector().x;
-		case VY:		return entity.getVelocityVector().y;
-		case X:			return entity.getPosition().x;
-		case Y:			return entity.getPosition().y;
-		case VELOCITY:  return entity.getVelocity();
-		case WEIGHT:	return entity.getMass();
+		case DIRECTION:	return getResult(0).getVelocityVector().getRotation();
+		case RADIUS:	return getResult(0).getRadius();
+		case VX:		return getResult(0).getVelocityVector().x;
+		case VY:		return getResult(0).getVelocityVector().y;
+		case X:			return getResult(0).getPosition().x;
+		case Y:			return getResult(0).getPosition().y;
+		case VELOCITY:  return getResult(0).getVelocity();
+		case WEIGHT:	return getResult(0).getMass();
 		default:		return null;
 		}
 	}

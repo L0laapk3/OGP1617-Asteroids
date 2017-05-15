@@ -4,14 +4,14 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.expression.IExpression;
 
-public class Return extends ContainerStatement<IExpression<? extends Object>> implements IFunctionContextAwareStatement {
+public class Return extends ExpressionContainer<Object> implements IFunctionContextAwareStatement {
 	
 	public Return(IExpression<? extends Object> expression) throws ProgramException {
 		super(expression);
 	}
 
 	public boolean selfStep(Program program) throws ProgramException {
-		this.functionContext.doReturn(statements[0].evaluate(program));
+		this.functionContext.doReturn(getResult(0));
 		return false;
 	}
 	

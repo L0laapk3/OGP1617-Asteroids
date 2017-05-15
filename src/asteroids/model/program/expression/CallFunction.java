@@ -3,6 +3,7 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.NotAFunctionException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.model.program.statement.ExpressionContainer;
 import asteroids.model.program.statement.FunctionContainer;
 import asteroids.model.program.statement.IStatement;
 import asteroids.model.program.statement.IVariableContextAwareStatement;
@@ -13,7 +14,7 @@ import asteroids.util.OGUtil;
 //TODO: callfunction moet eigenlijk heel die functie shit clonen denk ik
 
 
-public class CallFunction extends MultiContainerExpression<Object> implements IExpression<Object>, IVariableContextAwareStatement {
+public class CallFunction extends ExpressionContainer<Object> implements IExpression<Object>, IVariableContextAwareStatement {
 
 	public final String functionName;
 	
