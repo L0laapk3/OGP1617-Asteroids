@@ -2470,14 +2470,16 @@ public class Part3TestFullKris {
 		Set<? extends Bullet> bulletsOnShip1 = null;
 		if (nbStudentsInTeam > 1)
 			bulletsOnShip1 = facade.getBulletsOnShip(ship1);
+		
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
-		System.out.println("kak" + facade.getBulletsOnShip(ship1));
+		
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 1.0);
 		System.out.println("fagg" + ship1.isTerminated());
 		System.out.println("fag" + results);
+		System.out.println("kak" + (facade.getBulletsOnShip(ship1)).iterator().next().getMotherShip());
 		assertEquals(1, results.size());
 		System.out.println(facade.getWorldBullets(filledWorld).contains(results.get(0)));
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
