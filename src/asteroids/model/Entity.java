@@ -845,6 +845,11 @@ public abstract class Entity extends Instance {
 	void die() {
 		this.terminate();
 	}
+	
+	
+	
+	
+	
 	/**
 	 * Function that will return the nearest entity of one of the given types.
 	 * @param filter

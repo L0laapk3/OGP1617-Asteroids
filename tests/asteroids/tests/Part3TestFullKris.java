@@ -1775,8 +1775,7 @@ public class Part3TestFullKris {
 			assertEquals(1.5, facade.getShipOrientation(ship1), EPSILON);
 			Object[] expecteds = { 0.4 };
 			assertArrayEquals(expecteds, results.toArray());
-			score += 3;
-			fail();
+			score += 5;
 		} catch (ModelException exc) {
 			assertEquals(1.5, facade.getShipOrientation(ship1), EPSILON);
 			score += 5;
