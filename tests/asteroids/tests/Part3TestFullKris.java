@@ -2479,6 +2479,7 @@ public class Part3TestFullKris {
 		List<Object> results = facade.executeProgram(ship1, 1.0);
 		OGUtil.println("fagg" + ship1.isTerminated());
 		OGUtil.println("fag" + results);
+		System.out.println("kak" + (facade.getBulletsOnShip(ship1)).iterator().next().getMotherShip());
 		assertEquals(1, results.size());
 		OGUtil.println(facade.getWorldBullets(filledWorld) + " " + results);
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
