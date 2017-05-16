@@ -640,7 +640,7 @@ public class Part3TestFullKris {
 			assertTrue(facade.isTerminatedBullet(bullet1));
 			assertTrue(facade.isTerminatedBullet(bullet2));
 		}
-		score += 8;
+		score += 8;	
 	}
 
 	@Test
@@ -2178,6 +2178,7 @@ public class Part3TestFullKris {
 				"print 0.0; ";
 			Program program = ProgramParser.parseProgramFromString(code, programFactory);
 			facade.loadProgramOnShip(ship1, program);
+			System.out.println("het komt hierr");
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { 10.0, 12.0, 14.0, 16.0, 0.0 };
 			assertArrayEquals(expecteds, results.toArray());
@@ -2345,6 +2346,7 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { ship2 };
+			System.out.println(results.toArray());
 			assertArrayEquals(expecteds, results.toArray());
 			score += 14;
 		}
@@ -2466,9 +2468,13 @@ public class Part3TestFullKris {
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
+		System.out.println("kak" + facade.getBulletsOnShip(ship1));
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 1.0);
+		System.out.println("fagg" + ship1.isTerminated());
+		System.out.println("fag" + results);
 		assertEquals(1, results.size());
+		System.out.println(facade.getWorldBullets(filledWorld).contains(results.get(0)));
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
 		if (nbStudentsInTeam > 1)
 			assertTrue(bulletsOnShip1.contains(results.get(0)));
@@ -2525,6 +2531,7 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { null };
+			System.out.println(results.toArray());
 			assertArrayEquals(expecteds, results.toArray());
 			score += 2;
 		}
@@ -3116,7 +3123,7 @@ public class Part3TestFullKris {
 	// GetDirection
 
 	@Test
-	public void testGetDirection_LegalCase() throws ModelException {
+	public void testGetDirection_LegalCase() throws ModelException { //TODO test verkeerd?
 		max_score += 3;
 		String code = 
 				"print getdir ; ";
@@ -3124,7 +3131,10 @@ public class Part3TestFullKris {
 		facade.turn(ship1, 0.33);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 1.0);
+		
 		Object[] expecteds = { facade.getShipOrientation(ship1) };
+		System.out.println("fag" + expecteds);
+		System.out.println(results.toArray());
 		assertArrayEquals(expecteds, results.toArray());
 		score += 3;
 	}

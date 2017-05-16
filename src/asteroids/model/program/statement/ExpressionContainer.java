@@ -10,7 +10,7 @@ public abstract class ExpressionContainer<T extends Object> extends StatementCon
 
 	private T[] results;
 	
-	@SafeVarargs //not actually writing to expressiosn
+	@SafeVarargs //not actually writing to expressions
 	@SuppressWarnings("unchecked")
 	public ExpressionContainer(IExpression<? extends T>... expressions) throws ProgramException {
 		super(expressions);
