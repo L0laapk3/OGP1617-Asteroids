@@ -759,7 +759,9 @@ public class Part3TestFullKris {
 			Bullet bullet2 = facade.createBullet(300, 220, 10, 5, 50);
 			facade.loadBulletOnShip(ship, bullet1);
 			facade.loadBulletOnShip(otherShip, bullet2);
+			System.out.println("faggggg");
 			facade.removeBulletFromShip(ship, bullet2);
+			
 			if (nbStudentsInTeam == 1) {
 				assertEquals(0, facade.getNbBulletsOnShip(ship));
 				throw new ModelException("Needed for a succesfull test.");
@@ -853,6 +855,8 @@ public class Part3TestFullKris {
 		facade.addShipToWorld(world, ship2);
 		Bullet bullet1 = facade.createBullet(520, 170, 10, 5, 10);
 		facade.loadBulletOnShip(ship1, bullet1);
+		
+		System.out.println("jooooooooooo");
 		facade.fireBullet(ship1);
 		assertTrue(facade.getWorldBullets(world).isEmpty());
 		assertTrue(facade.getWorldShips(world).contains(ship1));
@@ -2185,6 +2189,7 @@ public class Part3TestFullKris {
 			score += 16;
 		}
 	}
+	
 
 	// Read Variable
 

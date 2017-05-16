@@ -480,7 +480,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 */
 	public Ship getBulletShip(Bullet bullet) {
 		
-		if (bullet.isLoadedInMotherShip()) {
+		if (bullet.isLoadedInMotherShip() && !(bullet.isTerminated())) {
 			return bullet.getMotherShip();
 		} else {
 			return null;
@@ -638,7 +638,12 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * Remove <code>ship</code> from <code>ship</code>.
 	 */
 	public void removeBulletFromShip(Ship ship, Bullet bullet) throws ModelException {
-		ship.unloadBullet(bullet);
+		try {
+			ship.unloadBullet(bullet);
+		} catch (NullPointerException | IllegalEntityException ex ){
+			throw new ModelException(ex);
+		}
+		
 	}
 
 	/**

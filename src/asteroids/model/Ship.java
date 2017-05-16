@@ -8,6 +8,7 @@ import asteroids.exceptions.AlreadyTerminatedException;
 import asteroids.exceptions.BulletNotLoadedException;
 import asteroids.exceptions.DoubleEntityException;
 import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.IllegalEntityException;
 import asteroids.exceptions.InvalidParentShipException;
 import asteroids.exceptions.InvalidPositionException;
 import asteroids.exceptions.InvalidRadiusException;
@@ -204,7 +205,11 @@ public class Ship extends AdvancedEntity {
 	 *         bullet must not be null.
 	 */
 	@Raw
-	public void unloadBullet(Bullet bullet) throws NullPointerException {
+	public void unloadBullet(Bullet bullet) throws NullPointerException, IllegalEntityException {
+		if (!(this.getLoadedBullets().contains(bullet))) {
+			System.out.println("hij doet een exception");
+			throw new IllegalEntityException("The given bullet can not be unloaded");
+		}
 		if (bullet == null)
 			throw new NullPointerException();
 		bullet.setLoadedInMotherShip(false);

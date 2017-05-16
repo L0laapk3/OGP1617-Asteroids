@@ -210,10 +210,6 @@ public class Bullet extends EntityWithConstantDensity {
 				throw new AssertionError(ex);
 			}		
 		else {
-			
-			if (!isNullOrTerminated(this.getMotherShip()))
-				this.getMotherShip().triggerScoreOn(ship); //does nothing for now (part 3?)
-			ship.triggerHit();
 			this.die();
 		}
 	}
@@ -228,6 +224,7 @@ public class Bullet extends EntityWithConstantDensity {
 	void collideEntity(Entity entity) {
 		entity.die();
 		this.die();
+
 	}
 	/**
 	 * Variable holding the maximum speed of all bullets.
@@ -256,13 +253,19 @@ public class Bullet extends EntityWithConstantDensity {
 		maxSpeed=newMaxSpeed;
 	}
 	
+	/**
+	 * Function that terminates a bullet properly.
+	 * @post This bullet will be unloaded from his mothership.
+	 * @effect super.terminate
+	 */
+	
 	@Override
 	public void terminate() {
 		System.out.print("het moederschip in terminate is: ");
 		System.out.println(this.getMotherShip());
-		if (this.getMotherShip() != null) {
+		if (this.isLoadedInMotherShip()) {
 			this.getMotherShip().unloadBullet(this);
-		}
+		} 
 		super.terminate();
 	}
 
