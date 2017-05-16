@@ -497,6 +497,7 @@ public abstract class Entity extends Instance {
 		return Vector2.distance(entity1.position, entity2.position) - entity1.radius - entity2.radius;
 	}
 
+	
 	/**
 	 * Check whether <code>entity1</code> and <code>entity2</code> overlap. A entity
 	 * always overlaps with itself.
@@ -518,6 +519,8 @@ public abstract class Entity extends Instance {
 			return true;
 		}
 		Vector2 centerDifference = new Vector2(entity1.getPosition().x - entity2.getPosition().x, entity1.getPosition().y - entity2.getPosition().y);
+		System.out.println("ze overlappen: " + (centerDifference.pythagoras() <= 0.99 * (entity1.getRadius() + entity2.getRadius())));
+		
 		return centerDifference.pythagoras() <= 0.99 * (entity1.getRadius() + entity2.getRadius());
 	}
 

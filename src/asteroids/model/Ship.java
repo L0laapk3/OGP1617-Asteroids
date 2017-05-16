@@ -15,6 +15,7 @@ import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.exceptions.NotOverlapException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.util.OGUtil;
@@ -108,12 +109,24 @@ public class Ship extends AdvancedEntity {
 	 * 		 | new.bullet.getWorld() == ship.getWorld()
 	 * @throws NullPointerException
 	 *         bullet must not be null.
+	 * @throws NotOverlapException 
 	 * @note defensive
 	 */
 	@Raw
-	public void loadBullet(Bullet bullet) throws NullPointerException, RuntimeException {
+	public void loadBullet(Bullet bullet) throws NullPointerException, RuntimeException, NotOverlapException {
 		if (bullet == null)
 			throw new NullPointerException();
+		
+		System.out.println(bullet.getPosition());
+		System.out.println(this.getPosition());
+		
+		Vector2 centerDifference = new Vector2(this.getPosition().x - bullet.getPosition().x, this.getPosition().y - bullet.getPosition().y);
+		
+		System.out.println("shit" + !(centerDifference.pythagoras() <= 1.01 * (this.getRadius() + bullet.getRadius())));
+		
+		if (!(centerDifference.pythagoras() <= 1.01 * (this.getRadius() + bullet.getRadius()))) {
+			throw new NotOverlapException(); 
+		}
 		
 		System.out.print("de geladen bullets: ");
 		System.out.println(this.getLoadedBullets());
@@ -125,16 +138,21 @@ public class Ship extends AdvancedEntity {
 		this.updateLoadMass();
 		bullet.setLoadedInMotherShip(true);
 		bullet.resetBounces();
-	
-		if (this.getWorld() != bullet.getWorld())
+		
+		if ((this.getWorld() == null) && (bullet.getWorld() != null)) {
+			throw new NullPointerException();
+		}
+
+		if (this.getWorld() != bullet.getWorld()) {
 			try {
 				this.getWorld().addEntity(bullet);
 				// These exceptions should never happen as the bullet has been set to be loaded in this ship.
 			} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
-				throw new RuntimeException(ex);
+				throw new AssertionError(ex);
 			}
 		System.out.print("de geladen bullets nu: ");
 		System.out.println(this.getLoadedBullets());
+		}
 	}
 	
 	/**
@@ -161,13 +179,15 @@ public class Ship extends AdvancedEntity {
 	 * function to load a bullet to this ship
 	 * 
 	 * @param  A collection of bullets The collection of bullets that has to be loaded.
+	 * @throws NotOverlapException 
+	 * @throws RuntimeException 
 	 * @effect loadBullet(bullet)
 	 * 		 | ship.getLoadedBullets.contains(bullet) = true
 	 * @post   The given bullets will be added to the Set with loaded bullets from this ship.
 	 *       | new.getLoadedBullets.contains(bullets) = true
 	 */
 	@Raw
-	public void loadBullet(Collection<Bullet> bullets) throws NullPointerException {
+	public void loadBullet(Collection<Bullet> bullets) throws RuntimeException, NotOverlapException {
 		for (Bullet bullet : bullets) {
 			this.loadBullet(bullet);
 		}

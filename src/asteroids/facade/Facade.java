@@ -17,6 +17,7 @@ import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoProgramException;
 import asteroids.exceptions.NoWorldException;
 import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.exceptions.NotOverlapException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
@@ -413,7 +414,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException {
 		try {
 			return new Bullet(x, y, xVelocity, yVelocity, radius, null);
-		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException ex) {
+		} catch (IllegalArgumentException | InvalidRadiusException | InvalidPositionException | NotOverlapException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -609,11 +610,13 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	/**
 	 * Load <code>bullet</code> on <code>ship</code>.
 	 * @throws ModelException 
+	 * @throws NotOverlapException 
+	 * @throws RuntimeException 
 	 */
 	public void loadBulletOnShip(Ship ship, Bullet bullet) throws ModelException {
 		try {
 			ship.loadBullet(bullet);
-		} catch (NullPointerException ex) {
+		} catch (RuntimeException | NotOverlapException ex) {
 			throw new ModelException(ex);
 		}
 	}
@@ -626,7 +629,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) throws ModelException {
 		try {
 			ship.loadBullet(bullets);
-		} catch (NullPointerException ex) {
+		} catch (RuntimeException | NotOverlapException ex) {
 			throw new ModelException(ex);
 		}
 	}
