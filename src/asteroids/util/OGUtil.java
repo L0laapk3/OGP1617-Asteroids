@@ -84,6 +84,7 @@ public class OGUtil {
 	/**
 	 * Prints only in debug mode
 	 */
+	public static void print(Object... args) { for (Object arg : args) print(arg + " "); }
 	public static void print(Object arg) {
         if (VERBOSE)
 			System.out.print(arg);
@@ -92,8 +93,11 @@ public class OGUtil {
 	/**
 	 * Prints line only in debug mode
 	 */
+	public static void println(Object... args) { for (Object arg : args) print(arg + " "); println(""); }
 	public static void println(Object arg) {
         if (VERBOSE)
 			System.out.println(arg);
 	}
+	
+
 }

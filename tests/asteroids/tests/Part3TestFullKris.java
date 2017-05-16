@@ -29,6 +29,7 @@ import asteroids.part3.facade.IFacade;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.internal.ProgramParser;
 import asteroids.util.ModelException;
+import asteroids.util.OGUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Part3TestFullKris {
@@ -2464,16 +2465,17 @@ public class Part3TestFullKris {
 		Set<? extends Bullet> bulletsOnShip1 = null;
 		if (nbStudentsInTeam > 1)
 			bulletsOnShip1 = facade.getBulletsOnShip(ship1);
+		OGUtil.println("kak" + facade.getBulletsOnShip(ship1));
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
-		System.out.println("kak" + facade.getBulletsOnShip(ship1));
+		OGUtil.println("kak" + facade.getBulletsOnShip(ship1));
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 1.0);
-		System.out.println("fagg" + ship1.isTerminated());
-		System.out.println("fag" + results);
+		OGUtil.println("fagg" + ship1.isTerminated());
+		OGUtil.println("fag" + results);
 		assertEquals(1, results.size());
-		System.out.println(facade.getWorldBullets(filledWorld).contains(results.get(0)));
+		OGUtil.println(facade.getWorldBullets(filledWorld) + " " + results);
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
 		if (nbStudentsInTeam > 1)
 			assertTrue(bulletsOnShip1.contains(results.get(0)));

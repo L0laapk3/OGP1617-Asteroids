@@ -11,6 +11,7 @@ import asteroids.model.Planetoid;
 import asteroids.model.Ship;
 import asteroids.model.program.Program;
 import asteroids.model.program.statement.Statement;
+import asteroids.util.OGUtil;
 
 public class FindEntity extends Statement implements IExpression<Entity> {
 
@@ -42,7 +43,10 @@ public class FindEntity extends Statement implements IExpression<Entity> {
 			switch(filter) {
 				case ANY:		return ship.getNearestEntity();
 				case ASTEROID:	return ship.getNearestEntity(Asteroid.class);
-				case BULLET:	return ship.getNearestEntity(bullet -> ((Bullet)bullet).getMotherShip() == ship, Bullet.class);
+				case BULLET:	return ship.getNearestEntity(bullet -> {
+					OGUtil.println("Klol", ((Bullet)bullet), ((Bullet)bullet).getMotherShip(), ship);
+					return ((Bullet)bullet).getMotherShip() == ship;
+				}, Bullet.class);
 				case PLANET:	return ship.getNearestEntity(Ship.class, MinorPlanet.class);
 				case PLANETOID:	return ship.getNearestEntity(Planetoid.class);
 				case SELF:		return ship;
