@@ -28,9 +28,20 @@ public abstract class FunctionContextContainer<T extends IStatement> extends Loo
 	@Override
 	public void setFunctionContext(FunctionContextContainer<? extends IStatement> context) { } //dont overwrite context of child classes
 
+	LoopContextContainer<? extends IStatement> selfLoopContext = null;
+	@Override
+	public void setLoopContext(LoopContextContainer<? extends IStatement> context) { //dont overwrite context of child classes, instead save to selfContext
+		selfLoopContext = context;
+	}
+	
 	@Override
 	public void doBreak() throws BadBreakStatementException {
-		throw new BadBreakStatementException();
+		//dit mag voor de een of andere reden wel...
+		//throw new BadBreakStatementException();
+		OGUtil.println("PROPOGATING BREAK: " + selfLoopContext);
+		if (selfLoopContext == null)
+			throw new BadBreakStatementException();
+		selfLoopContext.doBreak();
 	}
 	
 	

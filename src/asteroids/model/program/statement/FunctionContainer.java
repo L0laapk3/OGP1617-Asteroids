@@ -19,11 +19,12 @@ public class FunctionContainer extends FunctionContextContainer<IStatement> {
 		
 	}
 	
-	public FunctionContainer(FunctionContainer original, VariableContextContainer<? extends IStatement> selfContext) throws ProgramException {
+	public FunctionContainer(FunctionContainer original, LoopContextContainer<? extends IStatement> selfLoopContext) throws ProgramException {
 		super(original.statements[0].clone());
 		//TODO: contexts worden niet geupdate blijkbaar :(
 		OGUtil.println("cloned " + original +  " to " + this);
 		this.selfContext = original.selfContext;
+		this.selfLoopContext = selfLoopContext;
 		firstRequiredTime = original.firstRequiredTime;
 		this.hasActionOrPrint = original.hasActionOrPrint;
 		initChildsContext();

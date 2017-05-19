@@ -3,6 +3,7 @@
 import asteroids.exceptions.BadBreakStatementException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
+import asteroids.util.OGUtil;
 
 public class Break extends Statement implements ILoopContextAwareStatement {
 
@@ -12,6 +13,7 @@ public class Break extends Statement implements ILoopContextAwareStatement {
 
 	@Override
 	public boolean step(Program program) throws BadBreakStatementException {
+		OGUtil.println("BREAKING: " + this.loopContext);
 		this.loopContext.doBreak();
 		return false;
 	}

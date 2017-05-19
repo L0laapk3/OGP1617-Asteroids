@@ -2189,6 +2189,7 @@ public class Part3TestFullKris {
 			System.out.println("het komt hierr");
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { 10.0, 12.0, 14.0, 16.0, 0.0 };
+			OGUtil.println(results.toArray());
 			assertArrayEquals(expecteds, results.toArray());
 			score += 16;
 		}
