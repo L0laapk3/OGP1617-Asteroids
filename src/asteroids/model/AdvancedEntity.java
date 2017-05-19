@@ -1,7 +1,7 @@
 package asteroids.model;
 
-import asteroids.exceptions.*;
-import asteroids.util.ModelException;
+import asteroids.exceptions.InvalidPositionException;
+import asteroids.exceptions.InvalidRadiusException;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;

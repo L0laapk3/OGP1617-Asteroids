@@ -15,8 +15,8 @@ import asteroids.exceptions.InvalidRadiusException;
 import asteroids.exceptions.InvalidShipException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoWorldException;
-import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.exceptions.NotOverlapException;
+import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.util.OGUtil;
@@ -280,7 +280,8 @@ public class Ship extends AdvancedEntity {
 	 */
 	@Raw
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
-		System.out.println("SHOOT " + bullet);
+	
+		
 		
 		if (isNullOrTerminated(this.getCollisionWorld()))
 			throw new NoWorldException();
@@ -288,7 +289,6 @@ public class Ship extends AdvancedEntity {
 			throw new AlreadyTerminatedException("Ship cannot fire because it is terminated.");
 		if (bullet.isTerminated())
 			throw new AlreadyTerminatedException("Cannot fire bullet because it is terminated.");
-		bullet.setWorld(this.getWorld());
 		if (bullet.getMotherShip() != this)
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
@@ -307,16 +307,9 @@ public class Ship extends AdvancedEntity {
 		OGUtil.println("/SHOOT");
 		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 		
-		double x = bullet.getPosition().x;
-		double y = bullet.getPosition().y;
-			
-		if ((bullet.getWorld() != null) && (((x + bullet.getRadius() * 0.99) > bullet.getWorld().getWidth()) || ((x - bullet.getRadius() * 0.99) < 0) || ((y + bullet.getRadius() * 0.99) > bullet.getWorld().getHeight())
-				|| ((y - bullet.getRadius() * 0.99) < 0))){ 
-			bullet.terminate();
-			return;
-		}
 
-		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
+
+		Entity collidesWith = this.getWorld().findOverlap(bullet);
 		
 		while (!isNullOrTerminated(collidesWith)) {
 			OGUtil.println(collidesWith);
@@ -333,7 +326,27 @@ public class Ship extends AdvancedEntity {
 			System.out.print("geladen in het moedership: ");
 			System.out.println(bullet.isLoadedInMotherShip());
 			OGUtil.println(bullet.getCollisionWorld());
-			collidesWith = (bullet.isTerminated() || bullet.isLoadedInMotherShip()) ? null : bullet.getWorld().findOverlap(bullet);
+			if (bullet.isTerminated() || bullet.isLoadedInMotherShip())
+				return;
+			collidesWith = this.getWorld().findOverlap(bullet);
+		}
+		
+		
+		if (bullet.getWorld() != this.getWorld()) {
+			try {
+				this.getWorld().addEntity(bullet);
+			} catch (DoubleEntityException | IllegalEntityException e) {
+				throw new AssertionError(); //cant happen, shouldnt happen
+			} catch (NotWithinBoundariesException e) {
+				//if ((bullet.getWorld() != null) && (((x + bullet.getRadius() * 0.99) > bullet.getWorld().getWidth()) || ((x - bullet.getRadius() * 0.99) < 0) || ((y + bullet.getRadius() * 0.99) > bullet.getWorld().getHeight())
+						//|| ((y - bullet.getRadius() * 0.99) < 0))){ 
+
+				 bullet.terminate();
+				 return;
+			} catch (EntitiesOverlapException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		

@@ -2495,6 +2495,7 @@ public class Part3TestFullKris {
 		assertEquals(1, results.size());
 		
 		OGUtil.println("De bullets in de wereld van wereld: " + facade.getWorldBullets(filledWorld) + " " + results);
+		OGUtil.println("Eerste bullet mother ship: " + facade.getWorldBullets(filledWorld).iterator().next().getMotherShip());
 		
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
 		
