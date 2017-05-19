@@ -5,8 +5,9 @@ import asteroids.exceptions.ProgramException;
 import asteroids.model.program.Program;
 import asteroids.model.program.statement.ExpressionContainer;
 import asteroids.model.program.statement.FunctionContainer;
+import asteroids.model.program.statement.ILoopContextAwareStatement;
 import asteroids.model.program.statement.IStatement;
-import asteroids.model.program.statement.IVariableContextAwareStatement;
+import asteroids.model.program.statement.LoopContextContainer;
 import asteroids.model.program.statement.VariableContextContainer;
 import asteroids.util.OGUtil;
 
@@ -14,7 +15,7 @@ import asteroids.util.OGUtil;
 //TODO: callfunction moet eigenlijk heel die functie shit clonen denk ik
 
 
-public class CallFunction extends ExpressionContainer<Object> implements IExpression<Object>, IVariableContextAwareStatement {
+public class CallFunction extends ExpressionContainer<Object> implements IExpression<Object>, ILoopContextAwareStatement {
 
 	public final String functionName;
 	
@@ -33,7 +34,7 @@ public class CallFunction extends ExpressionContainer<Object> implements IExpres
 		Object variable = this.getVariableContext().getVariable(functionName);
 		if (!(variable instanceof FunctionContainer))
 			throw new NotAFunctionException();
-		function = new FunctionContainer((FunctionContainer)variable, this.getVariableContext());
+		function = new FunctionContainer((FunctionContainer)variable, this.getLoopContext());
 		OGUtil.println("loaded function " + function + " from " + this);
 		function.recursivePrint();
 		iArgument = 0;
@@ -78,5 +79,9 @@ public class CallFunction extends ExpressionContainer<Object> implements IExpres
 	private VariableContextContainer<? extends IStatement> variableContext = null;
 	@Override public void saveVariableContext(VariableContextContainer<? extends IStatement> variableContext) { this.variableContext = variableContext; }
 	@Override public VariableContextContainer<? extends IStatement> getVariableContext() { return this.variableContext; };
+	
+	private LoopContextContainer<? extends IStatement> loopContext = null;
+	@Override public void saveLoopContext(LoopContextContainer<? extends IStatement> loopContext) { this.loopContext = loopContext; }
+	@Override public LoopContextContainer<? extends IStatement> getLoopContext() { return this.loopContext; };
 	
 }

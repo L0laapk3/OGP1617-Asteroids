@@ -2190,6 +2190,7 @@ public class Part3TestFullKris {
 			System.out.println("het komt hierr");
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { 10.0, 12.0, 14.0, 16.0, 0.0 };
+			OGUtil.println(results.toArray());
 			assertArrayEquals(expecteds, results.toArray());
 			score += 16;
 		}
@@ -2495,6 +2496,7 @@ public class Part3TestFullKris {
 		assertEquals(1, results.size());
 		
 		OGUtil.println("De bullets in de wereld van wereld: " + facade.getWorldBullets(filledWorld) + " " + results);
+		OGUtil.println("Eerste bullet mother ship: " + facade.getWorldBullets(filledWorld).iterator().next().getMotherShip());
 		
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
 		
