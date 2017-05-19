@@ -15,13 +15,18 @@ public class Turn extends ExpressionContainer<Double> implements IAction {
 	
 	@Override
 	public boolean selfStep(Program program) throws ProgramException {
-		if (getResult(0) == null)
+		System.out.println("hij geraakt in selfstep");
+		if (getResult(0) == null) {
 			throw new NullComputationException();
+		}
 		try {
 			program.getShip().turn(getResult(0));
+		} catch (AssertionError e ) {
+			return false;
 		} catch (InvalidShipException e) {
 			throw new ProgramException(e);
 		}
+
 		return false;
 	}
 

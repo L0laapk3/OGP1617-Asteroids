@@ -248,7 +248,9 @@ public class Ship extends AdvancedEntity {
 			return false;
 		
 		System.out.println("bullets left: " + loadedBullets.size());
-		shootBullet(loadedBullets.iterator().next()); // gets one (pseudo)random bullet from hashset
+		Bullet bullet = loadedBullets.iterator().next();  // gets one (pseudo)random bullet from hashset
+		System.out.println("De geschoten bullet: " + bullet);
+		shootBullet(bullet);
 		
 		return true;
 	}
@@ -280,9 +282,6 @@ public class Ship extends AdvancedEntity {
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
 		System.out.println("SHOOT " + bullet);
 		
-		System.out.print("De geschoten bullet: ");
-		System.out.println(bullet);
-		
 		if (isNullOrTerminated(this.getCollisionWorld()))
 			throw new NoWorldException();
 		if (this.isTerminated())
@@ -294,6 +293,8 @@ public class Ship extends AdvancedEntity {
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
 			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
+		
+		System.out.println("De wereld van de geschoten bullet: " + bullet.getWorld());
 		
 		bullet.setLoadedInMotherShip(false);
 		this.unloadBullet(bullet);
@@ -317,17 +318,15 @@ public class Ship extends AdvancedEntity {
 
 		Entity collidesWith = bullet.getCollisionWorld().findOverlap(bullet);
 		
-		System.out.println("hieerrrr");
-		
 		while (!isNullOrTerminated(collidesWith)) {
 			OGUtil.println(collidesWith);
 			OGUtil.println(bullet.getMotherShip());
 			
-			System.out.println("hieerrrrxp");
+			System.out.println("Voor collide");
 			
 			Collisions.collide(bullet, collidesWith);
 			
-			System.out.println("hieerrrrrrrrrrrrr");
+			System.out.println("Na collide");
 			
 			OGUtil.println("---");
 			OGUtil.println(bullet);
@@ -341,7 +340,7 @@ public class Ship extends AdvancedEntity {
 		
 		updateLoadMass();
 		
-		
+		System.out.println("De wereld van de geschoten bullet na alles: " + bullet.getWorld());
 		
 	}
 

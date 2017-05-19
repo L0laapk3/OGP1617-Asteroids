@@ -2474,19 +2474,29 @@ public class Part3TestFullKris {
 		Set<? extends Bullet> bulletsOnShip1 = null;
 		if (nbStudentsInTeam > 1)
 			bulletsOnShip1 = facade.getBulletsOnShip(ship1);
-		OGUtil.println("kak" + facade.getBulletsOnShip(ship1));
+		OGUtil.println("bullets op ship 1 helemaal in het begin: " + facade.getBulletsOnShip(ship1));
+		//TODO nog 9 op ship
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
-		OGUtil.println("kak" + facade.getBulletsOnShip(ship1));
+		
+		OGUtil.println("De bullets in de wereld van wereld na fire: " + facade.getWorldBullets(filledWorld));
+		
+		OGUtil.println("bullets op ship 1 na 3x fireBullet: " + facade.getBulletsOnShip(ship1));
+		//TODO nog 6 op ship
+		
 		facade.loadProgramOnShip(ship1, program);
+		
 		List<Object> results = facade.executeProgram(ship1, 1.0);
-		OGUtil.println("fagg" + ship1.isTerminated());
-		OGUtil.println("fag" + results);
-		System.out.println("kak" + (facade.getBulletsOnShip(ship1)).iterator().next().getMotherShip());
+		OGUtil.println("Is ship 1 getermineerd? :: " + ship1.isTerminated());
+		OGUtil.println("Dit zijn de results van ons: " + results);
+		
 		assertEquals(1, results.size());
-		OGUtil.println(facade.getWorldBullets(filledWorld) + " " + results);
+		
+		OGUtil.println("De bullets in de wereld van wereld: " + facade.getWorldBullets(filledWorld) + " " + results);
+		
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
+		
 		if (nbStudentsInTeam > 1)
 			assertTrue(bulletsOnShip1.contains(results.get(0)));
 		score += 12;
