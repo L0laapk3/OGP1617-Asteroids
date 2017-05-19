@@ -61,6 +61,7 @@ public class Part3TestFullKris {
 		ship1 = facade.createShip(100, 120, 10, 5, 50, 0, 1.0E20);
 		for (int i = 1; i < 10; i++) {
 			Bullet bulletToLoad = facade.createBullet(100, 120, 0, 0, 10);
+			System.out.println("gemaakte bullet: " + bulletToLoad);
 			facade.loadBulletOnShip(ship1, bulletToLoad);
 		}
 		facade.addShipToWorld(filledWorld, ship1);
