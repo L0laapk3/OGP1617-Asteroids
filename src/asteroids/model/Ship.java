@@ -280,9 +280,7 @@ public class Ship extends AdvancedEntity {
 	 */
 	@Raw
 	public void shootBullet(Bullet bullet) throws NoWorldException, InvalidParentShipException, BulletNotLoadedException {
-	
-		
-		
+			
 		if (isNullOrTerminated(this.getCollisionWorld()))
 			throw new NoWorldException();
 		if (this.isTerminated())
@@ -299,17 +297,36 @@ public class Ship extends AdvancedEntity {
 		bullet.setLoadedInMotherShip(false);
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = Vector2.fromPolar(this.getOrientation(), 1);
-		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
+		
+		System.out.println("De unitDirection" + unitDirection);
+		
+		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + 2 * bullet.getRadius())));
+		OGUtil.println("positie na set position: " + bullet.getPosition() + " het moest zijn: "+ Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
+		
 		System.out.println("radius: " + bullet.getRadius());
 		System.out.println(bullet.getPosition());
 		//bullet.mirrorPositionWall(); //TODO ik heb dit weg moeten doen omdat er anders een test niet werkte (testFireBulletOutOfBounds())
 		OGUtil.println(bullet.getPosition());
 		OGUtil.println("/SHOOT");
-		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 		
-
+		double centerX = bullet.getPosition().x;
+		double centerY = bullet.getPosition().y;
+		double widthWorld = this.getWorld().getWidth();
+		double heightWorld = this.getWorld().getHeight();
+		double radius = bullet.getRadius();
+		
+		
+		if (((centerX + radius * 0.99) > widthWorld) || ((centerX - radius * 0.99) < 0) || ((centerY + radius * 0.99) > heightWorld)
+				|| ((centerY - radius * 0.99) < 0)) {
+			bullet.die();
+			return;
+		}
+		
+		bullet.setVelocity(Vector2.multiply(unitDirection, BULLET_LAUNCHING_SPEED));
 
 		Entity collidesWith = this.getWorld().findOverlap(bullet);
+		
+		System.out.println("De bullet botst met: " + collidesWith);
 		
 		while (!isNullOrTerminated(collidesWith)) {
 			OGUtil.println(collidesWith);

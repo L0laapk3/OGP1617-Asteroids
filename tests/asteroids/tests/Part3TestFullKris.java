@@ -827,20 +827,29 @@ public class Part3TestFullKris {
 	@Test
 	public void testFireBulletOutOfBounds() throws ModelException {
 		max_score += 8;
+		System.out.println("------------------------");
 		World world = facade.createWorld(5000, 5000);
 		Ship ship = facade.createShip(550, 550, 0, 0, 547, 3 * Math.PI / 2, 1.0E20);
 		facade.addShipToWorld(world, ship);
+		
 		Bullet bullet1 = facade.createBullet(520, 170, 10, 5, 3);
+		System.out.println("Eerste bullet: " + bullet1);
 		Bullet bullet2 = facade.createBullet(480, 300, 10, 5, 3);
+		System.out.println("Tweede bullet: " + bullet2);
+		
 		facade.loadBulletOnShip(ship, bullet1);
 		facade.loadBulletOnShip(ship, bullet2);
 		facade.fireBullet(ship);
+		
 		Bullet usedBullet = null;
 		if (nbStudentsInTeam > 1)
 			if (facade.getBulletsOnShip(ship).contains(bullet1))
 				usedBullet = bullet2;
 			else
 				usedBullet = bullet1;
+		System.out.println("De gebruikte bullet" + usedBullet);
+		
+		System.out.println(facade.getWorldBullets(world));
 		assertTrue(facade.getWorldBullets(world).isEmpty());
 		assertEquals(1, facade.getNbBulletsOnShip(ship));
 		assertTrue(nbStudentsInTeam <= 1 || facade.isTerminatedBullet(usedBullet));
