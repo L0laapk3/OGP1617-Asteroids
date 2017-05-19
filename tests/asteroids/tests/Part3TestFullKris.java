@@ -1744,6 +1744,7 @@ public class Part3TestFullKris {
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 0.45);
+		System.out.println(facade.getShipOrientation(ship1));
 		assertEquals(2.5, facade.getShipOrientation(ship1), EPSILON);
 		Object[] expecteds = { 0.4 };
 		assertArrayEquals(expecteds, results.toArray());
@@ -1768,6 +1769,8 @@ public class Part3TestFullKris {
 	@Test
 	public void testTurnStatement_InvalidAngle() throws ModelException {
 		max_score += 5;
+		System.out.println("kkkak" + facade.getShipOrientation(ship1));
+		
 		try {
 			String code = //TODO: in de opgave zien ofda da wel echt niet mag...
 				"turn 10.0; 												" + 
@@ -1777,6 +1780,7 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 0.45);
 			// It is allowed to do nothing in case of an illegal angle.
+			System.out.println("kkak" + facade.getShipOrientation(ship1));
 			assertEquals(1.5, facade.getShipOrientation(ship1), EPSILON);
 			Object[] expecteds = { 0.4 };
 			assertArrayEquals(expecteds, results.toArray());
@@ -3130,7 +3134,7 @@ public class Part3TestFullKris {
 	// GetDirection
 
 	@Test
-	public void testGetDirection_LegalCase() throws ModelException { //TODO test verkeerd?
+	public void testGetDirection_LegalCase() throws ModelException {
 		max_score += 3;
 		String code = 
 				"print getdir ; ";

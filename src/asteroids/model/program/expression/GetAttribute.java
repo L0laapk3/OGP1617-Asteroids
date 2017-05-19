@@ -3,6 +3,7 @@ package asteroids.model.program.expression;
 import asteroids.exceptions.NullComputationException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Entity;
+import asteroids.model.Ship;
 import asteroids.model.program.Program;
 import asteroids.model.program.statement.ExpressionContainer;
 
@@ -33,7 +34,7 @@ public class GetAttribute extends ExpressionContainer<Entity> implements IExpres
 			throw new NullComputationException();
 		
 		switch(attribute) {
-		case DIRECTION:	return getResult(0).getVelocityVector().getRotation();
+		case DIRECTION:	return ((Ship)getResult(0)).getOrientation();
 		case RADIUS:	return getResult(0).getRadius();
 		case VX:		return getResult(0).getVelocityVector().x;
 		case VY:		return getResult(0).getVelocityVector().y;

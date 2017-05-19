@@ -95,9 +95,14 @@ public abstract class AdvancedEntity extends Entity {
 	 */
 	@Raw
 	public void turn(double angle) {
-		this.orientation = (this.orientation + angle) % (2 * Math.PI);
-		if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
-			this.orientation += (2 * Math.PI);
+		System.out.println("jooo" + angle);
+		if ((0 > angle) || (angle >= 2 * Math.PI)) {
+			return;
+		}
+		this.orientation += angle;
+		//this.orientation = (this.orientation + angle) % (2 * Math.PI); TODO weggedaan 
+		//if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
+		//	this.orientation += (2 * Math.PI);
 	}
 
 	

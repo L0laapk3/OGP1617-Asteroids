@@ -125,7 +125,7 @@ public class Ship extends AdvancedEntity {
 		
 		System.out.println("shit" + !(centerDifference.pythagoras() <= 1.01 * (this.getRadius() + bullet.getRadius())));
 		
-		if (!(centerDifference.pythagoras() <= 1.01 * (this.getRadius() + bullet.getRadius()))) {
+		if (!(centerDifference.pythagoras() <= 0.99 * (this.getRadius() - bullet.getRadius()))) {
 			throw new NotOverlapException(); 
 		}
 		
