@@ -1,6 +1,7 @@
 package asteroids.model;
 
 import asteroids.exceptions.*;
+import asteroids.util.ModelException;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
@@ -95,9 +96,13 @@ public abstract class AdvancedEntity extends Entity {
 	 */
 	@Raw
 	public void turn(double angle) {
-		this.orientation = (this.orientation + angle) % (2 * Math.PI);
-		if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
-			this.orientation += (2 * Math.PI);
+		System.out.println("jooo" + angle + ((0 > angle) || (angle >= 2 * Math.PI)));
+		assert !((0 > angle) || (angle >= 2 * Math.PI));
+
+		this.orientation += angle;
+		//this.orientation = (this.orientation + angle) % (2 * Math.PI); TODO weggedaan 
+		//if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
+		//	this.orientation += (2 * Math.PI);
 	}
 
 	

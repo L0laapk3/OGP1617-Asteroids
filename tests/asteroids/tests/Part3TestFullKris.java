@@ -1744,6 +1744,7 @@ public class Part3TestFullKris {
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 0.45);
+		System.out.println(facade.getShipOrientation(ship1));
 		assertEquals(2.5, facade.getShipOrientation(ship1), EPSILON);
 		Object[] expecteds = { 0.4 };
 		assertArrayEquals(expecteds, results.toArray());
@@ -1768,6 +1769,8 @@ public class Part3TestFullKris {
 	@Test
 	public void testTurnStatement_InvalidAngle() throws ModelException {
 		max_score += 5;
+		System.out.println("kkkak" + facade.getShipOrientation(ship1));
+		
 		try {
 			String code = //TODO: in de opgave zien ofda da wel echt niet mag...
 				"turn 10.0; 												" + 
@@ -1777,6 +1780,7 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 0.45);
 			// It is allowed to do nothing in case of an illegal angle.
+			System.out.println("kkak" + facade.getShipOrientation(ship1));
 			assertEquals(1.5, facade.getShipOrientation(ship1), EPSILON);
 			Object[] expecteds = { 0.4 };
 			assertArrayEquals(expecteds, results.toArray());
@@ -2470,19 +2474,29 @@ public class Part3TestFullKris {
 		Set<? extends Bullet> bulletsOnShip1 = null;
 		if (nbStudentsInTeam > 1)
 			bulletsOnShip1 = facade.getBulletsOnShip(ship1);
-		OGUtil.println("kak" + facade.getBulletsOnShip(ship1));
+		OGUtil.println("bullets op ship 1 helemaal in het begin: " + facade.getBulletsOnShip(ship1));
+		//TODO nog 9 op ship
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
-		OGUtil.println("kak" + facade.getBulletsOnShip(ship1));
+		
+		OGUtil.println("De bullets in de wereld van wereld na fire: " + facade.getWorldBullets(filledWorld));
+		
+		OGUtil.println("bullets op ship 1 na 3x fireBullet: " + facade.getBulletsOnShip(ship1));
+		//TODO nog 6 op ship
+		
 		facade.loadProgramOnShip(ship1, program);
+		
 		List<Object> results = facade.executeProgram(ship1, 1.0);
-		OGUtil.println("fagg" + ship1.isTerminated());
-		OGUtil.println("fag" + results);
-		System.out.println("kak" + (facade.getBulletsOnShip(ship1)).iterator().next().getMotherShip());
+		OGUtil.println("Is ship 1 getermineerd? :: " + ship1.isTerminated());
+		OGUtil.println("Dit zijn de results van ons: " + results);
+		
 		assertEquals(1, results.size());
-		OGUtil.println(facade.getWorldBullets(filledWorld) + " " + results);
+		
+		OGUtil.println("De bullets in de wereld van wereld: " + facade.getWorldBullets(filledWorld) + " " + results);
+		
 		assertTrue(facade.getWorldBullets(filledWorld).contains(results.get(0)));
+		
 		if (nbStudentsInTeam > 1)
 			assertTrue(bulletsOnShip1.contains(results.get(0)));
 		score += 12;
@@ -3130,7 +3144,7 @@ public class Part3TestFullKris {
 	// GetDirection
 
 	@Test
-	public void testGetDirection_LegalCase() throws ModelException { //TODO test verkeerd?
+	public void testGetDirection_LegalCase() throws ModelException {
 		max_score += 3;
 		String code = 
 				"print getdir ; ";

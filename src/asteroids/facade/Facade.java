@@ -218,13 +218,20 @@ public class Facade implements asteroids.part3.facade.IFacade {
 	 * @pre    The ship must not be null.
 	 * @effect Turns the ship by given angle.
 	 *       | ship.turn(angle)
+	 * @throws ModelException 
 	 * @note   This is written in a nominal manner.
 	 * 
 	 */
 	@Override
-	public void turn(Ship ship, double angle) {
+	public void turn(Ship ship, double angle) throws ModelException {
 		assert !Ship.isNullOrTerminated(ship);
-		ship.turn(angle);
+		try {
+			ship.turn(angle);
+		} catch (AssertionError ex) {
+			throw new ModelException("Assertion error: angle is lower than 0 or greater than 2*PI");
+		}
+		
+			
 	}
 
 	/**

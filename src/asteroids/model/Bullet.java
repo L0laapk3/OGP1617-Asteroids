@@ -7,6 +7,7 @@ import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoMotherShipException;
 import asteroids.exceptions.NotOverlapException;
 import asteroids.util.OGUtil;
+import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
@@ -198,15 +199,18 @@ public class Bullet extends EntityWithConstantDensity {
 		System.out.println(this.getMotherShip());
 		System.out.print("Het meegegeven ship: ");
 		System.out.println(ship);
+		Vector2 OriginalPositionBullet = this.getPosition();
 		
 		if (ship == this.getMotherShip())
 			try {
 				System.out.println("bullet terug laden");
 				System.out.print("de bullets die al geladen zijn: ");
 				System.out.println(ship.getLoadedBullets());
+				this.setPosition(ship.getPosition());
 				ship.loadBullet(this);
 			} catch (DoubleEntityException | MisMatchWorldsException | NotOverlapException ex) { //these should never happen
 				System.out.println("fak");
+				this.setPosition(OriginalPositionBullet);
 				throw new AssertionError(ex);
 			}		
 		else {

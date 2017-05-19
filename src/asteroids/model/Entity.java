@@ -287,6 +287,16 @@ public abstract class Entity extends Instance {
 	public double getVelocity() {
 		return this.velocity.pythagoras();
 	}
+	
+	/**
+	 * Return the direction of the entity.
+	 * 
+	 * @return The direction of the entity in radians.
+	 */
+	@Raw
+	public double getDirection() {
+		return this.velocity.getRotation();
+	}
 
 	/**
 	 * Checks whether the given velocity is a valid maxSpeed.
