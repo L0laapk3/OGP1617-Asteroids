@@ -15,7 +15,6 @@ public class Turn extends ExpressionContainer<Double> implements IAction {
 	
 	@Override
 	public boolean selfStep(Program program) throws ProgramException {
-		System.out.println("hij geraakt in selfstep");
 		if (getResult(0) == null) {
 			throw new NullComputationException();
 		}

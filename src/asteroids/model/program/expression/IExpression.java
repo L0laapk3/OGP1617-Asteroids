@@ -17,7 +17,6 @@ public interface IExpression<T extends Object> extends IStatement, IContainerSta
 	@SuppressWarnings("unchecked")
 	public default <U extends Object> IExpression<? extends U> castTo(Class<U> c) throws ProgramException {
 		try {
-			System.out.println("from " + this + " to " + c);
 			return (IExpression<? extends U>)this;
 		} catch (ClassCastException e) {
 			throw new ProgramException(e);

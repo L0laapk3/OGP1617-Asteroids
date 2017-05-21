@@ -10,7 +10,6 @@ public abstract class Statement implements IStatement {
 		
 		try {
 			Statement clone = (Statement)super.clone();
-			//System.out.println("I just got cl0ned: " + this + " " + clone);
 			return clone;
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError(e);

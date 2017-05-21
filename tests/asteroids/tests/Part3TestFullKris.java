@@ -61,7 +61,6 @@ public class Part3TestFullKris {
 		ship1 = facade.createShip(100, 120, 10, 5, 50, 0, 1.0E20);
 		for (int i = 1; i < 10; i++) {
 			Bullet bulletToLoad = facade.createBullet(100, 120, 0, 0, 10);
-			System.out.println("gemaakte bullet: " + bulletToLoad);
 			facade.loadBulletOnShip(ship1, bulletToLoad);
 		}
 		facade.addShipToWorld(filledWorld, ship1);
@@ -761,7 +760,6 @@ public class Part3TestFullKris {
 			Bullet bullet2 = facade.createBullet(300, 220, 10, 5, 50);
 			facade.loadBulletOnShip(ship, bullet1);
 			facade.loadBulletOnShip(otherShip, bullet2);
-			System.out.println("faggggg");
 			facade.removeBulletFromShip(ship, bullet2);
 			
 			if (nbStudentsInTeam == 1) {
@@ -827,15 +825,12 @@ public class Part3TestFullKris {
 	@Test
 	public void testFireBulletOutOfBounds() throws ModelException {
 		max_score += 8;
-		System.out.println("------------------------");
 		World world = facade.createWorld(5000, 5000);
 		Ship ship = facade.createShip(550, 550, 0, 0, 547, 3 * Math.PI / 2, 1.0E20);
 		facade.addShipToWorld(world, ship);
 		
 		Bullet bullet1 = facade.createBullet(520, 170, 10, 5, 3);
-		System.out.println("Eerste bullet: " + bullet1);
 		Bullet bullet2 = facade.createBullet(480, 300, 10, 5, 3);
-		System.out.println("Tweede bullet: " + bullet2);
 		
 		facade.loadBulletOnShip(ship, bullet1);
 		facade.loadBulletOnShip(ship, bullet2);
@@ -847,9 +842,7 @@ public class Part3TestFullKris {
 				usedBullet = bullet2;
 			else
 				usedBullet = bullet1;
-		System.out.println("De gebruikte bullet" + usedBullet);
 		
-		System.out.println(facade.getWorldBullets(world));
 		assertTrue(facade.getWorldBullets(world).isEmpty());
 		assertEquals(1, facade.getNbBulletsOnShip(ship));
 		assertTrue(nbStudentsInTeam <= 1 || facade.isTerminatedBullet(usedBullet));
@@ -866,8 +859,6 @@ public class Part3TestFullKris {
 		facade.addShipToWorld(world, ship2);
 		Bullet bullet1 = facade.createBullet(520, 170, 10, 5, 10);
 		facade.loadBulletOnShip(ship1, bullet1);
-		
-		System.out.println("jooooooooooo");
 		facade.fireBullet(ship1);
 		assertTrue(facade.getWorldBullets(world).isEmpty());
 		assertTrue(facade.getWorldShips(world).contains(ship1));
@@ -1278,7 +1269,6 @@ public class Part3TestFullKris {
 		facade.fireBullet(ship);
 		// collision with own ship after 8 seconds (a bit more for students working alone)
 		facade.evolve(world, 9, null);
-		System.out.println(facade.getWorldBullets(world).size());
 		assertEquals(0, facade.getWorldBullets(world).size());
 		assertEquals(1, facade.getNbBulletsOnShip(ship));
 		if (nbStudentsInTeam > 1) {
@@ -1373,9 +1363,6 @@ public class Part3TestFullKris {
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 1.0);
-		System.out.print("results: ");
-		System.out.println(results);
-		System.out.println(program);
 		Object[] expecteds = { 7.0 };
 		assertArrayEquals(expecteds, results.toArray());
 		score += 4;
@@ -1754,7 +1741,6 @@ public class Part3TestFullKris {
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 0.45);
-		System.out.println(facade.getShipOrientation(ship1));
 		assertEquals(2.5, facade.getShipOrientation(ship1), EPSILON);
 		Object[] expecteds = { 0.4 };
 		assertArrayEquals(expecteds, results.toArray());
@@ -1779,7 +1765,6 @@ public class Part3TestFullKris {
 	@Test
 	public void testTurnStatement_InvalidAngle() throws ModelException {
 		max_score += 5;
-		System.out.println("kkkak" + facade.getShipOrientation(ship1));
 		
 		try {
 			String code = //TODO: in de opgave zien ofda da wel echt niet mag...
@@ -1790,7 +1775,6 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 0.45);
 			// It is allowed to do nothing in case of an illegal angle.
-			System.out.println("kkak" + facade.getShipOrientation(ship1));
 			assertEquals(1.5, facade.getShipOrientation(ship1), EPSILON);
 			Object[] expecteds = { 0.4 };
 			assertArrayEquals(expecteds, results.toArray());
@@ -2064,7 +2048,6 @@ public class Part3TestFullKris {
 		Program program = ProgramParser.parseProgramFromString(code, programFactory);
 		facade.loadProgramOnShip(ship1, program);
 		List<Object> results = facade.executeProgram(ship1, 0.3);
-		System.out.println(results);
 		Object[] expecteds = { 1155.0 };
 		assertArrayEquals(expecteds, results.toArray());
 		score += 20;
@@ -2196,7 +2179,6 @@ public class Part3TestFullKris {
 				"print 0.0; ";
 			Program program = ProgramParser.parseProgramFromString(code, programFactory);
 			facade.loadProgramOnShip(ship1, program);
-			System.out.println("het komt hierr");
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { 10.0, 12.0, 14.0, 16.0, 0.0 };
 			OGUtil.println(results.toArray());
@@ -2366,7 +2348,6 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { ship2 };
-			System.out.println(results.toArray());
 			assertArrayEquals(expecteds, results.toArray());
 			score += 14;
 		}
@@ -2564,7 +2545,6 @@ public class Part3TestFullKris {
 			facade.loadProgramOnShip(ship1, program);
 			List<Object> results = facade.executeProgram(ship1, 1.0);
 			Object[] expecteds = { null };
-			System.out.println(results.toArray());
 			assertArrayEquals(expecteds, results.toArray());
 			score += 2;
 		}
@@ -3166,8 +3146,6 @@ public class Part3TestFullKris {
 		List<Object> results = facade.executeProgram(ship1, 1.0);
 		
 		Object[] expecteds = { facade.getShipOrientation(ship1) };
-		System.out.println("fag" + expecteds);
-		System.out.println(results.toArray());
 		assertArrayEquals(expecteds, results.toArray());
 		score += 3;
 	}

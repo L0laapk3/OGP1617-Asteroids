@@ -48,9 +48,7 @@ public class Program {
 	
 	public Program(IStatement statement) throws ProgramException {
 		main = new FunctionContainer(statement);
-		System.out.println("\n\n\n------------------------------------\n");
 		main.recursivePrint();
-		System.out.println("\n------------------------------------\n\n\n");
 	}
 	
 	
@@ -88,7 +86,6 @@ public class Program {
 	}
 	
 	public void print(Object object) {
-		System.out.println(object);
 		prints.add(object);
 	}
 }
