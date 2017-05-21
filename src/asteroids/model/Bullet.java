@@ -195,21 +195,13 @@ public class Bullet extends EntityWithConstantDensity {
 		//OGUtil.println(this.getParent());
 		//OGUtil.println(ship);
 		
-		System.out.print("Het moederschip in de hitfunctie: ");
-		System.out.println(this.getMotherShip());
-		System.out.print("Het meegegeven ship: ");
-		System.out.println(ship);
 		Vector2 OriginalPositionBullet = this.getPosition();
 		
 		if (ship == this.getMotherShip())
 			try {
-				System.out.println("bullet terug laden");
-				System.out.print("de bullets die al geladen zijn: ");
-				System.out.println(ship.getLoadedBullets());
 				this.setPosition(ship.getPosition());
 				ship.loadBullet(this);
 			} catch (DoubleEntityException | MisMatchWorldsException | NotOverlapException ex) { //these should never happen
-				System.out.println("fak");
 				this.setPosition(OriginalPositionBullet);
 				throw new AssertionError(ex);
 			}		
@@ -265,8 +257,6 @@ public class Bullet extends EntityWithConstantDensity {
 	
 	@Override
 	public void terminate() {
-		System.out.print("het moederschip in terminate is: ");
-		System.out.println(this.getMotherShip());
 		if (this.isLoadedInMotherShip()) {
 			this.getMotherShip().unloadBullet(this);
 		} 

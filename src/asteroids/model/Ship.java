@@ -118,21 +118,11 @@ public class Ship extends AdvancedEntity {
 		if (bullet == null)
 			throw new NullPointerException();
 		
-		System.out.println(bullet.getPosition());
-		System.out.println(this.getPosition());
-		
 		Vector2 centerDifference = new Vector2(this.getPosition().x - bullet.getPosition().x, this.getPosition().y - bullet.getPosition().y);
-		
-		System.out.println("shit" + !(centerDifference.pythagoras() <= 1.01 * (this.getRadius() + bullet.getRadius())));
 		
 		if (!(centerDifference.pythagoras() <= 0.99 * (this.getRadius() - bullet.getRadius()))) {
 			throw new NotOverlapException(); 
 		}
-		
-		System.out.print("de geladen bullets: ");
-		System.out.println(this.getLoadedBullets());
-		
-		System.out.println("LOAD " + this + " " + bullet);
 
 		bullet.setMotherShip(this);
 		loadedBullets.add(bullet);
@@ -151,8 +141,6 @@ public class Ship extends AdvancedEntity {
 			} catch (DoubleEntityException | NotWithinBoundariesException | EntitiesOverlapException ex) {
 				throw new AssertionError(ex);
 			}
-		System.out.print("de geladen bullets nu: ");
-		System.out.println(this.getLoadedBullets());
 		}
 	}
 	
@@ -207,7 +195,6 @@ public class Ship extends AdvancedEntity {
 	@Raw
 	public void unloadBullet(Bullet bullet) throws NullPointerException, IllegalEntityException {
 		if (!(this.getLoadedBullets().contains(bullet))) {
-			System.out.println("hij doet een exception");
 			throw new IllegalEntityException("The given bullet can not be unloaded");
 		}
 		if (bullet == null)
@@ -215,7 +202,6 @@ public class Ship extends AdvancedEntity {
 		bullet.setLoadedInMotherShip(false);
 		loadedBullets.remove(bullet);
 		updateLoadMass();
-		System.out.println("in unload");
 	}
 
 	/**
@@ -246,10 +232,8 @@ public class Ship extends AdvancedEntity {
 		
 		if (!hasBullet())
 			return false;
-		
-		System.out.println("bullets left: " + loadedBullets.size());
+
 		Bullet bullet = loadedBullets.iterator().next();  // gets one (pseudo)random bullet from hashset
-		System.out.println("De geschoten bullet: " + bullet);
 		shootBullet(bullet);
 		
 		return true;
@@ -291,20 +275,14 @@ public class Ship extends AdvancedEntity {
 			throw new InvalidParentShipException();
 		if (!loadedBullets.contains(bullet))
 			throw new BulletNotLoadedException("Cannot shoot bullet because it is not loaded in the ship.");
-		
-		System.out.println("De wereld van de geschoten bullet: " + bullet.getWorld());
-		
+				
 		bullet.setLoadedInMotherShip(false);
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = Vector2.fromPolar(this.getOrientation(), 1);
 		
-		System.out.println("De unitDirection" + unitDirection);
-		
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + 2 * bullet.getRadius())));
 		OGUtil.println("positie na set position: " + bullet.getPosition() + " het moest zijn: "+ Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
-		
-		System.out.println("radius: " + bullet.getRadius());
-		System.out.println(bullet.getPosition());
+
 		//bullet.mirrorPositionWall(); //TODO ik heb dit weg moeten doen omdat er anders een test niet werkte (testFireBulletOutOfBounds())
 		OGUtil.println(bullet.getPosition());
 		OGUtil.println("/SHOOT");
@@ -326,22 +304,14 @@ public class Ship extends AdvancedEntity {
 
 		Entity collidesWith = this.getWorld().findOverlap(bullet);
 		
-		System.out.println("De bullet botst met: " + collidesWith);
-		
 		while (!isNullOrTerminated(collidesWith)) {
 			OGUtil.println(collidesWith);
 			OGUtil.println(bullet.getMotherShip());
 			
-			System.out.println("Voor collide");
-			
 			Collisions.collide(bullet, collidesWith);
-			
-			System.out.println("Na collide");
 			
 			OGUtil.println("---");
 			OGUtil.println(bullet);
-			System.out.print("geladen in het moedership: ");
-			System.out.println(bullet.isLoadedInMotherShip());
 			OGUtil.println(bullet.getCollisionWorld());
 			if (bullet.isTerminated() || bullet.isLoadedInMotherShip())
 				return;
@@ -369,9 +339,7 @@ public class Ship extends AdvancedEntity {
 		
 		
 		updateLoadMass();
-		
-		System.out.println("De wereld van de geschoten bullet na alles: " + bullet.getWorld());
-		
+				
 	}
 
 	
@@ -606,7 +574,6 @@ public class Ship extends AdvancedEntity {
 				throw new RuntimeException(e);
 			} catch (ProgramException e) {
 				//TODO: what has to happen when a program throws an error???
-				System.out.println("[" + this + "] Program of this ship threw an error! ");
 				e.printStackTrace();
 			}
 	}

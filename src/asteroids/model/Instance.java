@@ -39,7 +39,6 @@ public abstract class Instance extends Object {
 	@Raw
 	@Basic
 	public void terminate() {
-		System.out.println("TERMINATE " + this);
 		if (!isTerminated())
 			this.isTerminated = true;
 	}

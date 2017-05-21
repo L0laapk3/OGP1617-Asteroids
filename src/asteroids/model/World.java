@@ -254,15 +254,12 @@ public class World extends Instance {
 	 */
 	@Override
 	public void terminate() {
-		System.out.println("Alle entities: " + entities);
 		while (!entities.isEmpty()) {
 			Iterator<Entity> it = entities.iterator();
 			Entity entity = it.next();
 			// do not terminate, just set world to null
 			this.removeEntity(entity);
 		}
-			
-		System.out.println("echte einde van de for loop");
 		super.terminate();
 	}
 
@@ -350,7 +347,6 @@ public class World extends Instance {
 			
 			entity.setWorld(null);
 		} else {
-			System.out.println("Hij gaat in else in remove met: " + entity);
 			throw new IllegalEntityException("An entity that did not exist in this world has been tried to remove from that world.");
 		}
 	}
@@ -595,8 +591,6 @@ public class World extends Instance {
 							//explosie gebeurt ook als ge uw eigen kogel opraapt, lijkt erop dat het een fout in src-provided is.
 							collisionListener.objectCollision(collInfo.firstEntity, collInfo.secondEntity, collPos.x, collPos.y);
 						}
-						System.out.print("juist voor oproepen van hit");
-						System.out.println(collInfo.secondEntity.getClass());
 						Collisions.collide(collInfo.firstEntity, collInfo.secondEntity);
 					}
 				} else {

@@ -96,7 +96,6 @@ public abstract class AdvancedEntity extends Entity {
 	 */
 	@Raw
 	public void turn(double angle) {
-		System.out.println("jooo" + angle + ((0 > angle) || (angle >= 2 * Math.PI)));
 		assert !((0 > angle) || (angle >= 2 * Math.PI));
 
 		this.orientation += angle;

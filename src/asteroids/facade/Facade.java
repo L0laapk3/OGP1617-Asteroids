@@ -16,8 +16,8 @@ import asteroids.exceptions.InvalidTimeException;
 import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoProgramException;
 import asteroids.exceptions.NoWorldException;
-import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.exceptions.NotOverlapException;
+import asteroids.exceptions.NotWithinBoundariesException;
 import asteroids.exceptions.ProgramException;
 import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
@@ -714,9 +714,7 @@ public class Facade implements asteroids.part3.facade.IFacade {
 				OGUtil.println("--------- WARNING! ----------");
 				OGUtil.println("Facade tried to illegally call getPositionCollisionEntity on 2 objects that overlap. Printing the stack trace causes great amounts of lag.");
 				OGUtil.println("In the assignment is specifically stated that this method does not apply to objects that overlap and that it has to be written defensively.");
-				System.out.print("Result of Entity.overlap(entity1, entity2): ");
 				OGUtil.println(Entity.overlap((Entity) entity1, (Entity) entity2));
-				System.out.print("Checking if one is bullet loaded in the other ship: ");
 				Bullet bullet = null;
 				Ship ship = null;
 				if (entity1 instanceof Ship && entity2 instanceof Bullet) {
