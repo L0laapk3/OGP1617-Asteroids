@@ -3,7 +3,10 @@ package asteroids.part3.facade;
 import java.util.List;
 import java.util.Set;
 
-import asteroids.model.*;
+import asteroids.model.Asteroid;
+import asteroids.model.Planetoid;
+import asteroids.model.Ship;
+import asteroids.model.World;
 import asteroids.model.program.Program;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.util.ModelException;

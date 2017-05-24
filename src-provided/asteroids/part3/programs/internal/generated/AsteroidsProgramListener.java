@@ -171,229 +171,229 @@ public interface AsteroidsProgramListener extends ParseTreeListener {
 	void exitSkipAction(AsteroidsProgramParser.SkipActionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code changeSignExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterChangeSignExpression(AsteroidsProgramParser.ChangeSignExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code changeSignExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitChangeSignExpression(AsteroidsProgramParser.ChangeSignExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code functCall}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterFunctCall(AsteroidsProgramParser.FunctCallContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code functCall}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitFunctCall(AsteroidsProgramParser.FunctCallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code numberExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterNumberExpression(AsteroidsProgramParser.NumberExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code numberExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitNumberExpression(AsteroidsProgramParser.NumberExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code getYExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterGetYExpression(AsteroidsProgramParser.GetYExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code getYExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitGetYExpression(AsteroidsProgramParser.GetYExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code notExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterNotExpression(AsteroidsProgramParser.NotExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code notExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitNotExpression(AsteroidsProgramParser.NotExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code parenExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterParenExpression(AsteroidsProgramParser.ParenExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code parenExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitParenExpression(AsteroidsProgramParser.ParenExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code getRadiusExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterGetRadiusExpression(AsteroidsProgramParser.GetRadiusExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code getRadiusExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitGetRadiusExpression(AsteroidsProgramParser.GetRadiusExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code entityExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterEntityExpression(AsteroidsProgramParser.EntityExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code entityExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitEntityExpression(AsteroidsProgramParser.EntityExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code getXExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterGetXExpression(AsteroidsProgramParser.GetXExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code getXExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitGetXExpression(AsteroidsProgramParser.GetXExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code readVariableExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterReadVariableExpression(AsteroidsProgramParser.ReadVariableExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code readVariableExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitReadVariableExpression(AsteroidsProgramParser.ReadVariableExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code getVXExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterGetVXExpression(AsteroidsProgramParser.GetVXExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code getVXExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitGetVXExpression(AsteroidsProgramParser.GetVXExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code readParameterExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterReadParameterExpression(AsteroidsProgramParser.ReadParameterExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code readParameterExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitReadParameterExpression(AsteroidsProgramParser.ReadParameterExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code getDirectionExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterGetDirectionExpression(AsteroidsProgramParser.GetDirectionExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code getDirectionExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitGetDirectionExpression(AsteroidsProgramParser.GetDirectionExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code addExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterAddExpression(AsteroidsProgramParser.AddExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code addExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitAddExpression(AsteroidsProgramParser.AddExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code getVYExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterGetVYExpression(AsteroidsProgramParser.GetVYExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code getVYExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitGetVYExpression(AsteroidsProgramParser.GetVYExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code lessThanExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterLessThanExpression(AsteroidsProgramParser.LessThanExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code lessThanExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitLessThanExpression(AsteroidsProgramParser.LessThanExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code sqrtExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterSqrtExpression(AsteroidsProgramParser.SqrtExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code sqrtExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitSqrtExpression(AsteroidsProgramParser.SqrtExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code equalExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterEqualExpression(AsteroidsProgramParser.EqualExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code equalExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitEqualExpression(AsteroidsProgramParser.EqualExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code mulExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterMulExpression(AsteroidsProgramParser.MulExpressionContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code mulExpression}
-	 * labeled alternative in {@link AsteroidsProgramParser#statement}.
+	 * labeled alternative in {@link AsteroidsProgramParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitMulExpression(AsteroidsProgramParser.MulExpressionContext ctx);

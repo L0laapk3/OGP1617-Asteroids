@@ -27,7 +27,7 @@ import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.internal.ProgramParser;
 import asteroids.util.ModelException;
 
-public class Part3TestFullToledo {
+public class Part3TestFull {
 
   private static final double EPSILON = 0.0001;
   private static final double BIG_EPSILON = 1.0E14;
@@ -47,8 +47,7 @@ public class Part3TestFullToledo {
     System.out.println("Score: " + score + "/" + max_score);
   }
 
-@SuppressWarnings("unchecked")
-@Before
+  @Before
   public void setUp() throws ModelException {
     facade = new asteroids.facade.Facade();
     programFactory = (IProgramFactory<?, ?, ?, Program>) facade.createProgramFactory();
