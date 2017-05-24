@@ -280,9 +280,8 @@ public class Ship extends AdvancedEntity {
 		this.unloadBullet(bullet);
 		Vector2 unitDirection = Vector2.fromPolar(this.getOrientation(), 1);
 		
-		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + 2 * bullet.getRadius())));
-		OGUtil.println("positie na set position: " + bullet.getPosition() + " het moest zijn: "+ Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
-
+		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
+		
 		//bullet.mirrorPositionWall(); //TODO ik heb dit weg moeten doen omdat er anders een test niet werkte (testFireBulletOutOfBounds())
 		OGUtil.println(bullet.getPosition());
 		OGUtil.println("/SHOOT");
@@ -322,7 +321,8 @@ public class Ship extends AdvancedEntity {
 		if (bullet.getWorld() != this.getWorld()) {
 			try {
 				this.getWorld().addEntity(bullet);
-			} catch (DoubleEntityException | IllegalEntityException e) {
+			} catch (DoubleEntityException | IllegalEntityException | EntitiesOverlapException e) {
+				//entitiesoverlapexception cant happen either, because we just checked for overlap
 				throw new AssertionError(); //cant happen, shouldnt happen
 			} catch (NotWithinBoundariesException e) {
 				//if ((bullet.getWorld() != null) && (((x + bullet.getRadius() * 0.99) > bullet.getWorld().getWidth()) || ((x - bullet.getRadius() * 0.99) < 0) || ((y + bullet.getRadius() * 0.99) > bullet.getWorld().getHeight())
@@ -330,9 +330,6 @@ public class Ship extends AdvancedEntity {
 
 				 bullet.terminate();
 				 return;
-			} catch (EntitiesOverlapException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 

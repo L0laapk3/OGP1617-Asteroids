@@ -42,6 +42,7 @@ public interface IStatement extends Cloneable {
 		if (!OGUtil.VERBOSE)
 			return;
 		StackTraceElement head = new Exception().getStackTrace()[1];
+		System.out.println(head);
 		__recursivePrint(this, 0, new ArrayList<Integer>());
 	}
 	default void __recursivePrint(IStatement statement, int level, List<Integer> childrenLeft) {
