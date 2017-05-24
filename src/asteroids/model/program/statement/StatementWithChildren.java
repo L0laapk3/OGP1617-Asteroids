@@ -19,7 +19,7 @@ public abstract class StatementWithChildren<T extends IStatement> extends Statem
 	
 	
 
-	@SuppressWarnings("unchecked") //TODO: ???
+	@SuppressWarnings("unchecked")
 	public StatementWithChildren<T> clone() {
 		StatementWithChildren<T> n = (StatementWithChildren<T>)super.clone();
 		//n.statements = (T[])new IStatement[this.statements.length];

@@ -92,7 +92,6 @@ public class Planetoid extends MinorPlanet {
 			Vector2 firstVelocity = Vector2.fromPolar(direction, this.getVelocityVector().pythagoras() * 1.5);
 			Vector2 SecondVelocity = Vector2.fromPolar(direction + Math.PI, this.getVelocityVector().pythagoras() * 1.5);
 			
-			//TODO: RADIUS, orientation, die hebbe toch geen orientation, in constructor van minorplanets aanpassen (opgelost denk ik)
 			
 			try {
 				Asteroid first = new Asteroid(firstPosition.x, firstPosition.y, firstVelocity.x, firstVelocity.y, this.getRadius() / 2);

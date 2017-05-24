@@ -1767,7 +1767,7 @@ public class Part3TestFullKris {
 		max_score += 5;
 		
 		try {
-			String code = //TODO: in de opgave zien ofda da wel echt niet mag...
+			String code =
 				"turn 10.0; 												" + 
 				"print 0.4; ";
 			facade.turn(ship1, 1.5);
@@ -1785,7 +1785,7 @@ public class Part3TestFullKris {
 		}
 	}
 
-	@Test //TODO: exception, whut??
+	@Test
 	public void testTurnStatement_InFunctionBody() throws ModelException {
 		try {
 			max_score += 3;
@@ -2467,7 +2467,6 @@ public class Part3TestFullKris {
 		if (nbStudentsInTeam > 1)
 			bulletsOnShip1 = facade.getBulletsOnShip(ship1);
 		OGUtil.println("bullets op ship 1 helemaal in het begin: " + facade.getBulletsOnShip(ship1));
-		//TODO nog 9 op ship
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
 		facade.fireBullet(ship1);
@@ -2475,7 +2474,6 @@ public class Part3TestFullKris {
 		OGUtil.println("De bullets in de wereld van wereld na fire: " + facade.getWorldBullets(filledWorld));
 		
 		OGUtil.println("bullets op ship 1 na 3x fireBullet: " + facade.getBulletsOnShip(ship1));
-		//TODO nog 6 op ship
 		
 		facade.loadProgramOnShip(ship1, program);
 		

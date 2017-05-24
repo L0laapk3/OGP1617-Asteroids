@@ -10,7 +10,7 @@ public interface IVariableContextAwareStatement extends IStatement {
 	
 	
 	
-	/* TODO moeten deze weg? staan ook zo een blokken in andere files
+	/*
 	
 	default getters and setters
 	

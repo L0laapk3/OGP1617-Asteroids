@@ -16,8 +16,6 @@ import be.kuleuven.cs.som.annotate.Raw;
 
 
 
-//TODO: orientation bekijken in entity en alle subclasses van entity.
-
 
 /**
  * A class to define basic entities.

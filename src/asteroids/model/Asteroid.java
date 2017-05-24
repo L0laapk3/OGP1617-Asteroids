@@ -26,8 +26,5 @@ public class Asteroid extends MinorPlanet {
 	public Asteroid(double x, double y, double xVelocity, double yVelocity, double radius)
 			throws IllegalArgumentException, InvalidRadiusException, InvalidPositionException {
 		super(x, y, xVelocity, yVelocity, radius, RHO_ASTEROID);
-		// TODO Auto-generated constructor stub
-		
-		
 	}
 }

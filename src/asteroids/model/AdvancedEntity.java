@@ -98,13 +98,9 @@ public abstract class AdvancedEntity extends Entity {
 	public void turn(double angle) {
 		if (angle <= 0 || angle >= 2 * Math.PI)
 			return;
-		//assert !((0 > angle) || (angle >= 2 * Math.PI));
 		System.out.println("valid");
 
 		this.orientation += angle;
-		//this.orientation = (this.orientation + angle) % (2 * Math.PI); TODO weggedaan 
-		//if (this.orientation < 0) // due to the way java calculates %, we need to add 2*PI to keep this number positive.
-		//	this.orientation += (2 * Math.PI);
 	}
 
 	
@@ -273,16 +269,13 @@ public abstract class AdvancedEntity extends Entity {
 		
 
 
-		// NOMINAL (We still have to do a defensive check because of the given tests) 
-		//TODO ik heb het zo moeten doen anders was het ofwel fout volgens de tests ofwel volgens de opgaven 
-		if ((orientation < 0) || (orientation > 2 * Math.PI)) {
-			throw new IllegalArgumentException ("the orientation can not be negative");
-		}
-		assert orientation >= 0 && orientation <= 2 * Math.PI;
+		//TODO euhm
+		//we know this is supposed to be written NOMINAL, but we still have to throw an error because of test requirements.
+		if ((orientation < 0) || (orientation > 2 * Math.PI))
+			throw new IllegalArgumentException("the orientation can not be negative");
+		
+		
 		this.orientation = orientation;
-		
-		
-		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -14,7 +14,6 @@ import asteroids.util.OGUtil;
 
 
 
-//TODO: WERK
 
 public class Program {
 

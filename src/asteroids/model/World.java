@@ -5,12 +5,16 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import asteroids.exceptions.*;
+import asteroids.exceptions.DoubleEntityException;
+import asteroids.exceptions.EntitiesOverlapException;
+import asteroids.exceptions.IllegalEntityException;
+import asteroids.exceptions.InvalidTimeException;
+import asteroids.exceptions.NegativeTimeException;
+import asteroids.exceptions.NoWorldException;
+import asteroids.exceptions.NotWithinBoundariesException;
+import asteroids.part2.CollisionListener;
 import asteroids.util.OGUtil;
 import asteroids.util.Vector2;
-
-import asteroids.part2.CollisionListener;
-
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Raw;
@@ -471,8 +475,9 @@ public class World extends Instance {
 			
 			Entity first = it.next();
 			
+			//TODO: dees mag weg (als da fatsoenlijk getest is)
 			if ((first instanceof Bullet) && (((Bullet)first).isLoadedInMotherShip())) {
-				OGUtil.println("wtf"); //TODO lol
+				throw new AssertionError("bullet cannot collide with the ship that it is loaded in..");
 			}
 
 			// detect wall collisions

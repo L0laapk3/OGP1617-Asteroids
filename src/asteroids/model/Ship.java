@@ -282,7 +282,7 @@ public class Ship extends AdvancedEntity {
 		
 		bullet.setPosition(Vector2.add(this.getPosition(), Vector2.multiply(unitDirection, this.getRadius() + bullet.getRadius())));
 		
-		//bullet.mirrorPositionWall(); //TODO ik heb dit weg moeten doen omdat er anders een test niet werkte (testFireBulletOutOfBounds())
+		
 		OGUtil.println(bullet.getPosition());
 		OGUtil.println("/SHOOT");
 		
@@ -484,16 +484,15 @@ public class Ship extends AdvancedEntity {
 	 * This function teleports the ship to a random position within the world, if the position is not valid because the ship does not lay fully within
 	 * the boundaries of his world or the position is already taken by an other entity then the ship will be terminated.
 	 * 
-	 * @effect  if the newly given position is not valid because the ship does not lay fully within the boundaries of his world or the position 
-	 * 		  is already taken by an other entity then the ship will be terminated.
-	 * 		| if position = occupied or ship not fully within boundaries
-	 * 		| 	ship.terminate();
-	 * @effect  if the newly given position is a valid position then the ship will be teleported to that position.
-	 * 		| if position = valid
-	 * 		|   ship.setPosition(randomHeight, randomWidth)
+	 * @effect if the newly given position is not valid because the ship does not lay fully within the boundaries of his world or the position 
+	 * 		   is already taken by an other entity then the ship will be terminated.
+	 * 		 | if position = occupied or ship not fully within boundaries
+	 * 		 | ship.terminate();
+	 * @effect if the newly given position is a valid position then the ship will be teleported to that position.
+	 * 		 | if position = valid
+	 * 		 | ship.setPosition(randomHeight, randomWidth)
 	 */
 	public void teleport() {
-		// TODO SHIP PLANETOID WTF COLLISION SHIT + COMMENTS
 	
 		double randomHeight = Math.random() * this.getWorld().getHeight();
 		double randomWidth = Math.random() * this.getWorld().getWidth();
@@ -570,7 +569,7 @@ public class Ship extends AdvancedEntity {
 			} catch (InvalidShipException e) { //this should never happen
 				throw new RuntimeException(e);
 			} catch (ProgramException e) {
-				//TODO: what has to happen when a program throws an error???
+				System.out.println("[WARNING]: program crashed on ship " +  this + ":");
 				e.printStackTrace();
 			}
 	}

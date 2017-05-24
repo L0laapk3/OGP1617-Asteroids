@@ -12,7 +12,7 @@ import asteroids.model.program.statement.VariableContextContainer;
 import asteroids.util.OGUtil;
 
 
-//TODO: callfunction moet eigenlijk heel die functie shit clonen denk ik
+
 
 
 public class CallFunction extends ExpressionContainer<Object> implements IExpression<Object>, ILoopContextAwareStatement {
