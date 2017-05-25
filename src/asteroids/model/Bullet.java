@@ -178,49 +178,27 @@ public class Bullet extends EntityWithConstantDensity {
 			super.collideWithWall();
 	}
 	
-
-	/**
-	 * Function that handles when a bullet hits a ship.
-	 * @post   If the ship that got hit by the bullet is the bullet's own mothership, then the bullet will be added to the magazine of the ship again.
-	 * @post   Otherwise, the bullet and the hit on the ship gets handled:
-	 * @effect ship.triggerHit()
-	 * 		   See @post
-	 * @param  ship
-	 * @throws NullPointerException
-	 * @throws RuntimeException 
-	 */
-	@Raw
-	void hit(Ship ship) throws NullPointerException, RuntimeException {
-		OGUtil.println("---hit---");
-		//OGUtil.println(this.getParent());
-		//OGUtil.println(ship);
-		
-		Vector2 OriginalPositionBullet = this.getPosition();
-		
-		if (ship == this.getMotherShip())
-			try {
-				this.setPosition(ship.getPosition());
-				ship.loadBullet(this);
-			} catch (DoubleEntityException | MisMatchWorldsException | NotOverlapException ex) { //these should never happen
-				this.setPosition(OriginalPositionBullet);
-				throw new AssertionError(ex);
-			}		
-		else {
-			this.die();
-		}
-	}
-
+	
 	/**
 	 * Handles the collision between a bullet and another entity
 	 * @param  entity
 	 *         The entity that this bullet collides with.
-	 * @post   Both the bullet and the other entity are terminated.
+	 * @effect If the other entity is the bullet's mothership, then the bullet will get loaded into the ship.
+	 * @effect Otherwise, both the bullet and the other entity are terminated.
 	 */
 	@Raw
 	void collideEntity(Entity entity) {
-		entity.die();
-		this.die();
-
+		if (entity instanceof Ship && (Ship)entity == this.getMotherShip()) {
+			try {
+				this.setPosition(entity.getPosition());
+				((Ship)entity).loadBullet(this);
+			} catch (DoubleEntityException | MisMatchWorldsException | NotOverlapException ex) { //these should never happen
+				throw new AssertionError(ex);
+			}
+		} else {
+			entity.die();
+			this.die();
+		}
 	}
 	/**
 	 * Variable holding the maximum speed of all bullets.

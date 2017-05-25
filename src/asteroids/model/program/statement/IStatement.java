@@ -39,7 +39,7 @@ public interface IStatement extends Cloneable {
 	
 
 	public default void recursivePrint() {
-		if (!OGUtil.VERBOSE)
+		if (OGUtil.SILENT)
 			return;
 		StackTraceElement head = new Exception().getStackTrace()[1];
 		System.out.println(head);
