@@ -2,6 +2,7 @@ package asteroids.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import asteroids.exceptions.AlreadyTerminatedException;
@@ -473,9 +474,17 @@ public class Ship extends AdvancedEntity {
 	@Raw
 	@Override
 	public void terminate() {
-		//naar onze interpretatie moeten de bullets mee sterven met het schip
-		for (Bullet bullet : loadedBullets)
-			bullet.terminate();
+		
+		Iterator<Bullet> it = loadedBullets.iterator();
+		while (it.hasNext()) {
+			it.next().terminate();
+			it = loadedBullets.iterator();
+		}
+		
+//		for (Bullet bullet : loadedBullets) {
+//			System.out.println("de bullet" + bullet);
+//			bullet.terminate();
+//		}
 		super.terminate();
 	}
 
