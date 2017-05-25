@@ -52,12 +52,12 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 	
 	
 	protected boolean setIfContains(String name, Object value) throws BadClassAssignmentException {
-		//OGUtil.println("try put " + name + " in " + this);
+		OGUtil.println("try put " + name + " in " + this);
 		if (variables.containsKey(name) && !((variables.get(name) instanceof FunctionContainer) && !(value instanceof FunctionContainer))) {
-			if (variables.get(name).getClass() != value.getClass())
+			if (variables.get(name) != null && value != null && variables.get(name).getClass() != value.getClass())
 				throw new BadClassAssignmentException();
 			else {
-				//OGUtil.println("put " + name + " to " + this);
+				OGUtil.println("put " + name + " to " + this);
 				variables.put(name, value);
 				return true;
 			}
@@ -72,7 +72,7 @@ public abstract class VariableContextContainer<T extends IStatement> extends Sta
 			if (variables.containsKey(name)) // && (variables.get(name) instanceof FunctionContainer)) //not needed, guarranteed
 				throw new BadClassAssignmentException();
 			variables.put(name, value);
-			//OGUtil.println("put " + name + " to " + this);
+			OGUtil.println("put " + name + " to " + this);
 		}
 	}
 	
