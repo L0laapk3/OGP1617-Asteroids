@@ -198,6 +198,7 @@ public class Bullet extends EntityWithConstantDensity {
 		} else {
 			entity.die();
 			this.die();
+			ship.die();
 		}
 	}
 	/**
