@@ -44,7 +44,7 @@ public class AsteroidsFrame3 extends AsteroidsFrame2<IFacade> {
 	
 	@Override
 	public void startGame() {
-		// Set op a world with 1 ship for the player and a random number
+		// Set up a world with 1 ship for the player and a random number
 		// of enemy ships.
 		World world;
 		Ship player;
