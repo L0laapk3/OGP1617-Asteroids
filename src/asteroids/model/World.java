@@ -475,7 +475,6 @@ public class World extends Instance {
 			
 			Entity first = it.next();
 			
-			//TODO: dees mag weg (als da fatsoenlijk getest is)
 			if ((first instanceof Bullet) && (((Bullet)first).isLoadedInMotherShip())) {
 				throw new AssertionError("bullet cannot collide with the ship that it is loaded in..");
 			}

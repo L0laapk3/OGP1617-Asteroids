@@ -268,7 +268,6 @@ public abstract class AdvancedEntity extends Entity {
 		
 
 
-		//TODO euhm
 		//we know this is supposed to be written NOMINAL, but we still have to throw an error because of test requirements.
 		if ((orientation < 0) || (orientation > 2 * Math.PI))
 			throw new IllegalArgumentException("the orientation can not be negative");
