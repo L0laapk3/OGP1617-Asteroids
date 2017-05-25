@@ -34,21 +34,10 @@ public class Collisions {
 		
 		if (first instanceof Bullet)
 			((Bullet)first).collideEntity(second);
-		/*
-		if (((first instanceof Bullet) && (second instanceof Ship) && !(((Bullet)first).getMotherShip() == second))) {
-			((Bullet)first).collideEntity(second);
-			
-		} else if ((first instanceof Bullet) && !(second instanceof Ship)) {
-			((Bullet)first).collideEntity(second);
-		}*/
 		
 		else if (first instanceof Ship) {
 			if (second instanceof Ship)
 				Entity.bounce(first, second);
-			//else if (second instanceof Bullet) {
-			//	((Bullet)second).hit((Ship)first);
-
-			//}
 			else if (second instanceof Asteroid)
 				first.die();
 			else if (second instanceof Planetoid)
