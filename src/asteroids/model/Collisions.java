@@ -29,7 +29,16 @@ public class Collisions {
 		if (!collideOne(first, second) && !collideOne(second, first))
 			throw new RuntimeException(new UndefinedCollisionBehaviourException(first, second));
 	}
-	
+
+    /**
+     * Helper function that tries to execute the appropriate handler for the collision of two entities.
+     * @param  first
+     *             The first entity.
+     * @param  second
+     *         The second entity.
+     * @return true if and only if the appropriate collision handler has not has been executed.
+     */
+
 	private static boolean collideOne(Entity first, Entity second) {
 		
 		if (first instanceof Bullet)
