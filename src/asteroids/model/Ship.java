@@ -480,11 +480,6 @@ public class Ship extends AdvancedEntity {
 			it.next().terminate();
 			it = loadedBullets.iterator();
 		}
-		
-//		for (Bullet bullet : loadedBullets) {
-//			System.out.println("de bullet" + bullet);
-//			bullet.terminate();
-//		}
 		super.terminate();
 	}
 
@@ -578,7 +573,6 @@ public class Ship extends AdvancedEntity {
 			} catch (InvalidShipException e) { //this should never happen
 				throw new RuntimeException(e);
 			} catch (ProgramException e) {
-				System.out.println("[WARNING]: program crashed on ship " +  this + ":");
 				e.printStackTrace();
 			}
 	}
