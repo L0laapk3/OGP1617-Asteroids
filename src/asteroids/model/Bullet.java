@@ -7,7 +7,6 @@ import asteroids.exceptions.MisMatchWorldsException;
 import asteroids.exceptions.NoMotherShipException;
 import asteroids.exceptions.NotOverlapException;
 import asteroids.util.OGUtil;
-import asteroids.util.Vector2;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Raw;
 
@@ -198,7 +197,6 @@ public class Bullet extends EntityWithConstantDensity {
 		} else {
 			entity.die();
 			this.die();
-			ship.die();
 		}
 	}
 	/**
