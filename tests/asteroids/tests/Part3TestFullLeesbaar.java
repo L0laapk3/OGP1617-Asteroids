@@ -32,7 +32,7 @@ import asteroids.util.ModelException;
 import asteroids.util.OGUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class Part3TestFullKris {
+public class Part3TestFullLeesbaar {
 
 	private static final double EPSILON = 0.0001;
 	private static final double BIG_EPSILON = 1.0E14;
